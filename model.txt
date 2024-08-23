@@ -1,0 +1,144 @@
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import layers, models
+import matplotlib.pyplot as plt
+
+# Set directory paths
+train_dir = 'C:/Users/pwn/Desktop/LilamiBazzar/basedata/training'
+validation_dir = 'C:/Users/pwn/Desktop/LilamiBazzar/basedata/validation'
+
+# Data augmentation and normalization for training images
+train_datagen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=40,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    shear_range=0.2,
+    zoom_range=0.2,
+    horizontal_flip=True,
+    fill_mode='nearest'
+)
+
+# Data normalization for validation images
+validation_datagen = ImageDataGenerator(rescale=1./255)
+
+# Load images from directories
+train_generator = train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(150, 150),
+    batch_size=32,
+    class_mode='binary'
+)
+
+validation_generator = validation_datagen.flow_from_directory(
+    validation_dir,
+    target_size=(150, 150),
+    batch_size=32,
+    class_mode='binary'
+)
+
+# Build the model
+model = models.Sequential([
+    layers.Conv2D(16, (3, 3), activation='relu', input_shape=(150, 150, 3)),
+    layers.MaxPooling2D(2, 2),
+    layers.Conv2D(32, (3, 3), activation='relu'),
+    layers.MaxPooling2D(2, 2),
+    layers.Conv2D(64, (3, 3), activation='relu'),
+    layers.MaxPooling2D(2, 2),
+    layers.Flatten(),
+    layers.Dense(512, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
+
+# Compile the model
+model.compile(
+    optimizer='adam',
+    loss='binary_crossentropy',
+    metrics=['accuracy']
+)
+
+# Train the model
+history = model.fit(
+    train_generator,
+    epochs=25,
+    validation_data=validation_generator
+)
+
+# Save the trained model
+model.save('C:/Users/pwn/Desktop/LilamiBazzar/model/my_model.h5')
+
+# Plot training & validation accuracy and loss
+plt.figure(figsize=(12, 4))
+
+# Plot accuracy
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='accuracy')
+plt.plot(history.history['val_accuracy'], label='val_accuracy')
+plt.xlabel('Epoch')
+plt.ylabel('Accuracy')
+plt.legend(loc='lower right')
+
+# Plot loss
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='loss')
+plt.plot(history.history['val_loss'], label='val_loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend(loc='upper right')
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+def load_and_predict(model_path, img_path, target_size=(150, 150)):
+    # Load the trained model
+    model = load_model(model_path)
+    
+    # Function to preprocess the image
+    def preprocess_image(img_path, target_size):
+        img = image.load_img(img_path, target_size=target_size)
+        img_array = image.img_to_array(img)
+        img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+        img_array /= 255.0  # Rescale if necessary
+        return img_array
+    
+    # Preprocess the image
+    img_array = preprocess_image(img_path, target_size)
+    
+    # Make prediction
+    prediction = model.predict(img_array)
+    
+    # Interpret the prediction
+    result = 'Authentic' if prediction[0] >= 0.5 else 'Fake'
+    
+    # Load and display the image
+    img = mpimg.imread(img_path)
+    plt.imshow(img)
+    plt.title(f"Prediction: {result}")
+    plt.axis('off')  # Hide axes
+    plt.show()
+
+# Example usage
+model_path = 'C:/Users/pwn/Desktop/LilamiBazzar/model/my_model.h5'  # Path to your trained model
+img_path = 'C:/Users/pwn/Desktop/100.jpg'   # Path to the image you want to check
+
+load_and_predict(model_path, img_path)

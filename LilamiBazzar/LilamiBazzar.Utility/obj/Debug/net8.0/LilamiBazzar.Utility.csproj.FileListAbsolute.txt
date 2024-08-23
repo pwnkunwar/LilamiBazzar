@@ -1,0 +1,11 @@
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\bin\Debug\net8.0\LilamiBazzar.Utility.deps.json
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\bin\Debug\net8.0\LilamiBazzar.Utility.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\bin\Debug\net8.0\LilamiBazzar.Utility.pdb
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\LilamiBazzar.Utility.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\LilamiBazzar.Utility.AssemblyInfoInputs.cache
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\LilamiBazzar.Utility.AssemblyInfo.cs
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\LilamiBazzar.Utility.csproj.CoreCompileInputs.cache
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\LilamiBazzar.Utility.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\refint\LilamiBazzar.Utility.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\LilamiBazzar.Utility.pdb
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.Utility\obj\Debug\net8.0\ref\LilamiBazzar.Utility.dll

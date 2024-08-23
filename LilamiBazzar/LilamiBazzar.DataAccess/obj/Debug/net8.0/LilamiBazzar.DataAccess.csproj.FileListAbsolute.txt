@@ -1,0 +1,17 @@
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\bin\Debug\net8.0\LilamiBazzar.DataAccess.deps.json
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\bin\Debug\net8.0\LilamiBazzar.DataAccess.runtimeconfig.json
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\bin\Debug\net8.0\LilamiBazzar.DataAccess.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\bin\Debug\net8.0\LilamiBazzar.DataAccess.pdb
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\bin\Debug\net8.0\LilamiBazzar.Models.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\bin\Debug\net8.0\LilamiBazzar.Models.pdb
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.csproj.AssemblyReference.cache
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.AssemblyInfoInputs.cache
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.AssemblyInfo.cs
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBa.0F9C4793.Up2Date
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\refint\LilamiBazzar.DataAccess.dll
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.pdb
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\LilamiBazzar.DataAccess.genruntimeconfig.cache
+C:\Users\pwn\Desktop\LilamiBazzar\LilamiBazzar\LilamiBazzar.DataAccess\obj\Debug\net8.0\ref\LilamiBazzar.DataAccess.dll
