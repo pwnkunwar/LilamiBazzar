@@ -1,8 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<LilamiBazzar.Models.Models.Product>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="row pb-3">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-6">
+                <div class="row p-2">
+                    <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                        @* Extract the third image or last image if fewer than three *@
+                        @{
+                            var images = product.PhotoFilesNames.Split(',');
+                            var thirdImage = images.Length >= 3 ? images[2] : images.LastOrDefault();
+                        }
+                        <img src="/uploads/images/@thirdImage" class="card-img-top rounded mb-3" alt="Product Image" />
+                        <div class="pl-1">
+                        <h5 class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</h5>
+                        <p class="card-title text-warning text-center">@product.Description</p>
+                        </div>
+                        <div>
+                            <p class="text-dark text-opacity-75 text-center">@product.StartingPrice</p>
+                        </div>
+                        <div class="btn btn-primary bg-gradient border-0 form-control">
+                            Details
+                        </div>
+                        </div>
+                        @* Add buttons for Edit and Delete *@
+                 </div>
+                    </div>
+                </div>
+            
+        }
+    </div>

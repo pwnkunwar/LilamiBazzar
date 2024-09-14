@@ -29,7 +29,7 @@ namespace LilamiBazzar.Models.Models
         public string PasswordResetToken { get; set; } = string.Empty;
         public DateTime? PasswordResetTokenExpires { get; set; }
 
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
     }
     

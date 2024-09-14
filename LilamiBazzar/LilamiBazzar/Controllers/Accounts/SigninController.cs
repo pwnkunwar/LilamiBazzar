@@ -25,7 +25,7 @@ namespace LilamiBazzar.Controllers.Accounts
             return View();
         }*/
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(UserLogin userLogin)
+        public async Task<IActionResult> LoginAsync([FromBody] UserLogin userLogin)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace LilamiBazzar.Controllers.Accounts
                     var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userLogin.Email);
                     if(user is null)
                     {
-                        return BadRequest("User or Password Incorrect");
+                         return BadRequest("User or Password Incorrect");
                     }
                     if(!VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
                     {
@@ -44,7 +44,7 @@ namespace LilamiBazzar.Controllers.Accounts
                     {
                         return BadRequest("Please verified your email address");
                     }*/
-                    return Ok($"Welcome Back {userLogin.Email}");
+                   // return Ok($"Welcome Back {userLogin.Email}");
                     var authClaims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
@@ -54,6 +54,10 @@ namespace LilamiBazzar.Controllers.Accounts
                         new Claim(ClaimTypes.Role, user.Role)
                     };
                     var token = GenerateNewJsonWebToken(authClaims);
+
+                    // localStorage.setItem('Authorization', token);
+
+
                     return Ok(token);
 
                 }

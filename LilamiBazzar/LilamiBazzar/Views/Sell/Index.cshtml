@@ -1,0 +1,367 @@
+﻿<div class="col-xs-8 col-sm-10 text-center ae-top-icons--logo">
+    <p class="heading-6">Request an Auction Estimate</p>
+</div>
+
+<div class="progressbar col-xs-12 col-lg-6 col-lg-offset-3 js-overlay-control clearfix show">
+    <ul class="progressbar--nav">
+        <li data-name="step-1" data-target="item-details" data-is-valid="true" class="js-progress-object-details step progressbar--nav-item active">
+            <span class="progressbar--nav-circle"><span class="progressbar--nav-number">1</span></span>
+            <span class="progressbar--nav-item-text">Tell us about your item</span>
+        </li>
+        <li data-name="step-2" data-target="upload-photo" data-is-valid="false" class="js-progress-step-two step progressbar--nav-item">
+            <span class="progressbar--nav-circle"><span class="progressbar--nav-number">2</span></span>
+            <span class="progressbar--nav-item-text">Upload photos and documents</span>
+        </li>
+        <li data-name="step-3" data-target="review-submit" data-is-valid="false" class="js-progress-step-three step progressbar--nav-item">
+            <span class="progressbar--nav-circle"><span class="progressbar--nav-number">3</span></span>
+            <span class="progressbar--nav-item-text">Review and submit</span>
+        </li>
+    </ul>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 mx-auto">
+          <div class="tab-pane fade show active visually-hidden" id="upload-photo">
+
+              <div class="col-xs-12 no-padding text-center step--header">
+                    <h2 class="heading-4 step--title js-step-header-title">Upload photos and documents</h2>
+                      @* <p class="p--primary js-step-header-description">All fields are required unless labeled as optional</p> *@
+               </div>
+                <div class="row js-heading-blowout">
+                    <hr class="blow-out step--blowout">
+                </div>
+
+                <div class="container mt-5">
+                    <h3>Upload photos</h3>
+                    <p>Please upload three colour photos of your item</p>
+                    <div class="row">
+                        <!-- Front Image -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card text-center p-3">
+                                <label for="front-image-upload" class="d-block">
+                                    <i class="bi bi-upload" style="font-size: 48px;"></i>
+                                    <p>Example: front image<br>Maximum Size 10MB</p>
+                                </label>
+                                <input type="file" id="front-image-upload" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+
+                        <!-- Back Image -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card text-center p-3">
+                                <label for="back-image-upload" class="d-block">
+                                    <i class="bi bi-upload" style="font-size: 48px;"></i>
+                                    <p>Example: back image<br>Maximum Size 10MB</p>
+                                </label>
+                                <input type="file" id="back-image-upload" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+
+                        <!-- Signature Image -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card text-center p-3">
+                                <label for="signature-image-upload" class="d-block">
+                                    <i class="bi bi-upload" style="font-size: 48px;"></i>
+                                    <p>Example: signature image<br>Maximum Size 10MB</p>
+                                </label>
+                                <input type="file" id="signature-image-upload" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size:14px">The size limit per file is 10MB</p>
+                <p style="font-size:14px">Format types: JPG, PNG</p>
+
+                <div class="row js-heading-blowout">
+                    <hr class="blow-out step--blowout">
+                </div>
+
+
+                <div class="container mt-5">
+                    <h3>Upload Documents <span class="text-muted fst-italic">Optional</span></h3>
+                    <p>Documents may include receipts, authenticity certifications and/or previous valuation statements about your item</p>
+                    <div class="row">
+                        <!-- Front Image -->
+                       
+                            
+                            <div class="col-sm-7">
+                                <input type="file" autocomplete="off" class="form-control form-control" name="artist_maker" placeholder="+Add document" maxlength="500" required style="width:600px" id="document1">
+                            </div>
+
+
+                        
+                        <br />
+                        <br />
+              
+
+                        <!-- Back Image -->
+                        
+                            <div>
+                                <input type="file" autocomplete="off" class="form-control form-control" name="artist_maker" placeholder="+Add document" maxlength="500" required style="width:600px" id="document2">
+                            </div>
+                     
+                        <br />
+                        <br />
+
+
+                        <div>
+                                <input type="file" autocomplete="off" class="form-control form-control" name="artist_maker" placeholder="+Add document" maxlength="500" required style="width:600px" id="document3">
+                            </div>
+                   
+                </div>
+               <br/>
+                    <p style="font-size:14px">We accept up to three documents per submission in the form of PDF, JPG or PNG files</p>
+                    <p style="font-size:14px">The size limit per document is 10MB</p>
+
+                    <div class="row js-heading-blowout">
+                        <hr class="blow-out step--blowout">
+                    </div>
+
+                    <div class="form-group row mb-3">
+                        <div class="col-sm-12 text-center">
+                            <button type="button" class="btn btn-primary" id="submitButton">Next</button>
+                        </div>
+                    </div>
+        </div>
+
+            
+    </div>
+
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 mx-auto">
+            <form id="auction-form">
+                <!-- Step 1: Item Details -->
+                <div class="tab-pane fade show active" id="item-details">
+
+<div class="col-xs-12 no-padding text-center step--header">
+    <h2 class="heading-4 step--title js-step-header-title">Tell us about your item</h2>
+    <p class="p--primary js-step-header-description">All fields are required unless labeled as optional</p>
+</div>
+
+<div class="row js-heading-blowout">
+    <hr class="blow-out step--blowout">
+</div>
+
+
+                    <div class="form-group row align-items-center">
+                        <label for="artist_maker" class="col-form-label col-sm-4 text-sm-center mb-0">Artist / Maker</label>
+                        <div class="col-sm-7">
+                            <input type="text" autocomplete="off" class="form-control form-control-sm" name="artist_maker" placeholder="ex. Tom Wesselmann" maxlength="500" required id="title">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row align-items-center">
+                        <label for="description" class="col-form-label col-sm-4 text-sm-center mb-0">Description</label>
+                        <div class="col-sm-7">
+                                <input type="text" autocomplete="off" class="form-control" name="description" placeholder="Item title, medium/material, markings, labels, signatures" maxlength="500" required style="height: 100px;" id="description">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row align-items-center">
+                        <label for="dimensions" class="col-form-label col-sm-4 text-sm-center mb-0">Dimensions <span class="text-muted fst-italic">Optional</span></label>
+                        <div class="col-sm-8 d-flex">
+                            <input type="tel" pattern="[0-9]*" maxlength="6" class="form-control input-sm mr-2" name="width" placeholder="Width" id="width">
+                            <p class="p--primary font_grey3 d-none d-sm-block align-self-center mx-2">X</p>
+                            <input type="tel" pattern="[0-9]*" maxlength="6" class="form-control input-sm mr-2" name="height" placeholder="Height"id="height">
+                            <p class="p--primary font_grey3 d-none d-sm-block align-self-center mx-2">X</p>
+                            <input type="tel" pattern="[0-9]*" maxlength="6" class="form-control input-sm mr-2" name="length" placeholder="Depth" id="depth">
+                                <select class="form-control input-sm ml-2" name="dimension_unit" id="dimension_unit">
+                                <option disabled selected>Units</option>
+                                <option value="1">cm</option>
+                                <option value="2">in</option>
+                                <option value="3">ft</option>
+                                <option value="4">m</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row align-items-center">
+                        <label for="provenance" class="col-form-label col-sm-4 text-sm-center mb-0">Provenance</label>
+                        <div class="col-sm-7">
+                                <input type="text" autocomplete="off" class="form-control" name="provenance" placeholder="Where and when was the work acquired? Any known history of ownership prior to this?" maxlength="500" required style="height: 75px;" id="provenance">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row align-items-center">
+                        <label for="location_of_item" class="col-form-label col-sm-4 text-sm-center mb-0">Location Of Item</label>
+                        <div class="col-sm-7">
+                                <input type="text" autocomplete="off" class="form-control form-control-sm" name="location_of_item" placeholder="ex. Tom Wesselmann" maxlength="500" required id="location">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row align-items-center">
+                        <label for="starting_bid" class="col-form-label col-sm-4 text-sm-center mb-0">Starting Bid</label>
+                        <div class="col-sm-7">
+                                <input type="text" autocomplete="off" class="form-control form-control-sm" name="starting_bid" placeholder="ex. 100" maxlength="500" required id="price">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row align-items-center">
+                        <label for="auction_duration" class="col-form-label col-sm-4 text-sm-center mb-0">Auction Duration</label>
+                        <div class="col-sm-7">
+                                <input type="text" autocomplete="off" class="form-control form-control-sm" name="auction_duration" placeholder="ex. 7 days" maxlength="500" required id="aunctionDuration">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row mb-3">
+                        <div class="col-sm-12 text-center">
+                                <button type="button" class="btn btn-primary" id="next-button">Next</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Upload Photos -->
+                
+                
+         
+
+                <!-- Step 3: Review and Submit -->
+                <div class="tab-pane fade" id="review-submit">
+                    <div class="row text-center my-4">
+                        <div class="col-xs-12">
+                            <h2 class="h4">Review and Submit</h2>
+                            <p>Review your details before submission</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-xs-12 col-sm-7">
+                            <!-- Add review details here -->
+                            <div class="form-group row mb-3">
+                                <div class="col-sm-12 text-center">
+                                    <button type="button" class="btn btn-secondary" id="back-to-upload">Back</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Next button for Step 1
+        $('#next-button').click(function () {
+            $('#upload-photo').removeClass('visually-hidden');
+
+            $('#item-details').removeClass('show active');
+            $('#upload-photo').addClass('show active');
+            $('.progressbar--nav-item[data-target="upload-photo"]').addClass('active');
+            $('.progressbar--nav-item[data-target="item-details"]').removeClass('active');
+        });
+
+        // Back button for Step 2
+        $('#back-button').click(function () {
+            $('#upload-photo').removeClass('show active');
+            $('#item-details').addClass('show active');
+            $('.progressbar--nav-item[data-target="item-details"]').addClass('active');
+            $('.progressbar--nav-item[data-target="upload-photo"]').removeClass('active');
+        });
+
+        // Next button for Step 2
+        $('#next-to-step3').click(function () {
+            $('#upload-photo').removeClass('show active');
+            $('#review-submit').addClass('show active');
+            $('.progressbar--nav-item[data-target="review-submit"]').addClass('active');
+            $('.progressbar--nav-item[data-target="upload-photo"]').removeClass('active');
+        });
+
+        // Back button for Step 3
+        $('#back-to-upload').click(function () {
+            $('#review-submit').removeClass('show active');
+            $('#upload-photo').addClass('show active');
+            $('.progressbar--nav-item[data-target="upload-photo"]').addClass('active');
+            $('.progressbar--nav-item[data-target="review-submit"]').removeClass('active');
+        });
+    });
+</script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#submitButton').on('click', async function (e) {
+                e.preventDefault();
+
+                // Create FormData object
+                var formData = new FormData();
+
+                // Append file to FormData
+                var frontImageFile = $('#front-image-upload')[0].files[0];
+                if (frontImageFile) {
+                    formData.append('Photos', frontImageFile);
+                }
+                var backImageFile = $('#back-image-upload')[0].files[0];
+                if (backImageFile) {
+                    formData.append('Photos', backImageFile);
+                }
+                var signatureImageFile = $('#signature-image-upload')[0].files[0];
+                if (signatureImageFile){
+                    formData.append('Photos', signatureImageFile);
+                }
+                var document1 = $('#document1')[0].files[0];
+                if(document1)
+                {
+                    formData.append('Documents', document1);
+                }
+                var document2 = $('#document2')[0].files[0];
+                if (document2) {
+                    formData.append('Documents', document2);
+                }
+                var document3 = $('#document3')[0].files[0];
+                if (document3) {
+                    formData.append('Documents', document3);
+                }
+
+                // Append other form fields to FormData
+                formData.append('title', $('#title').val());
+                formData.append('description', $('#description').val());
+                formData.append('height', $('#height').val());
+                formData.append('width', $('#width').val());
+                formData.append('depth', $('#depth').val());
+                formData.append('dimension_unit', $('#dimension_unit').val());
+                formData.append('provenance', $('#provenance').val());
+                formData.append('location', $('#location').val());
+                formData.append('Startingprice', $('#price').val());
+                formData.append('aunctionDuration', $('#aunctionDuration').val());
+
+                try {
+                    // Await the result from AJAX call
+                    var response = await $.ajax({
+                        url: '/Product/Create', // Replace with your server endpoint
+                        type: 'POST',
+                        data: formData,
+                        processData: false, // Prevent jQuery from automatically processing the data
+                        contentType: false, // Prevent jQuery from automatically setting the content type
+                    });
+
+                    // Handle successful response
+                    console.log('Upload successful:', response);
+
+                    // Optionally, handle the response, e.g., redirecting the user
+                    // window.location.href = "somePage.html"; // Example redirection
+
+                } catch (error) {
+                    // Handle any errors that occurred during the AJAX call
+                    console.error('Upload failed:', error);
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
