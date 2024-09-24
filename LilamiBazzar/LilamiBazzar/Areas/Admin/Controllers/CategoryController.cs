@@ -2,8 +2,9 @@
 using LilamiBazzar.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LilamiBazzar.Controllers
+namespace LilamiBazzar.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,12 +30,12 @@ namespace LilamiBazzar.Controllers
         }
         public IActionResult Edit(int id)
         {
-            if(id == null || id ==0 )
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
             Category categoryFromDb = _context.Category.Find(id);
-            if(categoryFromDb == null)
+            if (categoryFromDb == null)
             {
                 return NotFound();
 
@@ -44,18 +45,18 @@ namespace LilamiBazzar.Controllers
         [HttpPost]
         public IActionResult Edit(Category category)
         {
-         _context.Category.Update(category);
+            _context.Category.Update(category);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
         {
-            if(id==null || id==0 )
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
             Category category = _context.Category.Find(id);
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }
@@ -65,7 +66,7 @@ namespace LilamiBazzar.Controllers
         public IActionResult DeletePOST(int id)
         {
             Category category = _context.Category.Find(id);
-            if(category == null)
+            if (category == null)
             {
                 return NotFound();
             }

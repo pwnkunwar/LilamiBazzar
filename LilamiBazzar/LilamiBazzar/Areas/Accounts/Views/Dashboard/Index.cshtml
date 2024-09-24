@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml"; // This ensures the layout is inherited from your main layout
+}
+
+<h1>Manage your account</h1>
+
+<div>
+    <h2>Change your account settings</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Navigation menu (Design only) -->
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><a class="nav-link active" href="/Accounts/Dashboard">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/Email">Email</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/ChangePassword">Password</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/TwoFactorAuthentication">Two-factor authentication</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/PersonalData">Personal data</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <!-- Profile form (Design only) -->
+            <h3>Profile</h3>
+            <div id="status-message">
+                <!-- Optional: Status message placeholder -->
+            </div>
+            <form id="profile-form" method="post">
+                <!-- Username (read-only) -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="Username" placeholder="Username" value="your-username" disabled />
+                    <label for="Username">Username</label>
+                </div>
+                <!-- Phone number (editable) -->
+                <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="PhoneNumber" placeholder="Phone number" />
+                    <label for="PhoneNumber">Phone number</label>
+                </div>
+                <!-- Save button -->
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+

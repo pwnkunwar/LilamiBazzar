@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using LilamiBazzar.Models.Models;
-using System.Security.Cryptography.Xml;
 using LilamiBazzar.DataAccess.Database;
 using System.Security.Cryptography;
+using LilamiBazzar.Models.Models;
 
-namespace LilamiBazzar.Controllers.Accounts
+namespace LilamiBazzar.Areas.Accounts
 {
+    [Area("Admin")]
     public class SignupController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,18 +14,18 @@ namespace LilamiBazzar.Controllers.Accounts
             _context = context;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(User user)
+        public async Task<IActionResult> CreateAsync(LilamiBazzar.Models.Models.User user)
         {
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
-                    if(_context.Users.Any(u => u.Email == user.Email))
+                    if (_context.Users.Any(u => u.Email == user.Email))
                     {
                         return BadRequest("User already exists!.");
                     }
                     GeneratePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
-                    var create = new User
+                    var create = new LilamiBazzar.Models.Models.User
                     {
                         UserId = Guid.NewGuid(),
                         FirstName = user.FirstName,

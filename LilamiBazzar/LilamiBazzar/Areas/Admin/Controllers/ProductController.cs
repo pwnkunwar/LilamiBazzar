@@ -8,8 +8,9 @@ using System.Linq;
 using LilamiBazzar.DataAccess.Database;
 using Microsoft.AspNetCore.Http;
 
-namespace LilamiBazzar.Controllers
+namespace LilamiBazzar.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;

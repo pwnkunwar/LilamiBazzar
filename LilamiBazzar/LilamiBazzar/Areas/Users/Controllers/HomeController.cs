@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
-namespace LilamiBazzar.Controllers
+namespace LilamiBazzar.Areas.User.Controllers
 {
+    [Area("Users")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -34,10 +35,10 @@ namespace LilamiBazzar.Controllers
             return View();
         }
 
-       /* [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }*/
+        /* [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+         public IActionResult Error()
+         {
+             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+         }*/
     }
 }

@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Personal Data";
+}
+
+<h1>Manage your account</h1>
+
+<div>
+    <h2>Personal Data</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Sidebar navigation (same as the main layout) -->
+            <ul class="nav nav-pills flex-column">
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/Email">Email</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/ChangePassword">Password</a></li>
+                <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/TwoFactorAuthentication">Two-factor authentication</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/Accounts/Dashboard/PersonalData">Personal data</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <!-- Personal Data Management -->
+            <h3>@ViewData["Title"]</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Your account contains personal data that you have provided to us. This page allows you to download or delete that data.</p>
+                    <p>
+                        <strong>Deleting this data will permanently remove your account, and this action cannot be undone.</strong>
+                    </p>
+                    <form id="download-data"  method="post">
+                        <button class="btn btn-primary" type="submit">Download</button>
+                    </form>
+                    <p>
+                        <a id="delete" class="btn btn-danger">Delete</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

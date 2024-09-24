@@ -9,8 +9,10 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace LilamiBazzar.Controllers.Accounts
+namespace LilamiBazzar.Areas.Accounts
 {
+    [Area("Accounts")]
+
     public class SigninController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -29,14 +31,14 @@ namespace LilamiBazzar.Controllers.Accounts
         {
             try
             {
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userLogin.Email);
-                    if(user is null)
+                    if (user is null)
                     {
-                         return BadRequest("User or Password Incorrect");
+                        return BadRequest("User or Password Incorrect");
                     }
-                    if(!VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
+                    if (!VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
                     {
                         return BadRequest("User or Password Incorrect");
                     }
@@ -44,7 +46,7 @@ namespace LilamiBazzar.Controllers.Accounts
                     {
                         return BadRequest("Please verified your email address");
                     }*/
-                   // return Ok($"Welcome Back {userLogin.Email}");
+                    // return Ok($"Welcome Back {userLogin.Email}");
                     var authClaims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
@@ -73,7 +75,7 @@ namespace LilamiBazzar.Controllers.Accounts
         {
             using (var hmac = new HMACSHA256(passwordSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return computedHash.SequenceEqual(passwordHash);
             }
         }
@@ -83,8 +85,8 @@ namespace LilamiBazzar.Controllers.Accounts
             var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
             var tokenObject = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],
+               /* issuer: _configuration["JWT:ValidIssuer"],
+                audience: _configuration["JWT:ValidAudience"],*/
                 expires: DateTime.Now.AddHours(1),
                 claims: claims,
                 signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)

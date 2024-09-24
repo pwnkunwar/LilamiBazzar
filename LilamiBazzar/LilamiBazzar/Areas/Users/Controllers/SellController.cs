@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace LilamiBazzar.Controllers
+namespace LilamiBazzar.Areas.User.Controllers
 {
+    [Area("Users")]
+
     public class SellController : Controller
     {
         public IActionResult Index()

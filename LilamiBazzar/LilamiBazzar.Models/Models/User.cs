@@ -30,8 +30,10 @@ namespace LilamiBazzar.Models.Models
         public DateTime? PasswordResetTokenExpires { get; set; }
 
         public string? Role { get; set; }
+        public DateTime? LockoutEnd { get; set; }
+
 
     }
-    
+
 
 }
