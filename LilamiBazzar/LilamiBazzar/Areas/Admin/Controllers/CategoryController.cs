@@ -14,7 +14,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _context.Category.ToList();
+            List<Category> objCategoryList = _context.Categories.ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -24,7 +24,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Category obj)
         {
-            _context.Category.Add(obj);
+            _context.Categories.Add(obj);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -34,7 +34,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category categoryFromDb = _context.Category.Find(id);
+            Category categoryFromDb = _context.Categories.Find(id);
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -45,7 +45,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(Category category)
         {
-            _context.Category.Update(category);
+            _context.Categories.Update(category);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -55,7 +55,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            Category category = _context.Category.Find(id);
+            Category category = _context.Categories.Find(id);
             if (category == null)
             {
                 return NotFound();
@@ -65,12 +65,12 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int id)
         {
-            Category category = _context.Category.Find(id);
+            Category category = _context.Categories.Find(id);
             if (category == null)
             {
                 return NotFound();
             }
-            _context.Category.Remove(category);
+            _context.Categories.Remove(category);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

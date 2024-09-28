@@ -1,6 +1,28 @@
 ﻿
-<div class="card shadow border-0 my-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+
+<style>
+    .custom-card {
+        border-radius: 25px; /* Adjust the value for more or less curvature */
+        overflow: hidden;
+        margin-left: 23px;
+        margin-right: 23px;
+    }
+
+    .custom-header {
+        background-color: #192E2E; /* Background color of the header */
+        /* margin-left: 15px;
+        margin-right: 23px; */
+    }
+
+        .custom-header h2 {
+            color: white; /* Text color for the heading */
+        }
+
+</style>
+
+<div class="card shadow border-0 my-4 custom-card">
+    <!-- Added custom class -->
+    <div class="card-header custom-header py-3">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">User List</h2>
@@ -11,15 +33,20 @@
         <table id="tblData" class="table table-bordered table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th>FirstName</th>
-                    <th>LastName</th>
+                    <th>Name</th>
                     <th>Email</th>
+                    <th>Phone</th>
+                    <th>Company</th>
                     <th>Role</th>
-                    <th>Actions</th>
+                    <th></th>
                 </tr>
             </thead>
         </table>
     </div>
 </div>
 
-<script src="~/js/user.js"></script>
+
+
+
+    <script src="~/js/user.js"></script>
+

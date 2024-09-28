@@ -12,15 +12,15 @@ namespace LilamiBazzar.Models.Models
         
             public UserValidator()
             {
-            RuleFor(user => user.FirstName)
-                 .Matches(@"^[a-zA-Z]+$").WithMessage("First name can only letters")
-                 .NotEmpty().WithMessage("First name is required.")
-                 .Length(1, 50).WithMessage("First name must be between 1 and 50 characters long.");
+            RuleFor(user => user.FullName)
+                 .Matches(@"^[a-zA-Z]+$").WithMessage("FullName name can only letters")
+                 .NotEmpty().WithMessage("FullName is required.")
+                 .Length(1, 50).WithMessage("FullName must be between 1 and 50 characters long.");
 
-            RuleFor(user => user.LastName)
+            /*RuleFor(user => user.LastName)
                 .Matches(@"^[a-zA-Z]+$").WithMessage("First name can only letters")
                 .NotEmpty().WithMessage("Last name is required.")
-                .Length(1, 50).WithMessage("Last name must be between 1 and 50 characters long.");
+                .Length(1, 50).WithMessage("Last name must be between 1 and 50 characters long.");*/
 
             RuleFor(user => user.Email)
                 .NotEmpty().WithMessage("Email is required.")

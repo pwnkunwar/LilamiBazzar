@@ -2,10 +2,11 @@
 using LilamiBazzar.DataAccess.Database;
 using System.Security.Cryptography;
 using LilamiBazzar.Models.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LilamiBazzar.Areas.Accounts
 {
-    [Area("Admin")]
+    [Area("Accounts")]
     public class SignupController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,30 +15,48 @@ namespace LilamiBazzar.Areas.Accounts
             _context = context;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(LilamiBazzar.Models.Models.User user)
+        public async Task<IActionResult> CreateAsync([FromBody] LilamiBazzar.Models.Models.User user)
         {
             try
             {
+                /*TempData["ErrorMessage"] = "User already exists!";
+                return RedirectToAction("Index", "Home", new { area = "Users" })*/;
+
+                ModelState.Remove("UserRoles");
                 if (ModelState.IsValid)
                 {
                     if (_context.Users.Any(u => u.Email == user.Email))
                     {
                         return BadRequest("User already exists!.");
                     }
+
+                    var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == StaticUserRoles.USER);
+                    if(role is null)
+                    {
+                        return BadRequest();
+                    }
                     GeneratePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
                     var create = new LilamiBazzar.Models.Models.User
                     {
                         UserId = Guid.NewGuid(),
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
+                        FullName = user.FullName,
+                        Address = user.Address,
                         Email = user.Email,
                         PasswordHash = passwordHash,
                         PasswordSalt = passwordSalt,
                         VerificationToken = GenerateRandomToken(),
-                        Role = StaticUserRoles.USER
                     };
                     _context.Users.Add(create);
                     await _context.SaveChangesAsync();
+
+                    var userRole = new UserRole
+                    {
+                        UserId = create.UserId,
+                        RoleId = role.RoleId
+                        
+                    };
+                   await _context.UserRoles.AddAsync(userRole);
+                   await _context.SaveChangesAsync();
 
                     return Ok("User created successfully");
                 }

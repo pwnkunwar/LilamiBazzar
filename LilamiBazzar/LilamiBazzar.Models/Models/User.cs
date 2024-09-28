@@ -14,9 +14,8 @@ namespace LilamiBazzar.Models.Models
         [Key]
         public Guid UserId { get; set; }
         //public string UserName { get; set; }
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-
+        public string? FullName { get; set; }
+        public string? Address { get; set; }
         public string? Email { get; set; }
         [NotMapped]
         public string Password { get; set; }
@@ -29,10 +28,10 @@ namespace LilamiBazzar.Models.Models
         public string PasswordResetToken { get; set; } = string.Empty;
         public DateTime? PasswordResetTokenExpires { get; set; }
 
-        public string? Role { get; set; }
         public DateTime? LockoutEnd { get; set; }
-
-
+        [NotMapped]
+        public ICollection<UserRole> UserRoles { get; set; }
+        public int FailedLoginAttempts { get; set; } = 0;
     }
 
 

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\design.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\CustomJs.js" />
     <_ContentIncludedByDefault Remove="wwwroot\js\user.js" />
   </ItemGroup>

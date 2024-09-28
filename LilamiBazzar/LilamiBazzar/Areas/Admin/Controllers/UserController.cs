@@ -1,4 +1,4 @@
-﻿using LilamiBazzar.DataAccess.Database;
+﻿/*using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -27,8 +27,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             var user = _dbContext.Users.FirstOrDefault(u=> u.UserId == userId);
             var mapper = new RoleManagmentVM
             {
-                user = user,
-                Role = user.Role
+                *//*u*//*ser = user,
+                Role = user.Role*//*
             };
             return View(mapper);
         }
@@ -94,3 +94,4 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
     }
 }
+*/

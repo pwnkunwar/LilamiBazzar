@@ -47,13 +47,22 @@ namespace LilamiBazzar.Areas.Accounts
                         return BadRequest("Please verified your email address");
                     }*/
                     // return Ok($"Welcome Back {userLogin.Email}");
+                    Role roleName = new Role();
+                    var roleId = await _context.UserRoles.FirstOrDefaultAsync(r => r.UserId == user.UserId);
+                    if(roleId is null)
+                    {
+                        return BadRequest();
+                    }
+                    else
+                    {
+                        roleName = await _context.Roles.FirstOrDefaultAsync(r => r.RoleId == roleId.RoleId);
+                    }
                     var authClaims = new List<Claim>
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                        new Claim(ClaimTypes.GivenName, user.FirstName),
-                        new Claim(ClaimTypes.Surname, user.LastName),
+                        new Claim(ClaimTypes.GivenName, user.FullName),
                         new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, user.Role)
+                        new Claim(ClaimTypes.Role, roleName.Name)
                     };
                     var token = GenerateNewJsonWebToken(authClaims);
 

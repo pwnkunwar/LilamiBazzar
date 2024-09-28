@@ -3,14 +3,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LilamiBazzar</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootssigintrap-icons.css">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LilamiBazzar.styles.css" asp-append-version="true" />
+
+
 
     <script src="~/js/CustomJs.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-    <style>
+   @*  <style>
         /* Custom CSS to move the modal down using absolute positioning */
         #signupModal .modal-dialog {
             position: absolute;
@@ -19,57 +21,289 @@
             transform: translateX(-50%);
         }
        
+    </style> *@
+    <style>
+        .copyright {
+            padding: 20px;
+            text-align: center;
+            color: var(--bg-color);
+            background: var(--main-color);
+        }
+        .social a {
+            font-size: 20px;
+            margin-right: 1rem;
+        }
+        .footer {
+            background: var(--main-color);
+            color: var(--bg-color);
+            border-radius: 5rem 0 0 0;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, auto));
+            gap: 2rem;
+        }
+
+            .footer-container h2 {
+                font-size: 1.7rem;
+                font-weight: 500;
+            }
+
+        .footer-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .footer-box h3 {
+                margin-bottom: 1rem;
+                font-size: 1rem;
+                font-weight: 400;
+            }
+
+            .footer-box a {
+                font-size: 0.8rem;
+                color: var(--bg-color);
+                font-weight: 400;
+                margin-bottom: 0.5rem;
+            }
+
+                .footer-box a:hover {
+                    color: var(--text-color);
+                }
+        .navbar {
+            margin-right: 22px;
+            margin-left: 20px;
+            margin-top: 7px;
+            height: 80px;
+        }
+
+        .custom-navbar {
+            background-color: #1b2b2d;
+            padding: 10px 20px;
+            border-radius: 20px;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #d2c7c7 !important;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .dropdown-menu {
+            background-color: #1b2b2d;
+        }
+
+        .dropdown-item {
+            color: #d2c7c7 !important;
+        }
+
+            .dropdown-item:hover {
+                background-color: #d2c7c7;
+                color: #1b2b2d !important;
+            }
+
+        .btn-signup, .btn-login {
+            color: #d2c7c7;
+            border-color: #d2c7c7;
+        }
+
+            .btn-signup:hover, .btn-login:hover {
+                background-color: #d2c7c7;
+                color: #1b2b2d;
+            }
+        section {
+            padding: 4.5rem 0 3rem;
+        }
+
+        .newsletter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            row-gap: 2rem;
+            justify-content: center;
+            text-align: center;
+        }
+
+            .newsletter h2 {
+                font-size: 1.7rem;
+            }
+
+            .newsletter form {
+                background: var(--bg-color);
+                box-shadow: var(--box-shadow);
+                padding: 6px 10px;
+                border-radius: 5rem;
+            }
+
+                .newsletter form input {
+                    border: none;
+                    outline: none;
+                    font-size: 1rem;
+                }
+
+            .newsletter #email-box {
+                width: 280px;
+            }
+
+            .newsletter .btn {
+                padding: 12px 34px;
+                font-weight: 500;
+                text-transform: uppercase;
+            }
+
+        .contents1 {
+            display: inline-block;
+            padding: 0;
+            color: var(--text-color);
+            font-size: 1rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            background-color: var(--main-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body>
-    <header>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LilamiBazzar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Sell" asp-action="Index">Sell</a>
-                    </li>
 
+<body>
+
+    <nav class="navbar custom-navbar">
+        <div class="container-fluid">
+            <!-- Left side (Sell and User Management) -->
+            <div class="d-flex">
+                <a class="navbar-brand" href="#">LILAMIBAZZAR</a>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Users/Sell/Index">SELL</a>
+                    </li>
                     <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle"  href="#" id="contentManagementDropdown"  data-bs-toggle="dropdown" aria-expanded="false">
-                            Content Management
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            USER MANAGEMENT
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="contentManagementDropdown">
-                            <li class="nav-item">
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-                            </li>
-                                <li class="nav-item">
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
-                                </li>
-                            @* <li><hr class="dropdown-divider" /></li> *@
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
                         </ul>
                     </li>
                 </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#signupModal">
-                            Sign Up
-                        </button>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#signinModal">
-                            Sign In
-                        </button>
-                    </li>
-                </ul>
+            </div>
+
+            <!-- Right side (Sign Up and Login) -->
+            <div class="d-flex ms-auto">
+                <button class="btn btn-outline-light btn-signup me-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+                <button class="btn btn-outline-light btn-login" data-bs-toggle="modal" data-bs-target="#signinModal">Login</button>
             </div>
         </div>
     </nav>
-</header>
+
+
+
+    <div class="modal fade" id="signupModal" tabindex="1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <section class="py-3 py-md-5 py-xl-8">
+                        <div class="container">
+                            <div class="col-12">
+                                <div class="mb-5 text-center">
+                                    <h2 class="display-5 fw-bold">Sign up</h2>
+                                    <p>
+                                        Already have an account?
+                                        <a href="#!" class="link-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#signinModal" data-bs-dismiss="modal">Sign in</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10 col-xl-8">
+                                <div class="row gy-5 justify-content-center">
+                                    <div class="col-12 col-lg-5">
+                                        <form  method="post">
+                                            <div class="row gy-3">
+                                                <div class="col-12">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control border-0 border-bottom rounded-0" name="fullName" id="fullName" placeholder="Full Name" required>
+                                                        <label for="fullName">First Name</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control border-0 border-bottom rounded-0" name="Address" id="Address" placeholder="Address" required>
+                                                        <label for="Address">Address</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="signupEmail" placeholder="name@example.com" required>
+                                                        <label for="email">Email</label>
+                                                        @if (TempData["ErrorMessage"] != null)
+                                                        {
+                                                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 position-relative">
+                                                    <div class="form-floating mb-3">
+                                                        <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="signUppassword" placeholder="Password" required>
+                                                        <label for="password">Password</label>
+                                                        <button type="button" id="togglePassword" class="btn btn-link position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%);">
+                                                            <i class="bi bi-eye" id="eyeIcon" style="color: black; font-size: 1.0rem;"></i>
+                                                        </button>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="iAgree" id="iAgree" required>
+                                                        <label class="form-check-label text-secondary" for="iAgree">
+                                                            I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                        <div class="d-grid">
+                                                            <button class="btn btn-primary btn-lg" type="button" id="SignUpButton">Sign Up</button>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
+                                        <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
+                                        <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
+                                        <div>or</div>
+                                        <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
+                                        <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
+                                    </div>
+                                    <div class="col-12 col-lg-5 d-flex align-items-center">
+                                        <div class="d-flex gap-3 flex-column w-100">
+                                            <a href="#!" class="btn btn-sm btn-danger" style="padding: 10px 18px; font-size: 14px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                                                    <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+                                                </svg>
+                                                <span class="ms-2">Sign in with Google</span>
+                                            </a>
+                                            <a href="#!" class="btn btn-sm btn-primary" style="padding: 7px 14px; font-size: 13.5px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.514h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                                </svg>
+                                                <span class="ms-2">Sign in with Facebook</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
 
@@ -98,13 +332,13 @@
                                                 <div class="row gy-3">
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
-                                                            <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="signinEmail" placeholder="name@example.com" required >
+                                                            <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="signinEmail" placeholder="name@example.com" required>
                                                             <label for="signinEmail">Email</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="signinPassword" placeholder="Password" required >
+                                                            <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="signinPassword" placeholder="Password" required>
                                                             <label for="signinPassword">Password</label>
                                                         </div>
                                                     </div>
@@ -161,6 +395,50 @@
             </div>
         </div>
     </div>
+  
+ <script>
+     $(document).ready(function () {
+            $('#SignUpButton').on('click', async function (e) {
+                e.preventDefault();
+
+                // Create the data object
+                var data = {
+                    fullname : $('#fullName').val(),
+                    address : $('#Address').val(),
+                    email: $('#signinEmail').val(),
+                    password: $('#signUppassword').val(),
+                    rememberme: $('#rememberMe').is(':checked')
+                };
+
+                try {
+                    debugger
+                    // Await the result from AjaxCall
+                    var signUpResponse = await AjaxCall("Accounts/SignUp/Create", data);
+
+                    
+
+                    // Save the token in localStorage
+                    const token = localStorage.getItem('Authorization');
+
+                    // Call a protected resource using the Bearer token
+                    var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
+
+                    // Handle successful response from the protected resource
+                    console.log("Dashboard Data:", dashboard);
+                    // Optionally, redirect to the dashboard or handle the response
+                    // window.location.href = "dashboard.html"; // Example redirection
+
+                } catch (error) {
+                    // Handle any errors that occurred during the AJAX call
+                    console.error("Login failed:", error);
+                }
+            });
+        });
+
+
+ </script>
+
+    
 
     <script>
         $(document).ready(function () {
@@ -178,7 +456,7 @@
                     // Await the result from AjaxCall
                     var loginResponse = await AjaxCall("Accounts/Signin/Login", data);
 
-                    
+                    debugger
 
                     // Save the token in localStorage
                     const token = localStorage.getItem('Authorization');
@@ -220,7 +498,7 @@
 
 
     <!-- Forgot Password Modal -->
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+ @*    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
@@ -258,135 +536,101 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-    <!-- Sign Up Modal -->
-        <div class="modal fade" id="signupModal" tabindex="1" aria-labelledby="signupModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <section class="py-3 py-md-5 py-xl-8">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-5 text-center">
-                                        <h2 class="display-5 fw-bold">Sign up</h2>
-                                        <p>
-                                            Already have an account?
-                                            <a href="#!" class="link-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#signinModal" data-bs-dismiss="modal">Sign in</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12 col-lg-10 col-xl-8">
-                                    <div class="row gy-5 justify-content-center">
-                                        <div class="col-12 col-lg-5">
-                                            <form asp-controller="Signup" asp-action="Create" method="post">
-                                                <div class="row gy-3">
-                                                    <div class="col-12">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control border-0 border-bottom rounded-0" name="firstName" id="firstName" placeholder="First Name" required">
-                                                            <label for="firstName">First Name</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control border-0 border-bottom rounded-0" name="lastName" id="lastName" placeholder="Last Name" required">
-                                                            <label for="lastName">Last Name</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="email" placeholder="name@example.com" required">
-                                                            <label for="email">Email</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-floating mb-3">
-                                                            <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="password" placeholder="Password" required">
-                                                            <label for="password">Password</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="iAgree" id="iAgree" required>
-                                                            <label class="form-check-label text-secondary" for="iAgree">
-                                                                I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="d-grid">
-                                                            <button class="btn btn-primary btn-lg" type="submit">Sign up</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
-                                            <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
-                                            <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
-                                            <div>or</div>
-                                            <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
-                                            <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
-                                        </div>
-                                        <div class="col-12 col-lg-5 d-flex align-items-center">
-                                            <div class="d-flex gap-3 flex-column w-100">
-                                                <a href="#!" class="btn btn-sm btn-danger" style="padding: 10px 18px; font-size: 14px;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
-                                                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
-                                                    </svg>
-                                                    <span class="ms-2">Sign in with Google</span>
-                                                </a>
-                                                <a href="#!" class="btn btn-sm btn-primary" style="padding: 7px 14px; font-size: 13.5px;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                                                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.514h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
-                                                    </svg>
-                                                    <span class="ms-2">Sign in with Facebook</span>
-                                                </a>
-                                                <a href="#!" class="btn btn-sm btn-info" style="padding: 10px 18px; font-size: 14px;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
-                                                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.141 0-.282-.008-.422A6.683 6.683 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.443-1.817 6.575 6.575 0 0 1-2.085.797 3.286 3.286 0 0 0-5.594 2.995A9.325 9.325 0 0 1 1.114 2.1 3.286 3.286 0 0 0 2.13 8.917 3.323 3.323 0 0 1 .64 8.575v.041a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 0 1.812-.476l-.004.002c-.873.033-1.71-.083-2.428-.359-.26-.092-.52-.198-.776-.328A9.227 9.227 0 0 0 5.026 15z" />
-                                                    </svg>
-                                                    <span class="ms-2">Sign in with Twitter</span>
-                                                </a>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    
+    </div> *@
 
 
 
 
 
-    <div class="container">
+
+
+ @*    <script>
+        // Close Sign Up modal when Sign In modal is opened
+        $('#signinModal').on('show.bs.modal', function () {
+            $('#signupModal').modal('hide');
+        });
+
+        // Close Sign In modal when Sign Up modal is opened
+        $('#signupModal').on('show.bs.modal', function () {
+            $('#signinModal').modal('hide');
+        });
+
+
+    </script> *@
+
+ @*    <script>
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            eyeIcon.classList.toggle('bi-eye', !isPassword);
+            eyeIcon.classList.toggle('bi-eye-slash', isPassword);
+        });
+    </script> *@
+
+
+    <div class="container1">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer bg-primary text-muted">
-        <div class="container">
-            &copy; 2024 - LilamiBazzar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <div>
+        <button id="btn-see"> <a href=" ">See More</a></button>
+    </div>
+    <!-- Newsletter -->
+    <section class="newsletter container">
+        <h2>Have Question in mind? <br>Let us help you</h2>
+        <form action="">
+            <input type="text" name="" id="email-box" placeholder="Feel Free To Ask !" required>
+            <input type="submit" value="Send" class="btn">
+        </form>
+    </section>
+    <!-- Footer -->
+    <section class="footer">
+        <div class="footer-container container">
+            <a>About LilamiBazzar</a>
+            <div class="footer-box">
+                <h3>Quick Links</h3>
+                <a href="">About Us</a>
+                <a href="">Contact Us</a>
+                <a href="">Rates</a>
+            </div>
+            <div class="footer-box">
+                <h3>Items</h3>
+                <a href="#">Notes</a>
+                <a href="#">chair</a>
+                <a href="#">watch</a>
+                <a href="#">amm</a>
+            </div>
+            <div class="footer-box">
+                <h3>Contact</h3>
+                <a href="tel:9866317885">980223323</a>
+                <a href="mailto:info@aawas.com.np">pawan@gmail.com</a>
+                <div class="social">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>&#169; LILAMIBAZZER All Right Reserved</p>
+    </div>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    </div>
+
+
+
+
+ <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+ <script src="~/js/site.js" asp-append-version="true"></script> 
 </body>
