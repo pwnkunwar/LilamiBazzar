@@ -8,9 +8,9 @@ function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": { url:'/admin/user/getall'},
         "columns": [
-            { "data": "firstName", "width": "15%" },
-            { "data": "lastName", "width": "15%" },
+            { "data": "fullName", "width": "15%" },
             { "data": "email", "width": "15%" },
+            { "data": "address", "width": "15%" },
             { "data": "role", "width": "15%" },
             {
                 data: { userId: "userId", lockoutEnd: "lockoutEnd" },

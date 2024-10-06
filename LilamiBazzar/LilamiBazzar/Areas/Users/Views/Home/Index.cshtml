@@ -3,7 +3,7 @@
 
 <style>
 
-  /*   {
+    {
         font-family: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         margin: 0;
         padding: 0;
@@ -12,7 +12,22 @@
         scroll-padding-top: 3rem;
         list-style: none;
         text-decoration: none;
-    } */
+    }
+ 
+
+    h2 {
+        display: block;
+        font-size: 1.5em;
+        margin-block-start: 0.83em;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+        unicode-bidi: isolate;
+    }
+
+
+       
 
     :root {
         --main-color: #192E2F;
@@ -220,6 +235,18 @@
         font-size: 1.5rem; /* Size of the icon */
         color: #343a40; /* Icon color */
     }
+    #btn-see{
+     
+        color: #ffffff;
+        background-color: #192E2E;
+        border-radius: 4rem;
+        height: 50px;
+        margin-left: 870px;
+        width: 150px;
+    }
+    
+    }
+
 
 
 
@@ -247,22 +274,43 @@
         </div>
 
         <div class="item-container1 container1">
+            @{
+                int productCount = 0; // Counter for products
+            }
+           
             @foreach (var product in Model)
             {
+                if (productCount >= 12) // Check if we have already displayed 12 products
+                {
+                    break; // Exit the loop if 12 products are displayed
+                }
                 <div class="box">
                     <a href="">
-                       @*  @{
+                        @{
                             var images = product.PhotoFilesNames.Split(',');
                             var thirdImage = images.Length >= 3 ? images[2] : images.LastOrDefault();
-                        } *@
-                        <img src="~/uploads/images/messi.jpg" alt="Product Image" />
+                        }
+
+                        <img src="~/uploads/images/@thirdImage" alt="Product Image" />
                         <h5 class="card-title">Title</h5>
                         <h6 class="card-title">Rs.300</h6>
-                        <a class="btn1">Details</a>
+                        <a class="btn1" href="/Users/Home/Details?productId=@product.ProductId">Details</a>
                        
                     </a>
                 </div>
+                productCount++;
             }
         </div>
+    </section>
+    <div>
+        <button id="btn-see"> <a href=" ">See More</a></button>
+    </div>
+    <!-- Newsletter -->
+    <section class="newsletter container">
+        <h2 style="color:#C3BDBD">What types of items would you like to see in our platform?  <br>Let us know!</h2>
+        <form action="">
+            <input type="text" name="" id="email-box" placeholder="Feel free to suggest items!" required style="width:500px;">
+            <input type="submit" value="Send" class="btn btn-primary" style="background-color:#192E2E; color: white; border-radius: 50px; padding: 10px 30px;">
+        </form>
     </section>
 </body>

@@ -1,17 +1,23 @@
-﻿<div class="container mt-5">
+﻿@model dynamic
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<div class="container mt-5">
     <div class="row">
         <div class="col-md-6">
             <!-- Display all images in a carousel -->
             <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="/uploads/images/3d10ee24-d993-4102-995b-94844e0919f3.jpg" class="d-block w-100" alt="Product Image 1" />
+                        <img src="/uploads/images/@Model.FirstImage" class="d-block w-100" alt="Product Image 1" height="700px" width="500px" />
                     </div>
                     <div class="carousel-item">
-                        <img src="/uploads/images/45ebb331-f3f7-43e1-b7a2-13dc6baaaecc.jpg" class="d-block w-100" alt="Product Image 2" />
+                        <img src="/uploads/images/@Model.SecondImage" class="d-block w-100" alt="Product Image 2" height="700px" width="500px" />
                     </div>
                     <div class="carousel-item">
-                        <img src="/uploads/images/5718afcc-b266-4eb6-96ea-a2d0a5590f39.jpg" class="d-block w-100" alt="Product Image 3" />
+                        <img src="/uploads/images/@Model.ThirdImage" class="d-block w-100" alt="Product Image 3" height="700px" width="500px" />
                     </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
@@ -28,7 +34,7 @@
         <div class="col-md-6">
             <h2 class="text-uppercase text-dark">Antique Vase</h2>
             <p class="text-muted">This is a beautiful antique vase with intricate designs, perfect for any collector.</p>
-            <p class="h4 text-success">Starting Price: 500 €</p>
+            <p class="h4 text-success">Starting Price: @Model.Product.StartingPrice</p>
 
             <div class="mt-4">
                 <p class="h5">Current Highest Bid: <span class="text-danger">750 €</span></p>
@@ -39,11 +45,48 @@
                 <label for="bidAmount" class="form-label">Place your bid</label>
                 <input type="number" class="form-control" id="bidAmount" placeholder="Enter your bid amount" min="500" />
 
-                <a asp-controller="Payment" asp-action="Index" class="btn btn-primary mt-3 w-100">Place Bid</a>
+                <button type="button" class="btn btn-primary mt-3 w-100" data-toggle="modal" data-target="#bidConfirmationModal" data-amount="">
+                    Place Bid
+                </button>
             </div>
 
             <div class="mt-3 text-center">
                 <a href="#" class="btn btn-secondary">View All Bids</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bid Confirmation Modal -->
+    <div class="modal fade" id="bidConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="bidConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bidConfirmationModalLabel">Confirm Your Bid</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to place a bid of <strong id="bidAmountDisplay">$0</strong>?</p> <!-- Dynamic bid amount -->
+                </div>
+                <div class="modal-footer">
+                    <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST" id="bidForm">
+                        <input type="text" id="amount" name="amount" value=""  hidden />
+                        <input type="text" id="tax_amount" name="tax_amount" value="0"  hidden />
+                        <input type="text" id="total_amount" name="total_amount" value="" required hidden />
+                        <input type="text" id="transaction_uuid" name="transaction_uuid" value="" hidden />
+                        <input type="text" id="product_code" name="product_code" value="EPAYTEST" required hidden />
+                        <input type="text" id="product_service_charge" name="product_service_charge" value="0" required hidden />
+                        <input type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" required hidden />
+                        <input type="text" id="success_url" name="success_url" value="https://localhost:7136/Users/Home/PaymentVerify" required hidden />
+                        <input type="text" id="failure_url" name="failure_url" value="https://google.com" required hidden />
+                        <input type="text" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required hidden />
+                        <input type="text" id="signature" name="signature" hidden />
+                        <button type="submit" class="btn btn-primary" id="confirmBid">Confirm</button> <!-- Change this button to type="submit" -->
+                    </form>
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -96,44 +139,92 @@
             </table>
         </div>
     </div>
-</div>
 
-<div class="row mt-5">
-    <div class="col-12">
-        <h4 class="text-dark">Reviews</h4>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">John Smith</h5>
-                <p class="card-text">This vase is stunning! The intricate designs are even better in person. I highly recommend this item.</p>
-                <button class="btn btn-outline-success btn-sm me-2">
-                    <i class="bi bi-hand-thumbs-up"></i> Like (12)
-                </button>
-                <button class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-chat"></i> Comment (5)
-                </button>
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4 class="text-dark">Reviews</h4>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">John Smith</h5>
+                    <p class="card-text">This vase is stunning! The intricate designs are even better in person. I highly recommend this item.</p>
+                    <button class="btn btn-outline-success btn-sm me-2">
+                        <i class="bi bi-hand-thumbs-up"></i> Like (12)
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-chat"></i> Comment (5)
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Alice Cooper</h5>
-                <p class="card-text">Received my item in excellent condition! It’s a perfect fit for my collection.</p>
-                <button class="btn btn-outline-success btn-sm me-2">
-                    <i class="bi bi-hand-thumbs-up"></i> Like (8)
-                </button>
-                <button class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-chat"></i> Comment (2)
-                </button>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Alice Cooper</h5>
+                    <p class="card-text">Received my item in excellent condition! It’s a perfect fit for my collection.</p>
+                    <button class="btn btn-outline-success btn-sm me-2">
+                        <i class="bi bi-hand-thumbs-up"></i> Like (8)
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-chat"></i> Comment (2)
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <!-- Add a Review -->
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Add Your Review</h5>
-                <textarea class="form-control" rows="3" placeholder="Write your review..."></textarea>
-                <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+            <!-- Add a Review -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Add Your Review</h5>
+                    <textarea class="form-control" rows="3" placeholder="Write your review..."></textarea>
+                    <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="~/js/CustomJs.js" /></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    // When the Place Bid button is clicked, set the bid amount in the modal
+    document.querySelectorAll('.btn-primary[data-target="#bidConfirmationModal"]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var bidAmount = document.getElementById('bidAmount').value;
+            var bidAmountDisplay = document.getElementById('bidAmountDisplay');
+            bidAmountDisplay.textContent = "$" + bidAmount; // Set the bid amount in the modal
+        });
+    });
+
+    // Handling bid confirmation and submitting the form
+    $('#confirmBid').click(async function (e) {
+        e.preventDefault(); // Prevent the form from submitting right away
+
+        var amount = parseFloat($('#bidAmount').val()); // Get the value of the bid amount
+        var productId = '@Model.Product.ProductId'; // Use Razor to get the product ID
+
+        var data = {
+            amount: amount,  // Use the amount variable
+            productId: productId // Use the product ID
+        };
+
+        try {
+            // Ensure AjaxCall is correctly defined and returns a promise
+            var placeAunction = await AjaxCall("/Users/Home/Payments", data);
+
+            // Debugging and form value setting
+            console.log(placeAunction);
+
+            // Set the values in the form
+            $('#amount').val(placeAunction.totalAmount);
+            $('#tax_amount').val(0);
+            $('#total_amount').val(placeAunction.totalAmount);         // Use .val() for input elements
+            $('#transaction_uuid').val(placeAunction.transactionId);   // Use the correct key
+            $('#product_code').val(placeAunction.productCode);         // Use the correct key
+            $('#signature').val(placeAunction.signature);
+
+            // Submit the form after setting all the values
+            $('#bidForm').submit();
+
+        } catch (error) {
+            console.error("Error placing auction:", error); // Handle errors gracefully
+        }
+    });
+</script>

@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    ViewData["NoFooter"] = true;
+}
 
 <style>
     .custom-card {
@@ -35,8 +37,8 @@
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Phone</th>
-                    <th>Company</th>
+                    <th>Address</th>
+                    @* <th>Company</th> *@
                     <th>Role</th>
                     <th></th>
                 </tr>
@@ -48,5 +50,5 @@
 
 
 
-    <script src="~/js/user.js"></script>
+<script src="~/js/user.js"></script>
 

@@ -1,4 +1,8 @@
 ﻿@model List<LilamiBazzar.Models.Models.Product>
+
+@{
+    ViewData["NoFooter"] = true;
+}
 <head>
     <style>
         .modal-body img {
@@ -19,6 +23,20 @@
             /* margin-left: 15px;
                     margin-right: 23px; */
         }
+
+        /* Remove or comment out these lines */
+        .btn-info {
+            /* background-color: #0dcaf0 !important; */
+        }
+
+        .btn-warning {
+            /* background-color: #ffc107 !important; */
+        }
+
+        .btn-danger {
+            /* background-color: #dc3545 !important; */
+        }
+
 
     </style>
 </head>

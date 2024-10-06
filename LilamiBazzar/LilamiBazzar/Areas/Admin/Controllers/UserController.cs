@@ -1,4 +1,4 @@
-﻿/*using LilamiBazzar.DataAccess.Database;
+﻿using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,52 +22,67 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult RoleManagement(Guid userId)
-        {
-            var user = _dbContext.Users.FirstOrDefault(u=> u.UserId == userId);
-            var mapper = new RoleManagmentVM
-            {
-                *//*u*//*ser = user,
-                Role = user.Role*//*
-            };
-            return View(mapper);
-        }
-
-        [HttpPost]
-        public IActionResult RoleManagement(LilamiBazzar.Models.Models.RoleManagmentVM roleManagmentVM)
-        {
-
-            var user = _dbContext.Users.FirstOrDefault(u => u.UserId == roleManagmentVM.user.UserId);
-            string oldRole = user.Role;
+        /* public IActionResult RoleManagement(Guid userId)
+         {
+             var user = _dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+             var mapper = new RoleManagmentVM
+             {
+                 user = user,
+                 Role = user.Role
+             };
+             return View(mapper);
+         */
 
 
+        /* [HttpPost]
+         public IActionResult RoleManagement(LilamiBazzar.Models.Models.RoleManagmentVM roleManagmentVM)
+         {
 
-            if (!(roleManagmentVM.user.Role == oldRole))
-            {
-               user.Role = roleManagmentVM.user.Role;
-                _dbContext.Users.Update(user);
-                _dbContext.SaveChanges();
-            }
-            else
-            {
-            return RedirectToAction("Index");
+             var user = _dbContext.Users.FirstOrDefault(u => u.UserId == roleManagmentVM.user.UserId);
+             string oldRole = user.Role;
 
-            }
 
-            return RedirectToAction("Index");
-        }
+
+             if (!(roleManagmentVM.user.Role == oldRole))
+             {
+                 user.Role = roleManagmentVM.user.Role;
+                 _dbContext.Users.Update(user);
+                 _dbContext.SaveChanges();
+             }
+             else
+             {
+                 return RedirectToAction("Index");
+
+             }
+
+             return RedirectToAction("Index");
+         }*/
 
 
 
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<LilamiBazzar.Models.Models.User> objUserList = _dbContext.Users.ToList();
+            var objUserList = _dbContext.Users
+                .Join(_dbContext.UserRoles,
+                user => user.UserId,
+                userRole => userRole.UserId,
+                (user, userRole) => new
+                {
+                    user.UserId,
+                    user.FullName,
+                    user.Email,
+                    user.Address,
+                    Role = userRole.Role.Name
+                })
+                .ToList();
+
+
 
             return Json(new { data = objUserList });
         }
 
-
+        /*
         [HttpPost]
         public IActionResult LockUnlock([FromBody] Guid id)
         {
@@ -90,8 +105,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             _dbContext.Users.Update(objFromDb);
             _dbContext.SaveChanges();
             return Json(new { success = true, message = "Operation Successful" });
-        }
-
+        }*/
     }
 }
-*/
+
+

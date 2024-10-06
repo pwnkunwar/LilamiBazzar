@@ -1,4 +1,5 @@
-﻿using LilamiBazzar.Models.Models;
+﻿using LilamiBazzar.DataAccess.Migrations;
+using LilamiBazzar.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -15,6 +16,8 @@ namespace LilamiBazzar.DataAccess.Database
         public DbSet<UserRole> UserRoles { get; set; }  // Add UserRole DbSet
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Auction> Auctions { get; set; }
+        public DbSet<Bid> Bids { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

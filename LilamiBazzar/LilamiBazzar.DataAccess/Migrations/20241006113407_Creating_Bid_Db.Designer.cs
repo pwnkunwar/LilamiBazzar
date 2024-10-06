@@ -4,6 +4,7 @@ using LilamiBazzar.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LilamiBazzar.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241006113407_Creating_Bid_Db")]
+    partial class Creating_Bid_Db
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,33 +51,6 @@ namespace LilamiBazzar.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Auctions");
-                });
-
-            modelBuilder.Entity("LilamiBazzar.Models.Models.Bid", b =>
-                {
-                    b.Property<Guid>("BidId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("AuctionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BidTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("BidId");
-
-                    b.HasIndex("AuctionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bids");
                 });
 
             modelBuilder.Entity("LilamiBazzar.Models.Models.Category", b =>
@@ -168,13 +144,13 @@ namespace LilamiBazzar.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("2d2e4bdb-ab90-40e6-a448-72ef88a724e6"),
+                            RoleId = new Guid("4a60d11e-3977-4bd3-b397-d72e6d82190a"),
                             Description = "Administrator role",
                             Name = "ADMIN"
                         },
                         new
                         {
-                            RoleId = new Guid("1d4ebe3e-c3b5-4a5f-b62a-adc17590bd80"),
+                            RoleId = new Guid("9b4e16bf-7fd9-4bc1-8263-7dbbc543be5d"),
                             Description = "Regular user role",
                             Name = "USER"
                         });
@@ -258,25 +234,6 @@ namespace LilamiBazzar.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("LilamiBazzar.Models.Models.Bid", b =>
-                {
-                    b.HasOne("LilamiBazzar.Models.Models.Auction", "Auction")
-                        .WithMany()
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LilamiBazzar.Models.Models.User", "Bidder")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Auction");
-
-                    b.Navigation("Bidder");
                 });
 
             modelBuilder.Entity("LilamiBazzar.Models.Models.UserRole", b =>

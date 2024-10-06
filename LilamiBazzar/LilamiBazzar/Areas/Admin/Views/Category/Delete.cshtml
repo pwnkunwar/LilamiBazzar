@@ -1,10 +1,26 @@
 ﻿@model LilamiBazzar.Models.Models.Category
 
+@{
+    ViewData["NoFooter"] = true;
+}
+<style>
+    .custom-card {
+        border-radius: 25px; /* Adjust the value for more or less curvature */
+        overflow: hidden;
+        margin-left: 23px;
+        margin-right: 23px;
+    }
 
+    .custom-header {
+        background-color: #192E2E; /* Background color of the header */
+        /* margin-left: 15px;
+                margin-right: 23px; */
+    }
 
+</style>
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient mt-0 py-3">
+<div class="card shadow border-0 mt-4 custom-card">
+    <div class="card-header  mt-0 py-3 custom-header">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">Delete Category</h2>

@@ -1,24 +1,26 @@
 ﻿@{
-    Layout = "/Views/Shared/_Layout.cshtml"; // This ensures the layout is inherited from your main layout
+    ViewData["NoFooter"] = true;
 }
+</br>
+<h1 style="margin-left: 70px;">Manage your account</h1>
 
-<h1>Manage your account</h1>
 
-<div>
+
+<div style="margin-left:74px">
     <h2>Change your account settings</h2>
     <hr />
     <div class="row">
         <div class="col-md-3">
             <!-- Navigation menu (Design only) -->
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a class="nav-link active" href="/Accounts/Dashboard">Profile</a></li>
+                <li class="nav-item"><a class="w-100 btn btn-lg btn-primary" href="/Accounts/Dashboard">Profile</a></li>
                 <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/Email">Email</a></li>
                 <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/ChangePassword">Password</a></li>
                 <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/TwoFactorAuthentication">Two-factor authentication</a></li>
                 <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/PersonalData">Personal data</a></li>
             </ul>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-6">
             <!-- Profile form (Design only) -->
             <h3>Profile</h3>
             <div id="status-message">

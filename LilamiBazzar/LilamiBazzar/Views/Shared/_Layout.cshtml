@@ -23,6 +23,7 @@
        
     </style> *@
     <style>
+
         .copyright {
             padding: 20px;
             text-align: center;
@@ -34,6 +35,7 @@
             margin-right: 1rem;
         }
         .footer {
+            height: 416px;
             background: var(--main-color);
             color: var(--bg-color);
             border-radius: 5rem 0 0 0;
@@ -72,8 +74,9 @@
                     color: var(--text-color);
                 }
         .navbar {
-            margin-right: 22px;
-            margin-left: 20px;
+            padding-top:10px;
+            margin-right: 24px;
+            margin-left: 24px;
             margin-top: 7px;
             height: 80px;
         }
@@ -84,34 +87,66 @@
             border-radius: 20px;
         }
 
-        .navbar-brand, .nav-link {
-            color: #d2c7c7 !important;
-            font-weight: bold;
-            font-size: 1.2rem;
+        /* .nav-link, .btn, .navbar .nav-link {
+            color:#d2c7c7;
+            padding-top: 14px;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 22px;
+            text-transform: uppercase;
+        } */
+        .custom-nav-link
+        {
+            margin-left:45px;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            line-height: 40px;
+            color: #FFFFFF8C;
+            text-decoration: none;
         }
 
-        .dropdown-menu {
+        .custom-nav-link1 {
+            margin-left: 18px;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            line-height: 40px;
+            color: #FFFFFF8C;
+            text-decoration: none;
+        }
+
+        .custom-nav-link2 {
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+            line-height: 40px;
+            color: #FFFFFF8C;
+            text-decoration: none;
+        }
+
+        /* .dropdown-menu {
             background-color: #1b2b2d;
-        }
+        } */
 
-        .dropdown-item {
+        /* .dropdown-item {
             color: #d2c7c7 !important;
-        }
+        } */
 
-            .dropdown-item:hover {
-                background-color: #d2c7c7;
-                color: #1b2b2d !important;
-            }
+            /* .dropdown-item:hover {
+                color: black !important;
+            } */
 
-        .btn-signup, .btn-login {
+        /* .btn-signup, .btn-login {
+            border: none;
             color: #d2c7c7;
             border-color: #d2c7c7;
         }
 
             .btn-signup:hover, .btn-login:hover {
-                background-color: #d2c7c7;
-                color: #1b2b2d;
-            }
+            
+                color:black;
+            } */
         section {
             padding: 4.5rem 0 3rem;
         }
@@ -164,6 +199,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        .logo-img {
+            height: 40px; /* Set your preferred height */
+            width: auto; /* Automatically adjust the width to maintain aspect ratio */
+            max-width: 100px; /* Optional: limit max width */
+        }
     </style>
 </head>
 
@@ -173,18 +214,21 @@
         <div class="container-fluid">
             <!-- Left side (Sell and User Management) -->
             <div class="d-flex">
-                <a class="navbar-brand" href="#">LILAMIBAZZAR</a>
+                <a class="custom-nav-link2" href="/Users/Home/Index">@* <img src="~/Videos/book.png" alt="Logo" class="logo-img" /> *@<i>LilamiBazzar</i></a>
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="/Users/Sell/Index">SELL</a>
+                        <a class="custom-nav-link" href="/Users/Sell/Index">SELL</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            USER MANAGEMENT
+                        <a class="custom-nav-link1 dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            CONTENT MANAGEMENT
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Category/Index">Category</a></li>
+                            <li><a class="dropdown-item" href="/Admin/Product/Index">Product</a></li>
+
+                            <li><a class="dropdown-item" href="/Admin/User/Index">Users</a></li>
+
                         </ul>
                     </li>
                 </ul>
@@ -454,7 +498,7 @@
 
                 try {
                     // Await the result from AjaxCall
-                    var loginResponse = await AjaxCall("Accounts/Signin/Login", data);
+                    var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
 
                     debugger
 
@@ -544,7 +588,7 @@
 
 
 
- @*    <script>
+    <script>
         // Close Sign Up modal when Sign In modal is opened
         $('#signinModal').on('show.bs.modal', function () {
             $('#signupModal').modal('hide');
@@ -556,7 +600,7 @@
         });
 
 
-    </script> *@
+    </script>
 
  @*    <script>
         // Password visibility toggle
@@ -579,53 +623,46 @@
         </main>
     </div>
 
-    <div>
-        <button id="btn-see"> <a href=" ">See More</a></button>
-    </div>
-    <!-- Newsletter -->
-    <section class="newsletter container">
-        <h2>Have Question in mind? <br>Let us help you</h2>
-        <form action="">
-            <input type="text" name="" id="email-box" placeholder="Feel Free To Ask !" required>
-            <input type="submit" value="Send" class="btn">
-        </form>
+
     </section>
-    <!-- Footer -->
-    <section class="footer">
-        <div class="footer-container container">
-            <a>About LilamiBazzar</a>
-            <div class="footer-box">
-                <h3>Quick Links</h3>
-                <a href="">About Us</a>
-                <a href="">Contact Us</a>
-                <a href="">Rates</a>
-            </div>
-            <div class="footer-box">
-                <h3>Items</h3>
-                <a href="#">Notes</a>
-                <a href="#">chair</a>
-                <a href="#">watch</a>
-                <a href="#">amm</a>
-            </div>
-            <div class="footer-box">
-                <h3>Contact</h3>
-                <a href="tel:9866317885">980223323</a>
-                <a href="mailto:info@aawas.com.np">pawan@gmail.com</a>
-                <div class="social">
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-twitter'></i></a>
-                    <a href="#"><i class='bx bxl-instagram'></i></a>
+
+    @if (ViewData["NoFooter"] == null || !(bool)ViewData["NoFooter"])
+    {
+        <!-- Footer -->
+        <section class="footer">
+            <div class="footer-container container">
+                <a>About LilamiBazzar</a>
+                <div class="footer-box">
+                    <h3>Quick Links</h3>
+                    <a href="">About Us</a>
+                    <a href="">Contact Us</a>
+                    <a href="">Rates</a>
+                </div>
+                <div class="footer-box">
+                    <h3>Items</h3>
+                    <a href="#">Notes</a>
+                    <a href="#">chair</a>
+                    <a href="#">watch</a>
+                    <a href="#">amm</a>
+                </div>
+                <div class="footer-box">
+                    <h3>Contact</h3>
+                    <a href="tel:9866317885">980223323</a>
+                    <a href="mailto:lilamibazzar@lilamibazzar.com">lilamibazzar@lilamibazzar.com</a>
+                    <div class="social">
+                        <a href="#"><i class='bx bxl-facebook'></i></a>
+                        <a href="#"><i class='bx bxl-twitter'></i></a>
+                        <a href="#"><i class='bx bxl-instagram'></i></a>
+                    </div>
                 </div>
             </div>
+        </section>
+        <!-- Copyright -->
+        <div class="copyright">
+            <p>&#169; LILAMIBAZZER All Right Reserved</p>
         </div>
-    </section>
-    <!-- Copyright -->
-    <div class="copyright">
-        <p>&#169; LILAMIBAZZER All Right Reserved</p>
-    </div>
 
-    </div>
-
+    }
 
 
 
