@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
     ViewData["Title"] = "Manage Email";
     ViewData["NoFooter"] = true;
 }
@@ -20,7 +22,7 @@
                 <li class="nav-item"><a class="nav-link" href="/Accounts/Dashboard/PersonalData">Personal data</a></li>
             </ul>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-6">
             <!-- Email management form -->
             <h3>@ViewData["Title"]</h3>
             <div id="status-message">
@@ -28,8 +30,9 @@
             </div>
             <form id="email-form" method="post">
                 <!-- Current email (read-only) -->
+                <input type="hidden" value="@Model.UserId" name="Id" />
                 <div class="form-floating mb-3 input-group">
-                    <input type="text" class="form-control" placeholder="Your email" value="user@example.com" disabled />
+                    <input type="text" class="form-control" placeholder="Your email" value="@Model.Email" disabled />
                     <div class="input-group-append">
                         <span class="h-100 input-group-text text-success font-weight-bold">✓</span>
                     </div>
@@ -38,12 +41,12 @@
 
                 <!-- New email input -->
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="NewEmail" placeholder="Enter new email" />
+                    <input type="email" class="form-control" id="NewEmail" name="newEmail" placeholder="Enter new email" />
                     <label for="NewEmail">Please enter new email</label>
                 </div>
 
                 <!-- Change email button -->
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Change email</button>
+                <button type="submit" asp-area="Accounts" asp-controller="Dashboard" asp-action="UpdateEmail" class="w-100 btn btn-lg btn-primary">Change email</button>
             </form>
         </div>
     </div>

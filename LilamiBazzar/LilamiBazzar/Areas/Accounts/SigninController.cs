@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
+using LilamiBazzar.Services.JWTService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,10 +18,12 @@ namespace LilamiBazzar.Areas.Accounts
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
-        public SigninController(ApplicationDbContext context, IConfiguration configuration)
+        private readonly IJwtService _jwtService;
+        public SigninController(ApplicationDbContext context, IConfiguration configuration, IJwtService jwtService)
         {
             _context = context;
             _configuration = configuration;
+            _jwtService = jwtService;
         }
         /*public IActionResult Index()
         {
@@ -62,14 +65,22 @@ namespace LilamiBazzar.Areas.Accounts
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                         new Claim(ClaimTypes.GivenName, user.FullName),
                         new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, roleName.Name)
+                        new Claim(ClaimTypes.Role, roleName.Name),
+                        new Claim(ClaimTypes.StreetAddress, user.Address)
                     };
-                    var token = GenerateNewJsonWebToken(authClaims);
+                    var token = _jwtService.GenerateNewJsonWebToken(authClaims);
 
                     // localStorage.setItem('Authorization', token);
 
 
-                    return Ok(token);
+                    Response.Cookies.Append("Authorization", token, new CookieOptions
+                    {
+                        /*HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.Now.AddDays(1)*/
+                    });
+                    return RedirectToAction("Index", "Home");
 
                 }
                 return BadRequest("Please use correct entries");
@@ -89,19 +100,6 @@ namespace LilamiBazzar.Areas.Accounts
             }
         }
 
-        private string GenerateNewJsonWebToken(List<Claim> claims)
-        {
-            var authSecret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-
-            var tokenObject = new JwtSecurityToken(
-               /* issuer: _configuration["JWT:ValidIssuer"],
-                audience: _configuration["JWT:ValidAudience"],*/
-                expires: DateTime.Now.AddHours(1),
-                claims: claims,
-                signingCredentials: new SigningCredentials(authSecret, SecurityAlgorithms.HmacSha256)
-            );
-            string token = new JwtSecurityTokenHandler().WriteToken(tokenObject);
-            return token;
-        }
+       
     }
 }

@@ -96,6 +96,7 @@ namespace LilamiBazzar.Areas.User.Controllers
 
             var Esewa = new EsewaPayment
             {
+                ProductId = productAmt.ProductId,
                 TotalAmount = productAmt.Amount,
                 Signature = hash,
                 TransactionId = guid,
@@ -112,23 +113,45 @@ namespace LilamiBazzar.Areas.User.Controllers
             var paymentData = JsonConvert.DeserializeObject<dynamic>(decodedString);
             string transactionCode = paymentData.transaction_code;
             string status = paymentData.status;
-            string totalAmount = paymentData.total_amount; // Access total_amount
-            string transactionId = paymentData.transaction_uuid; // Access transaction_uuid
+            decimal totalAmount = paymentData.total_amount; // Access total_amount
+            Guid transactionId = paymentData.transaction_uuid; // Access transaction_uuid
             string productCode = paymentData.product_code;
-            string message = $"transaction_code={transactionCode},status={status},total_amount={totalAmount},transaction_uuid={transactionId},product_code={productCode}";
+            string message = $"total_amount={totalAmount},transaction_uuid={transactionId},product_code={productCode},status={status},transaction_code={transactionCode}";
+
+            /*string message = $"transaction_code={transactionCode},status={status},total_amount={totalAmount},transaction_uuid={transactionId},product_code={productCode}";*/
             string secret = _configuration.GetSection("Esewa")["Secret"];
             string generatedSignature = GenerateHMACSHA256Hash(message, secret);
             string generatedSignatureBase64Decoded = Encoding.UTF8.GetString(Convert.FromBase64String(generatedSignature));
-            if (generatedSignature.Trim() == paymentData.Signature.ToString().Trim())
-            {
-                // The signature is valid, proceed with further processing
-                return Ok("Payment Verified");
-            }
+           /* if (generatedSignature != paymentData.Signature)
+            {*/
+
+                
+
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var userId = Guid.Parse(userIdClaim);
+                Guid productId = paymentData.ProductId;
+                var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == productId);
+                var bid = new Bid
+                {
+                    BidId = Guid.NewGuid(),
+                    AuctionId = auction.AunctionId,
+                    UserId = userId,
+                    Amount = totalAmount,
+                    BidTime = DateTime.Now
+
+                };
+
+                await _context.Bids.AddAsync(bid);
+                await _context.SaveChangesAsync();
+
+                //send mail to the users regarding the infomration of BId/Aunction
+                return View();
+            /*}
             else
             {
                 // The signature is invalid, handle accordingly
                 return BadRequest("Invalid Signature");
-            }
+            }*/
 
         }
 

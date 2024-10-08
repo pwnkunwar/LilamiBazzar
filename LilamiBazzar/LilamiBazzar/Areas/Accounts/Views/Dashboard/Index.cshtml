@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["NoFooter"] = true;
+    
 }
+
 </br>
 <h1 style="margin-left: 70px;">Manage your account</h1>
 
@@ -27,18 +29,19 @@
                 <!-- Optional: Status message placeholder -->
             </div>
             <form id="profile-form" method="post">
+                <input type="hidden" value="@Model.UserId" name="Id"/>
                 <!-- Username (read-only) -->
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="Username" placeholder="Username" value="your-username" disabled />
-                    <label for="Username">Username</label>
+                    <input type="text" class="form-control" id="FullName" name="fullName" placeholder="FullName" value="@Model.FullName"  />
+                    <label for="FullName">Full Name</label>
                 </div>
                 <!-- Phone number (editable) -->
                 <div class="form-floating mb-3">
-                    <input type="tel" class="form-control" id="PhoneNumber" placeholder="Phone number" />
-                    <label for="PhoneNumber">Phone number</label>
+                    <input type="tel" class="form-control" id="Address" placeholder="Address" name="Address" value="@Model.Address" />
+                    <label for="Address">Address</label>
                 </div>
                 <!-- Save button -->
-                <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+                <button type="submit" asp-area="Accounts" asp-controller="Dashboard" asp-action="ProfileUpdate" class="w-100 btn btn-lg btn-primary">Save</button>
             </form>
         </div>
     </div>

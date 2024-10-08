@@ -76,18 +76,18 @@
                             @foreach (var product in Model)
                             {
                                 <tr>
-                                    <td>@product.Title</td>
-                                    <td>@product.StartingPrice</td>
-                                    <td>@product.Location</td>
-                                    <td>@product.CategoryName</td>
-                                    <td>@product.ListingDate</td>
-                                    <td>@product.AunctionEndDate</td>
+                                    <td>@(product?.Title ?? "No Title")</td>
+                                    <td>@(product?.StartingPrice != null ? product.StartingPrice.ToString("C") : "No Price")</td>
+                                    <td>@(product?.Location ?? "No Location")</td>
+                                    <td>@(product?.CategoryName ?? "No Category")</td>
+                                    <td>@(product?.ListingDate.ToString("yyyy-MM-dd") ?? "No Date")</td>
+                                    <td>@(product?.AunctionEndDate.ToString("yyyy-MM-dd") ?? "No End Date")</td>
                                     <td>
                                         <button class="btn btn-info btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#moreInfoModal"
-                                                data-title="@product.Title"
-                                                data-description="@product.Description"
-                                                data-pictures="@product.PhotoFilesNames"
-                                                data-documents="@product.DocumentsNames">
+                                                data-title="@product?.Title"
+                                                data-description="@product?.Description"
+                                                data-pictures="@product?.PhotoFilesNames"
+                                                data-documents="@product?.DocumentsNames">
                                             More Info
                                         </button>
                                         <a asp-controller="Product" asp-action="Upsert" class="btn btn-warning btn-sm">
@@ -99,6 +99,7 @@
                                     </td>
                                 </tr>
                             }
+
                         </tbody>
                     </table>
                 </div>

@@ -9,6 +9,7 @@ namespace LilamiBazzar.Models.Models
     public class EsewaPayment
     {
         public decimal Amount { get; set; }
+        public Guid ProductId { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal ProductServiceCharge    { get; set; }
         public decimal ProductDeliveryCharge { get; set; }

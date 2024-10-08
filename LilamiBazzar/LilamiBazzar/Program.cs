@@ -5,6 +5,7 @@ using LilamiBazzar.DataAccess.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LilamiBazzar.Services.JWTService;
 
 
 internal class Program
@@ -21,6 +22,8 @@ internal class Program
                         .AddFluentValidationClientsideAdapters();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
+        builder.Services.AddScoped<IJwtService, JwtService>();
+
 
         builder.Services.AddAuthentication(options =>
         {
@@ -38,6 +41,14 @@ internal class Program
                /* ValidIssuer = builder.Configuration["JWT:ValidIssuer"],*/
                 /* ValidAudience = builder.Configuration["JWT:ValidAudience"],*/
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+            };
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    context.Token = context.Request.Cookies["Authorization"];
+                    return Task.CompletedTask;
+                }
             };
         });
 

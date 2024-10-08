@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using LilamiBazzar.DataAccess.Database;
 using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
 
 namespace LilamiBazzar.Areas.Admin.Controllers
 {
@@ -77,7 +78,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 // Handle Document Uploads
                 if (product.Documents != null && product.Documents.Any())
                 {
-                    var allowedDocumentExtensions = new[] { ".pdf", ".docx", ".xlsx", ".svg" };
+                    var allowedDocumentExtensions = new[] { ".pdf", ".docx", ".xlsx", ".svg", ".png" };
                     var uploadedDocumentFiles = new List<string>();
 
                     // Validate and save each document
@@ -112,9 +113,26 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     product.DocumentsNames = string.Join(",", uploadedDocumentFiles);
                 }
 
+            
+
                 // Save product with file references
                 await _context.Products.AddAsync(product);
                 await _context.SaveChangesAsync();
+
+
+                var auction = new Auction
+                {
+                    AunctionId = Guid.NewGuid(),
+                    ProductId = product.ProductId,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                    CurrentHighestBid = product.StartingPrice,
+                    IsCompleted = false
+                };
+
+                await _context.Auctions.AddAsync(auction);
+                await _context.SaveChangesAsync();
+
 
                 ViewBag.Message = "Files uploaded successfully!";
                 return View("Index");

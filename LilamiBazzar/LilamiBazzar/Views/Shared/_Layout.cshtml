@@ -449,7 +449,7 @@
                 var data = {
                     fullname : $('#fullName').val(),
                     address : $('#Address').val(),
-                    email: $('#signinEmail').val(),
+                    email: $('#signupEmail').val(),
                     password: $('#signUppassword').val(),
                     rememberme: $('#rememberMe').is(':checked')
                 };
@@ -499,17 +499,19 @@
                 try {
                     // Await the result from AjaxCall
                     var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
-
                     debugger
+                    document.cookie = `Authorization=${loginResponse}; path=/;`;
+
+                    
 
                     // Save the token in localStorage
-                    const token = localStorage.getItem('Authorization');
+                    // const token = localStorage.getItem('Authorization');
 
                     // Call a protected resource using the Bearer token
-                    var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
+                    // var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
 
                     // Handle successful response from the protected resource
-                    console.log("Dashboard Data:", dashboard);
+                 //   console.log("Dashboard Data:", dashboard);
                     // Optionally, redirect to the dashboard or handle the response
                     // window.location.href = "dashboard.html"; // Example redirection
 

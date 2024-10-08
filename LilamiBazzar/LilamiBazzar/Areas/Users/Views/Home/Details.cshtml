@@ -75,6 +75,7 @@
                         <input type="text" id="tax_amount" name="tax_amount" value="0"  hidden />
                         <input type="text" id="total_amount" name="total_amount" value="" required hidden />
                         <input type="text" id="transaction_uuid" name="transaction_uuid" value="" hidden />
+                        <input type="text" id="productId" name="productId" value="" hidden />
                         <input type="text" id="product_code" name="product_code" value="EPAYTEST" required hidden />
                         <input type="text" id="product_service_charge" name="product_service_charge" value="0" required hidden />
                         <input type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" required hidden />
@@ -219,6 +220,7 @@
             $('#transaction_uuid').val(placeAunction.transactionId);   // Use the correct key
             $('#product_code').val(placeAunction.productCode);         // Use the correct key
             $('#signature').val(placeAunction.signature);
+            $('#productId').val(placeAunction.productId);
 
             // Submit the form after setting all the values
             $('#bidForm').submit();
