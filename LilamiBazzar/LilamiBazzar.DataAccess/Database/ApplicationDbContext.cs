@@ -1,5 +1,6 @@
 ﻿using LilamiBazzar.DataAccess.Migrations;
 using LilamiBazzar.Models.Models;
+using LilamiBazzar.Utility;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -25,7 +26,7 @@ namespace LilamiBazzar.DataAccess.Database
 
             // Seeding roles data
             modelBuilder.Entity<Role>().HasData(
-                new Role { RoleId = Guid.NewGuid(), Name = StaticUserRoles.AMDIN, Description = "Administrator role" },
+                new Role { RoleId = Guid.NewGuid(), Name = StaticUserRoles.ADMIN, Description = "Administrator role" },
                 new Role { RoleId = Guid.NewGuid(), Name = StaticUserRoles.USER, Description = "Regular user role" }
             );
 

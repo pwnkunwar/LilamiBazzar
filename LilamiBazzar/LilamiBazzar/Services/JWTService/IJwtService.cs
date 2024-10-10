@@ -1,9 +1,10 @@
-﻿using System.Security.Claims;
+﻿using LilamiBazzar.Models.Models;
+using System.Security.Claims;
 
-namespace LilamiBazzar.Services.JWTService
+namespace LilamiBazzar.Services
 {
     public interface IJwtService
     {
-        public string GenerateNewJsonWebToken(List<Claim> claims);
+        public string AuthClaim(User user);
     }
 }

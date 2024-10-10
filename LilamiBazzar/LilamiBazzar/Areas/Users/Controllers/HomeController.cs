@@ -90,7 +90,7 @@ namespace LilamiBazzar.Areas.User.Controllers
             Guid guid = Guid.NewGuid();
             string totalAmount = productAmt.Amount.ToString();
             string productCode = "EPAYTEST";
-            string message = $"total_amount={totalAmount},transaction_uuid={guid},product_code={productCode}";
+            string message = $"total_amount={totalAmount},transaction_uuid={guid},product_code={productCode},productId={productAmt.ProductId}";
             string secret = _configuration.GetSection("Esewa")["Secret"];
             string hash = GenerateHMACSHA256Hash(message, secret);
 
@@ -122,10 +122,20 @@ namespace LilamiBazzar.Areas.User.Controllers
             string secret = _configuration.GetSection("Esewa")["Secret"];
             string generatedSignature = GenerateHMACSHA256Hash(message, secret);
             string generatedSignatureBase64Decoded = Encoding.UTF8.GetString(Convert.FromBase64String(generatedSignature));
-           /* if (generatedSignature != paymentData.Signature)
-            {*/
+            /* if (generatedSignature != paymentData.Signature)
+             {*/
 
+           /* var paymets = new Payments
+            {
+                PaymentId = Guid.NewGuid(),
+                TrasactionId = transactionId,
+                UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
+                AunctionId = transactionId, 
+                BidId 
                 
+
+            };
+              */  
 
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 var userId = Guid.Parse(userIdClaim);

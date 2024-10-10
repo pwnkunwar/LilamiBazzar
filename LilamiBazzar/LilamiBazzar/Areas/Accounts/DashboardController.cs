@@ -1,11 +1,13 @@
 ﻿using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
-using LilamiBazzar.Services.JWTService;
+using LilamiBazzar.Services.PasswordHashingService;
+using LilamiBazzar.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace LilamiBazzar.Areas.Accounts
 {
@@ -15,10 +17,12 @@ namespace LilamiBazzar.Areas.Accounts
     {
         private readonly ApplicationDbContext _dbcontext;
         private readonly IJwtService _jwtService;
-        public DashboardController(ApplicationDbContext context, IJwtService jwtService)
+        private readonly IPasswordHashingService _passwordHashingService;
+        public DashboardController(ApplicationDbContext context, IJwtService jwtService, IPasswordHashingService passwordHashingService)
         {
             _dbcontext = context;
             _jwtService = jwtService;
+            _passwordHashingService = passwordHashingService;
         }
         [Authorize]
         public IActionResult Index()
@@ -56,20 +60,11 @@ namespace LilamiBazzar.Areas.Accounts
 
 
 
-            Role roleName = new Role();
-            var roleId = _dbcontext.UserRoles.FirstOrDefault(r => r.UserId == user.UserId);
-            roleName = _dbcontext.Roles.FirstOrDefault(r => r.RoleId == roleId.RoleId);
+            var token = _jwtService.AuthClaim(user);
 
 
-            var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                        new Claim(ClaimTypes.GivenName, user.FullName),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, roleName.Name),
-                        new Claim(ClaimTypes.StreetAddress, user.Address)
-            };
-            var token = _jwtService.GenerateNewJsonWebToken(authClaims);
+            
+            
 
 
             Response.Cookies.Append("Authorization", token, new CookieOptions
@@ -94,7 +89,7 @@ namespace LilamiBazzar.Areas.Accounts
             };
             return View(emailObj);
         }
-
+        [HttpPost]
         public IActionResult UpdateEmail(Guid Id, string newEmail)
         {
             var oldEmail = User.FindFirst(ClaimTypes.Email)?.Value;
@@ -126,6 +121,16 @@ namespace LilamiBazzar.Areas.Accounts
             user.Email = newEmail;
             _dbcontext.SaveChanges();
 
+            var token = _jwtService.AuthClaim(user);
+
+            Response.Cookies.Append("Authorization", token, new CookieOptions
+            {
+                /*HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.Now.AddDays(1)*/
+            });
+
             return RedirectToAction("Index");
 
 
@@ -136,6 +141,37 @@ namespace LilamiBazzar.Areas.Accounts
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult ChangePassword(string oldPassword, string newPassword, string confirmPassword)
+        {
+            if(newPassword != confirmPassword)
+            {
+                return BadRequest();
+            }
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var guUserId = Guid.Parse(userId);
+            var user = _dbcontext.Users.Find(guUserId);
+            if(!_passwordHashingService.VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+            { 
+                return BadRequest("Password not Matched");
+            }
+            _passwordHashingService.GeneratePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            _dbcontext.SaveChanges();
+
+            var token = _jwtService.AuthClaim(user);
+
+            Response.Cookies.Append("Authorization", token, new CookieOptions
+            {
+                /*HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.Now.AddDays(1)*/
+            });
+
+            return RedirectToAction("Index");
+        }
         public IActionResult TwoFactorAuthentication()
         {
             return View();
@@ -144,5 +180,6 @@ namespace LilamiBazzar.Areas.Accounts
         {
             return View();
         }
+       
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Azure.Core;
 using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
-using LilamiBazzar.Services.JWTService;
+using LilamiBazzar.Services;
+using LilamiBazzar.Services.PasswordHashingService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -19,11 +20,17 @@ namespace LilamiBazzar.Areas.Accounts
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly IJwtService _jwtService;
-        public SigninController(ApplicationDbContext context, IConfiguration configuration, IJwtService jwtService)
+        private readonly IPasswordHashingService _passwordHashingService;
+        public SigninController(
+            ApplicationDbContext context, 
+            IConfiguration configuration, 
+            IJwtService jwtService,
+            IPasswordHashingService passwordHashingService)
         {
             _context = context;
             _configuration = configuration;
             _jwtService = jwtService;
+            _passwordHashingService = passwordHashingService;
         }
         /*public IActionResult Index()
         {
@@ -41,7 +48,7 @@ namespace LilamiBazzar.Areas.Accounts
                     {
                         return BadRequest("User or Password Incorrect");
                     }
-                    if (!VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
+                    if (!_passwordHashingService.VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
                     {
                         return BadRequest("User or Password Incorrect");
                     }
@@ -50,25 +57,9 @@ namespace LilamiBazzar.Areas.Accounts
                         return BadRequest("Please verified your email address");
                     }*/
                     // return Ok($"Welcome Back {userLogin.Email}");
-                    Role roleName = new Role();
-                    var roleId = await _context.UserRoles.FirstOrDefaultAsync(r => r.UserId == user.UserId);
-                    if(roleId is null)
-                    {
-                        return BadRequest();
-                    }
-                    else
-                    {
-                        roleName = await _context.Roles.FirstOrDefaultAsync(r => r.RoleId == roleId.RoleId);
-                    }
-                    var authClaims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                        new Claim(ClaimTypes.GivenName, user.FullName),
-                        new Claim(ClaimTypes.Email, user.Email),
-                        new Claim(ClaimTypes.Role, roleName.Name),
-                        new Claim(ClaimTypes.StreetAddress, user.Address)
-                    };
-                    var token = _jwtService.GenerateNewJsonWebToken(authClaims);
+
+
+                    var token = _jwtService.AuthClaim(user);
 
                     // localStorage.setItem('Authorization', token);
 
@@ -91,14 +82,7 @@ namespace LilamiBazzar.Areas.Accounts
                 return BadRequest(ex.Message);
             }
         }
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA256(passwordSalt))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return computedHash.SequenceEqual(passwordHash);
-            }
-        }
+       
 
        
     }

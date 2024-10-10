@@ -3,6 +3,8 @@ using LilamiBazzar.DataAccess.Database;
 using System.Security.Cryptography;
 using LilamiBazzar.Models.Models;
 using Microsoft.EntityFrameworkCore;
+using LilamiBazzar.Services.PasswordHashingService;
+using LilamiBazzar.Utility;
 
 namespace LilamiBazzar.Areas.Accounts
 {
@@ -10,9 +12,11 @@ namespace LilamiBazzar.Areas.Accounts
     public class SignupController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public SignupController(ApplicationDbContext context)
+        private readonly IPasswordHashingService _passwordHashingService;
+        public SignupController(ApplicationDbContext context, IPasswordHashingService passwordHashingService)
         {
             _context = context;
+            _passwordHashingService = passwordHashingService;
         }
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] LilamiBazzar.Models.Models.User user)
@@ -35,7 +39,7 @@ namespace LilamiBazzar.Areas.Accounts
                     {
                         return BadRequest();
                     }
-                    GeneratePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
+                    _passwordHashingService.GeneratePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
                     var create = new LilamiBazzar.Models.Models.User
                     {
                         UserId = Guid.NewGuid(),
@@ -80,15 +84,7 @@ namespace LilamiBazzar.Areas.Accounts
             }
 
         }
-        private void GeneratePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new HMACSHA256())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
 
-        }
 
         private string GenerateRandomToken()
         {

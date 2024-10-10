@@ -25,11 +25,13 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
   </ItemGroup>
 	<ItemGroup>
+		<ProjectReference Include="..\LilamiBazzar.DataAccess\LilamiBazzar.DataAccess.csproj" />
 		<ProjectReference Include="..\LilamiBazzar.Models\LilamiBazzar.Models.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\LilamiBazzar.DataAccess\LilamiBazzar.DataAccess.csproj" />
+		<ProjectReference Include="..\LilamiBazzar.Utility\LilamiBazzar.Utility.csproj" />
 	</ItemGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.7.24405.3" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.7.24405.3">

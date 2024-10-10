@@ -5,7 +5,10 @@ using LilamiBazzar.DataAccess.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using LilamiBazzar.Services.JWTService;
+using LilamiBazzar.Services;
+using LilamiBazzar.Services.PasswordHashingService;
+using LilamiBazzar.DataAccess.DbInitializer;
+using LilamiBazzar.Utility.Services.EmailService;
 
 
 internal class Program
@@ -23,8 +26,9 @@ internal class Program
 
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
         builder.Services.AddScoped<IJwtService, JwtService>();
-
-
+        builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
+        builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -38,7 +42,7 @@ internal class Program
             {
                 ValidateIssuer = false,
                 ValidateAudience = false,
-               /* ValidIssuer = builder.Configuration["JWT:ValidIssuer"],*/
+                /* ValidIssuer = builder.Configuration["JWT:ValidIssuer"],*/
                 /* ValidAudience = builder.Configuration["JWT:ValidAudience"],*/
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
             };
@@ -74,6 +78,7 @@ internal class Program
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
+        SeedDatabase();
 
         app.MapControllerRoute(
             name: "default",
@@ -81,5 +86,15 @@ internal class Program
 
 
         app.Run();
+
+        void SeedDatabase()
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                dbInitializer.Initialize();
+            }
+        }
     }
 }

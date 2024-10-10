@@ -20,6 +20,7 @@
   </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\LilamiBazzar.Models\LilamiBazzar.Models.csproj" />
+		<ProjectReference Include="..\LilamiBazzar.Utility\LilamiBazzar.Utility.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Migrations\" />
