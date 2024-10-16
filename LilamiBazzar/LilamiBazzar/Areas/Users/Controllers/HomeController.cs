@@ -4,6 +4,7 @@ using LilamiBazzar.Models.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using MimeKit;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -37,9 +38,9 @@ namespace LilamiBazzar.Areas.User.Controllers
         }
         public IActionResult Details(Guid productId)
         {
-            
 
 
+            var productBids = _context.Bids.Where(b => b.Auction.ProductId == productId).ToList();
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             if (product is null)
             {
@@ -60,7 +61,8 @@ namespace LilamiBazzar.Areas.User.Controllers
                     Product = product,
                     FirstImage = firstImage,
                     SecondImage = secondImage,
-                    ThirdImage = thirdImage
+                    ThirdImage = thirdImage,
+                    ProductBids = productBids
                 });
             }
 
@@ -71,28 +73,70 @@ namespace LilamiBazzar.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> PaymentsAsync([FromBody] ProductAmt productAmt)
         {
-
-            
-
-           
-            var product = await _context.Auctions.FirstOrDefaultAsync(p => p.ProductId == productAmt.ProductId);
-/*            var aunctionEndDate = product.EndDate;
-            if (aunctionEndDate < DateTime.Now)
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim is null)
             {
-                return BadRequest("Aunction already finished");
+                return Unauthorized();
             }
-            if (product.CurrentHighestBid > productAmt.Amount)
+            var userId = Guid.Parse(userIdClaim);
+
+
+
+            var productAunction = _context.Auctions.FirstOrDefault(a => a.ProductId == productAmt.ProductId);
+            /*if(productAmt.Amount <= productAunction.CurrentHighestBid)
             {
-                return BadRequest("total amount is less than currenthighestBid");
+                return BadRequest("Bid amount is less than actual");
+            }*/
+           /* if(productAunction.EndDate < DateTime.UtcNow)
+            {
+                return BadRequest("Acunction already ended");
             }*/
 
+            decimal previousBidAmount = 0;
+            decimal amountToPay = 0;
+            var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == productAmt.ProductId);
+            var isUserAlreadyBidder = _context.Bids.FirstOrDefault(u => u.UserId == userId);
+            if(isUserAlreadyBidder == null)
+            {
+                if(auction.CurrentHighestBid < productAmt.Amount)
+                {
+                    amountToPay = productAmt.Amount;
+
+                }
+                else
+                {
+                    return BadRequest("Amount is less");
+                }
+            }
+
+            var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
+            amountToPay = auction.CurrentHighestBid - previousBid.Amount;
+
+
+
+
+
+
+
+
+            var product = await _context.Auctions.FirstOrDefaultAsync(p => p.ProductId == productAmt.ProductId);
+            /*            var aunctionEndDate = product.EndDate;
+                        if (aunctionEndDate < DateTime.Now)
+                        {
+                            return BadRequest("Aunction already finished");
+                        }
+                        if (product.CurrentHighestBid > productAmt.Amount)
+                        {
+                            return BadRequest("total amount is less than currenthighestBid");
+                        }*/
 
             Guid guid = Guid.NewGuid();
-            string totalAmount = productAmt.Amount.ToString();
+            string totalAmount = amountToPay.ToString();
             string productCode = "EPAYTEST";
-            string message = $"total_amount={totalAmount},transaction_uuid={guid},product_code={productCode},productId={productAmt.ProductId}";
+            string message = $"total_amount={totalAmount},transaction_uuid={guid},product_code={productCode}";
             string secret = _configuration.GetSection("Esewa")["Secret"];
             string hash = GenerateHMACSHA256Hash(message, secret);
+            TempData["ProductId"] = productAmt.ProductId;
 
             var Esewa = new EsewaPayment
             {
@@ -116,7 +160,7 @@ namespace LilamiBazzar.Areas.User.Controllers
             decimal totalAmount = paymentData.total_amount; // Access total_amount
             Guid transactionId = paymentData.transaction_uuid; // Access transaction_uuid
             string productCode = paymentData.product_code;
-            string message = $"total_amount={totalAmount},transaction_uuid={transactionId},product_code={productCode},status={status},transaction_code={transactionCode}";
+            string message = $"total_amount={totalAmount},transaction_uuid={transactionId},product_code={productCode}";
 
             /*string message = $"transaction_code={transactionCode},status={status},total_amount={totalAmount},transaction_uuid={transactionId},product_code={productCode}";*/
             string secret = _configuration.GetSection("Esewa")["Secret"];
@@ -138,9 +182,18 @@ namespace LilamiBazzar.Areas.User.Controllers
               */  
 
                 var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var userId = Guid.Parse(userIdClaim);
-                Guid productId = paymentData.ProductId;
-                var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == productId);
+            if (userIdClaim is null)
+            {
+                return Unauthorized();
+            }
+            var userId = Guid.Parse(userIdClaim);
+               
+                Guid productId = (Guid)TempData["ProductId"];
+            var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == productId);
+            if(auction is null)
+            {
+                return BadRequest();
+            }
                 var bid = new Bid
                 {
                     BidId = Guid.NewGuid(),
@@ -166,54 +219,7 @@ namespace LilamiBazzar.Areas.User.Controllers
         }
 
 
-        public async Task<IActionResult> AunctionAsync(Guid productId, decimal total_amount)
-        {
-
-            var product = await _context.Auctions.FirstOrDefaultAsync(p => p.ProductId == productId);
-            var aunctionEndDate = product.EndDate;
-            if (aunctionEndDate < DateTime.Now)
-            {
-                return BadRequest("Aunction already finished");
-            }
-            if (product.CurrentHighestBid > total_amount)
-            {
-                return BadRequest("total amount is less than currenthighestBid");
-            }
-
-
-
-            var gId = Guid.NewGuid();
-            var auction = new Auction
-            {
-                AunctionId = gId,
-                ProductId = productId,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now,
-                CurrentHighestBid = total_amount,
-                IsCompleted = false
-            };
-            await _context.Auctions.AddAsync(auction);
-            await _context.SaveChangesAsync();
-
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userId = Guid.Parse(userIdClaim);
-
-            var bid = new Bid
-            {
-                BidId = Guid.NewGuid(),
-                AuctionId = gId,
-                UserId = userId,
-                Amount = total_amount,
-                BidTime = DateTime.Now
-
-            };
-
-            await _context.Bids.AddAsync(bid);
-            await _context.SaveChangesAsync();
-
-            //send mail to the users regarding the infomration of BId/Aunction
-            return View();
-        }
+       
 
         public IActionResult Privacy()
         {
