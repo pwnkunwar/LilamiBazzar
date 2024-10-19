@@ -253,6 +253,27 @@ namespace LilamiBazzar.Areas.User.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult Review([FromBody] ReviewInput review)
+        {
+            try
+            {
+                var reviewq = new Review
+                { 
+
+
+                };
+                return View(review);
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return View();
+        }
+
 
        
 

@@ -177,49 +177,114 @@
         </div>
     </div>
 
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4 class="text-dark">Reviews</h4>
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">John Smith</h5>
-                    <p class="card-text">This vase is stunning! The intricate designs are even better in person. I highly recommend this item.</p>
-                    <button class="btn btn-outline-success btn-sm me-2">
-                        <i class="bi bi-hand-thumbs-up"></i> Like (12)
-                    </button>
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-chat"></i> Comment (5)
-                    </button>
-                </div>
-            </div>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add Your Review</h5>
+                <textarea class="form-control" rows="3" placeholder="Write your review..." id="reviewText"></textarea>
 
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Alice Cooper</h5>
-                    <p class="card-text">Received my item in excellent condition! It’s a perfect fit for my collection.</p>
-                    <button class="btn btn-outline-success btn-sm me-2">
-                        <i class="bi bi-hand-thumbs-up"></i> Like (8)
+                <div class="mt-3">
+                    <button type="button" class="btn btn-success" id="thumbsUp">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span id="thumbsUpCount">0</span>
                     </button>
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-chat"></i> Comment (2)
+                    <button type="button" class="btn btn-danger" id="thumbsDown">
+                        <i class="fas fa-thumbs-down"></i>
+                        <span id="thumbsDownCount">0</span>
                     </button>
                 </div>
-            </div>
 
-            <!-- Add a Review -->
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Add Your Review</h5>
-                    <textarea class="form-control" rows="3" placeholder="Write your review..."></textarea>
-                    <button type="submit" class="btn btn-primary mt-2">Submit Review</button>
-                </div>
+                <button type="button" class="btn btn-primary mt-2" id="submitReview">Submit Review</button>
             </div>
         </div>
     </div>
-</div>
+
 
 <script src="~/js/CustomJs.js" /></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script>
+        // Initialize counts
+        let thumbsUpCount = 0;
+        let thumbsDownCount = 0;
+
+        $(document).ready(async function () {
+            // Event handler for thumbs up button
+            $("#thumbsUp").click(async function () {
+                // If thumbs up is clicked
+                thumbsUpCount = 1;  // Set like count to 1
+                thumbsDownCount = 0; // Reset dislike count
+                $("#thumbsUpCount").text(thumbsUpCount);
+                $("#thumbsDownCount").text(thumbsDownCount); // Update dislike count to 0
+            });
+
+            // Event handler for thumbs down button
+            $("#thumbsDown").click(async function () {
+                // If thumbs down is clicked
+                thumbsDownCount = 1; // Set dislike count to 1
+                thumbsUpCount = 0; // Reset like count
+                $("#thumbsDownCount").text(thumbsDownCount);
+                $("#thumbsUpCount").text(thumbsUpCount); // Update like count to 0
+            });
+
+            // Handle review submission
+            $("#submitReview").click(async function () {
+                const reviewText = $("#reviewText").val();
+                debugger
+                // Prepare data for submission
+                const reviewData = {
+                    Review: reviewText,
+                    ThumbsUp: thumbsUpCount,
+                    ThumbsDown: thumbsDownCount
+                };
+                debugger
+
+                // try {
+                //     // Make an AJAX POST request to save the review
+                //     const response = await $.ajax({
+                //         url: "/Users/Home/Review", // Ensure this is the correct URL
+                //         type: "POST",
+                //         contentType: "application/json",
+                //         data: JSON.stringify(reviewData) // Serialize the data into JSON
+                //     });
+
+                //     // Handle successful response
+                //     console.log("Review submitted successfully:", response);
+                //     // Optionally, clear the textarea and reset counts
+                //     $("#reviewText").val(""); // Clear the review text area
+                //     thumbsUpCount = 0; // Reset thumbs up count
+                //     thumbsDownCount = 0; // Reset thumbs down count
+                //     $("#thumbsUpCount").text(thumbsUpCount);
+                //     $("#thumbsDownCount").text(thumbsDownCount);
+
+                // } catch (error) {
+                //     console.error("Error submitting review:", error);
+                //     // Optionally handle error response (e.g., show a message to the user)
+                // }
+
+                // var placeAunction = await AjaxCall("/Users/Home/Review", reviewData);
+                try {
+                    const response = await $.ajax({
+                        url: "/Users/Home/Review", // Ensure this is the correct URL
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(reviewData) // Serialize the data into JSON
+                    });
+
+                    console.log("Review submitted successfully:", response);
+                    $("#reviewText").val(""); // Clear the review text area
+                    thumbsUpCount = 0; // Reset thumbs up count
+                    thumbsDownCount = 0; // Reset thumbs down count
+                    $("#thumbsUpCount").text(thumbsUpCount);
+                    $("#thumbsDownCount").text(thumbsDownCount);
+
+                } catch (error) {
+                    console.error("Error submitting review:", error);
+                }
+
+            });
+        });
+    </script>
+
 <script>
     // When the Place Bid button is clicked, set the bid amount in the modal
     document.querySelectorAll('.btn-primary[data-target="#bidConfirmationModal"]').forEach(function (button) {
