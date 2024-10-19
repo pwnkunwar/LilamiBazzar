@@ -19,9 +19,9 @@ namespace LilamiBazzar.Models.Models
         public Guid UserId { get; set; }
 
         // Navigation property for the related User (the Bidder)
-        public User Bidder { get; set; }
 
         public decimal Amount { get; set; }
         public DateTime BidTime { get; set; }
+        public User User { get; set; }
     }
 }

@@ -38,9 +38,37 @@ namespace LilamiBazzar.Areas.User.Controllers
         }
         public IActionResult Details(Guid productId)
         {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim is null)
+            {
+                return Unauthorized();
+            }
+            var userId = Guid.Parse(userIdClaim);
+            var isUserAlreadyBidder = _context.Bids.Any(b => b.UserId == userId && b.Auction.ProductId == productId);
+            List<Bid> productBids = new List<Bid>();
+            string username = string.Empty;
+            decimal AlreadyPayAmount  = 0;  
+            decimal RequiredPayAmount = 0;
+            if (isUserAlreadyBidder)
+            {
+               
+                productBids = _context.Bids.Where(b => b.Auction.ProductId == productId).ToList();
+                AlreadyPayAmount = _context.Bids.Where(a => a.UserId == userId && a.Auction.ProductId == productId).Select(a => a.Amount).FirstOrDefault();
+                decimal highestBiddingAmount = _context.Auctions.Where(a => a.ProductId == productId).Select(a => a.CurrentHighestBid).FirstOrDefault();
+                RequiredPayAmount = highestBiddingAmount - AlreadyPayAmount;
 
+                 
+            }
+            IEnumerable<dynamic> bidsWithUsers = (from bid in _context.Bids
+                             join user in _context.Users
+                             on bid.UserId equals user.UserId
+                             where bid.Auction.ProductId == productId
+                             select new
+                             {
+                                 Username = user.FullName,
+                                 BidAmount = bid.Amount
+                             }).ToList();
 
-            var productBids = _context.Bids.Where(b => b.Auction.ProductId == productId).ToList();
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
             if (product is null)
             {
@@ -62,7 +90,11 @@ namespace LilamiBazzar.Areas.User.Controllers
                     FirstImage = firstImage,
                     SecondImage = secondImage,
                     ThirdImage = thirdImage,
-                    ProductBids = productBids
+                    ProductBids = productBids,
+                    UserName = username,
+                    AlreadyPayAmount = AlreadyPayAmount,
+                    RequiredPayAmount = RequiredPayAmount,
+                    BidsWithUsers = bidsWithUsers
                 });
             }
 
@@ -108,9 +140,12 @@ namespace LilamiBazzar.Areas.User.Controllers
                     return BadRequest("Amount is less");
                 }
             }
-
-            var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
-            amountToPay = auction.CurrentHighestBid - previousBid.Amount;
+            else
+            {
+                var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
+                amountToPay = auction.CurrentHighestBid - previousBid.Amount;
+            }
+            
 
 
 

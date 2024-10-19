@@ -40,6 +40,32 @@
                 <p class="h5">Current Highest Bid: <span class="text-danger">750 €</span></p>
                 <p class="text-muted">Auction ends on: October 10, 2024</p>
             </div>
+            <div class="mt-4">
+                <p class="h5">Already Pay Amount :  <span class="text-danger">@Model.AlreadyPayAmount</span></p>
+                <p class="text-muted"></p>
+            </div>
+            @if (Model.RequiredPayAmount < 0)
+            {
+                <div class="mt-4">
+                    <p class="h5">To win the bid you have to pay: Rs.0 , Since you alredy pay : @Model.AlreadyPayAmount  <span class="text-danger"></span></p>
+                    <p class="text-muted"></p>
+                </div>
+            }
+            else if (Model.AlreadyPayAmount <= 0)
+            {
+                <div class="mt-4">
+                    <p class="h5">To win the bid you have to pay more than : Rs.750<span class="text-danger"></span></p>
+                    <p class="text-muted"></p>
+                </div>
+            }
+            else
+            {
+                <div class="mt-4">
+                    <p class="h5">To win the bid you have to pay: @Model.RequiredPayAmount , Since you alredy pay : @Model.AlreadyPayAmount  <span class="text-danger"></span></p>
+                    <p class="text-muted"></p>
+                </div>
+            }
+           
 
             <div class="mt-4">
                 <label for="bidAmount" class="form-label">Place your bid</label>
@@ -52,10 +78,14 @@
 
             <div class="mt-3 text-center">
                 <a href="#" class="btn btn-secondary">View All Bids</a>
+                
                 <div>
-                    @foreach (var bid in Model.ProductBids)
+                    @foreach (var bid in Model.BidsWithUsers)
                     {
-                        <div>@bid.Amount</div>
+                        <tr>
+                            <td>@bid.Username</td>
+                            <td>@bid.BidAmount</td>
+                        </tr>
                     }
                 </div>
             </div>
