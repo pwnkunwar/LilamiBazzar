@@ -38,6 +38,7 @@ namespace LilamiBazzar.Areas.User.Controllers
         }
         public IActionResult Details(Guid productId)
         {
+            TempData["productId"] = productId;
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim is null)
             {
@@ -254,16 +255,37 @@ namespace LilamiBazzar.Areas.User.Controllers
         }
 
         [HttpPost]
-        public IActionResult Review([FromBody] ReviewInput review)
+        public async Task<IActionResult> ReviewAsync([FromBody]  ReviewInput reviewInput)
         {
             try
             {
-                var reviewq = new Review
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim is null)
+                {
+                    return Unauthorized();
+                }
+                var userId = Guid.Parse(userIdClaim);
+                var fullQueryString = HttpContext.Request.QueryString.Value;
+                if (HttpContext.Request.Query.ContainsKey("productId"))
+                {
+                    string productId = HttpContext.Request.Query["productId"].ToString();
+
+                    // Use the productId as needed, for example store it in TempData
+                    TempData["productId"] = productId;
+
+                    // Continue processing...
+                    return Ok($"ProductId from query: {productId}");
+                }
+                var review = new Review
                 { 
+                    ReviewId = Guid.NewGuid(),
+                    Comment = reviewInput.Review,
+                    UserId = userId ,
+
 
 
                 };
-                return View(review);
+                return View(reviewInput);
 
 
             }

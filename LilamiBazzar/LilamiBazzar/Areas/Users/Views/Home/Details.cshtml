@@ -231,10 +231,10 @@
                 const reviewText = $("#reviewText").val();
                 debugger
                 // Prepare data for submission
-                const reviewData = {
+                const reviewInput = {
                     Review: reviewText,
-                    ThumbsUp: thumbsUpCount,
-                    ThumbsDown: thumbsDownCount
+                    ThumbsUp: thumbsUpCount > 0 ? true : false ,
+                    ThumbsDown: thumbsDownCount > 0 ? true : false
                 };
                 debugger
 
@@ -267,7 +267,7 @@
                         url: "/Users/Home/Review", // Ensure this is the correct URL
                         type: "POST",
                         contentType: "application/json",
-                        data: JSON.stringify(reviewData) // Serialize the data into JSON
+                        data: JSON.stringify(reviewInput) // Serialize the data into JSON
                     });
 
                     console.log("Review submitted successfully:", response);

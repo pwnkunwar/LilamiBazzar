@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using LilamiBazzar.Services.PasswordHashingService;
 using LilamiBazzar.Utility;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace LilamiBazzar.DataAccess.DbInitializer
 {
     public class DbInitializer : IDbInitializer
@@ -37,31 +38,37 @@ namespace LilamiBazzar.DataAccess.DbInitializer
         }
         private async Task CreateRoles()
         {
-
-        // Call the GeneratePasswordHash method
-        _psswdHash.GeneratePasswordHash("pwnkunwar", out byte[] passwordHash, out byte[] passwordSalt);
-            var adminUser = new User
+            var user = _applicationDbContext.Users.FirstOrDefault(e => e.Email == "pwnkunwar@gmail.com");
+            if (user == null)
             {
-                UserId = Guid.NewGuid(),
-                Email = "pwnkunwar@gmail.com",
-                Address = "localhost",
-                FullName = "admin",
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
-            };
-            _applicationDbContext.Users.Add(adminUser);
-            _applicationDbContext.SaveChanges();
+                // Call the GeneratePasswordHash method
+                _psswdHash.GeneratePasswordHash("pwnkunwar", out byte[] passwordHash, out byte[] passwordSalt);
+                var adminUser = new User
+                {
+                    UserId = Guid.NewGuid(),
+                    Email = "pwnkunwar@gmail.com",
+                    Address = "localhost",
+                    FullName = "admin",
+                    PasswordHash = passwordHash,
+                    PasswordSalt = passwordSalt
+                };
+                _applicationDbContext.Users.Add(adminUser);
+                _applicationDbContext.SaveChanges();
 
-            var role = _applicationDbContext.Roles.FirstOrDefault(r => r.Name == StaticUserRoles.ADMIN);
+                var role = _applicationDbContext.Roles.FirstOrDefault(r => r.Name == StaticUserRoles.ADMIN);
 
-            var userRole = new UserRole
+                var userRole = new UserRole
+                {
+                    UserId = adminUser.UserId,
+                    RoleId = role.RoleId
+                };
+                _applicationDbContext.UserRoles.Add(userRole);
+                _applicationDbContext.SaveChanges();
+            }
+            else
             {
-                UserId = adminUser.UserId,
-                RoleId = role.RoleId
-            };
-            _applicationDbContext.UserRoles.Add(userRole);
-            _applicationDbContext.SaveChanges();
-
+                return;
+            }
             
 
         }

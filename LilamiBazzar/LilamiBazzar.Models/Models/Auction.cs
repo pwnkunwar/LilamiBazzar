@@ -24,5 +24,6 @@ namespace LilamiBazzar.Models.Models
         [NotMapped]
         public List<Bid> Bids { get; set; }
         public bool IsCompleted { get; set; }
+        public Guid? HighestBidderId { get; set; }
     }
 }
