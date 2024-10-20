@@ -9,8 +9,7 @@ using LilamiBazzar.Services;
 using LilamiBazzar.Services.PasswordHashingService;
 using LilamiBazzar.DataAccess.DbInitializer;
 using LilamiBazzar.Utility.Services.EmailService;
-using LilamiBazzar.Services.CheckAndCompleteAunction;
-
+using LilamiBazzar.Services.CheckAndCompleteAuction;
 
 internal class Program
 {
@@ -30,7 +29,7 @@ internal class Program
         builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
         builder.Services.AddScoped<IDbInitializer, DbInitializer>();
         builder.Services.AddScoped<IEmailService, EmailService>();
-        builder.Services.AddHostedService<CheckAndCompleteAunction>();
+        builder.Services.AddHostedService<CheckAndCompleteAuction>();
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

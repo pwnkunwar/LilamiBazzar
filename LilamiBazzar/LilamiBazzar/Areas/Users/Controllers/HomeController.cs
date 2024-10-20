@@ -60,6 +60,11 @@ namespace LilamiBazzar.Areas.User.Controllers
 
                  
             }
+            var AuctionEnds = _context.Auctions.Where(p => p.ProductId == productId).Select(d => d.EndDate).FirstOrDefault();
+
+            bool canReview = _context.Auctions
+    .Any(a => a.ProductId == productId && a.HighestBidderId == userId && a.IsCompleted);
+
             IEnumerable<dynamic> bidsWithUsers = (from bid in _context.Bids
                              join user in _context.Users
                              on bid.UserId equals user.UserId
@@ -71,6 +76,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                              }).ToList();
 
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+
             if (product is null)
             {
                 return NotFound();
@@ -95,7 +101,10 @@ namespace LilamiBazzar.Areas.User.Controllers
                     UserName = username,
                     AlreadyPayAmount = AlreadyPayAmount,
                     RequiredPayAmount = RequiredPayAmount,
-                    BidsWithUsers = bidsWithUsers
+                    BidsWithUsers = bidsWithUsers,
+                    AuctionEndDate = AuctionEnds,
+                    CanReview = canReview,
+                    ProductId = productId
                 });
             }
 
@@ -265,26 +274,34 @@ namespace LilamiBazzar.Areas.User.Controllers
                     return Unauthorized();
                 }
                 var userId = Guid.Parse(userIdClaim);
-                var fullQueryString = HttpContext.Request.QueryString.Value;
-                if (HttpContext.Request.Query.ContainsKey("productId"))
-                {
-                    string productId = HttpContext.Request.Query["productId"].ToString();
+                Guid productId = Guid.Parse(reviewInput.ProductId);
+                var isAllowedReview = _context.Auctions.Any(u => u.HighestBidderId == userId && u.ProductId == productId && u.IsCompleted);
+                /*if (isAllowedReview)
+                {*/
+                    Guid sellerId = _context.Products.Where(s => s.ProductId == productId).Select(s => s.SellerId).FirstOrDefault();
+                    var review = new Review
+                    {
+                        ReviewId = Guid.NewGuid(),
+                        Comment = reviewInput.Review,
+                        UserId = userId,
+                        ProductId = productId,
+                        SellerId = sellerId,
+                        PositiveRating = 0,
+                        NegativeRating = 0
+                    };
+                    if (reviewInput.ThumbsUp)
+                    {
+                        review.PositiveRating += 1;
+                    }
+                    if (reviewInput.ThumbsDown)
+                    {
+                        review.NegativeRating += 1;
+                    }
+                    await _context.Reviews.AddAsync(review);
+                    await _context.SaveChangesAsync();
+               /* }*/
 
-                    // Use the productId as needed, for example store it in TempData
-                    TempData["productId"] = productId;
 
-                    // Continue processing...
-                    return Ok($"ProductId from query: {productId}");
-                }
-                var review = new Review
-                { 
-                    ReviewId = Guid.NewGuid(),
-                    Comment = reviewInput.Review,
-                    UserId = userId ,
-
-
-
-                };
                 return View(reviewInput);
 
 

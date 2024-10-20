@@ -38,7 +38,7 @@
 
             <div class="mt-4">
                 <p class="h5">Current Highest Bid: <span class="text-danger">750 €</span></p>
-                <p class="text-muted">Auction ends on: October 10, 2024</p>
+                <div id="countdown"></div>
             </div>
             <div class="mt-4">
                 <p class="h5">Already Pay Amount :  <span class="text-danger">@Model.AlreadyPayAmount</span></p>
@@ -177,8 +177,12 @@
         </div>
     </div>
 
-    <div class="container mt-5">
-        <div class="card">
+   @*  @if (Model.CanReview)
+    { *@
+        <div class="container mt-5">
+        <input type="hidden" id="productId" value="@Model.ProductId" />
+
+            <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Add Your Review</h5>
                 <textarea class="form-control" rows="3" placeholder="Write your review..." id="reviewText"></textarea>
@@ -198,6 +202,39 @@
             </div>
         </div>
     </div>
+  @*   } *@
+
+
+    <script>
+        // Get the auction end date from Razor view
+        const auctionEndDate = new Date('@Model.AuctionEndDate.ToString("MM/dd/yyyy hh:mm:ss tt")');
+
+        // Function to start the countdown
+        function startCountdown(endDate) {
+            const countdownInterval = setInterval(() => {
+                const now = new Date();
+                const timeRemaining = endDate - now;
+
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown").innerHTML = "Auction has ended!";
+                    return;
+                }
+
+                // Calculate remaining time components
+                const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+                // Display the countdown
+                document.getElementById("countdown").innerHTML = `Auction ends in: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        // Start the countdown
+        startCountdown(auctionEndDate);
+    </script>
 
 
 <script src="~/js/CustomJs.js" /></script>
@@ -229,9 +266,11 @@
             // Handle review submission
             $("#submitReview").click(async function () {
                 const reviewText = $("#reviewText").val();
+                const productId = $("#productId").val();
                 debugger
                 // Prepare data for submission
                 const reviewInput = {
+                    ProductId: productId,
                     Review: reviewText,
                     ThumbsUp: thumbsUpCount > 0 ? true : false ,
                     ThumbsDown: thumbsDownCount > 0 ? true : false
