@@ -5,6 +5,7 @@ using LilamiBazzar.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using LilamiBazzar.Services.PasswordHashingService;
 using LilamiBazzar.Utility;
+using LilamiBazzar.Utility.Services.EmailService;
 
 namespace LilamiBazzar.Areas.Accounts
 {
@@ -13,10 +14,12 @@ namespace LilamiBazzar.Areas.Accounts
     {
         private readonly ApplicationDbContext _context;
         private readonly IPasswordHashingService _passwordHashingService;
-        public SignupController(ApplicationDbContext context, IPasswordHashingService passwordHashingService)
+        private readonly IEmailService _emailService;
+        public SignupController(ApplicationDbContext context, IPasswordHashingService passwordHashingService, IEmailService emailService)
         {
             _context = context;
             _passwordHashingService = passwordHashingService;
+            _emailService = emailService;
         }
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] LilamiBazzar.Models.Models.User user)
@@ -61,6 +64,14 @@ namespace LilamiBazzar.Areas.Accounts
                     };
                    await _context.UserRoles.AddAsync(userRole);
                    await _context.SaveChangesAsync();
+
+                    var email = new Email
+                    {
+                        To = user.Email,
+                        Subject = "Please Verify Your Account",
+                        Body = $"Please click on this link to verify your account: https://localhost:7136/Accounts/Dashboard/AccountVerification?token={create.VerificationToken}"
+                    };
+                    _emailService.SendEmail(email);
 
                     return Ok("User created successfully");
                 }

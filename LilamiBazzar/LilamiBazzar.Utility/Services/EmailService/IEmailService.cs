@@ -9,10 +9,10 @@ namespace LilamiBazzar.Utility.Services.EmailService
 {
     public interface IEmailService
     {
-        public interface IEmailService
-        {
+        
+        
             void SendEmail(Email request);
-        }
+        
 
     }
 }
