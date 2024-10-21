@@ -204,6 +204,17 @@
     </div>
   @*   } *@
 
+  <div>
+        <p>
+            @foreach (var feedback in Model.Feedbacks)
+            {
+                <h1>@feedback.Comment</h1>
+                <h1>@feedback.NegativeRating</h1>
+                <h1>@feedback.PositiveRating</h1>
+            }
+        </p>
+  </div>
+
 
     <script>
         // Get the auction end date from Razor view

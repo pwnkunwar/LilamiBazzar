@@ -75,6 +75,10 @@ namespace LilamiBazzar.Areas.User.Controllers
                                  BidAmount = bid.Amount
                              }).ToList();
 
+            IEnumerable<dynamic> Feedbacks;
+            var feedbacks = _context.Reviews.Where(p => p.ProductId == productId).ToList();
+           
+
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product is null)
@@ -104,7 +108,8 @@ namespace LilamiBazzar.Areas.User.Controllers
                     BidsWithUsers = bidsWithUsers,
                     AuctionEndDate = AuctionEnds,
                     CanReview = canReview,
-                    ProductId = productId
+                    ProductId = productId,
+                    Feedbacks = feedbacks
                 });
             }
 
