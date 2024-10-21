@@ -28,7 +28,7 @@ namespace LilamiBazzar.Models.Models
         public string PasswordResetToken { get; set; } = string.Empty;
         public DateTime? PasswordResetTokenExpires { get; set; }
 
-        public DateTime? LockoutEnd { get; set; }
+        public Guid  LockoutId { get; set; }
         [NotMapped]
         public ICollection<UserRole> UserRoles { get; set; }
         public int FailedLoginAttempts { get; set; } = 0;
