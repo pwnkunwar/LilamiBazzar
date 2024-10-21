@@ -50,6 +50,7 @@ internal class Program
             options.Events = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
+                
                 {
                     context.Token = context.Request.Cookies["Authorization"];
                     return Task.CompletedTask;

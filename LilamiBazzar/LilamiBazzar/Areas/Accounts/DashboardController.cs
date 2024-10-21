@@ -191,6 +191,22 @@ namespace LilamiBazzar.Areas.Accounts
                 return Ok("Email Address Verified");
             }
         }
+        public IActionResult UnLocked(string token)
+        {
+           if(token == null)
+           {
+                return BadRequest();
+           }
+           var user =  _dbcontext.Users.FirstOrDefault(t => t.LockoutId == Guid.Parse(token));
+            if(user == null)
+            {
+                return BadRequest();
+            }
+            user.FailedLoginAttempts = 0;
+            _dbcontext.SaveChanges();
+
+            return RedirectToAction("Index","Home");
+        }
         public IActionResult TwoFactorAuthentication()
         {
             return View();

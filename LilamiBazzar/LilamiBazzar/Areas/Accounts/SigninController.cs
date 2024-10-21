@@ -56,14 +56,21 @@ namespace LilamiBazzar.Areas.Accounts
                     }
                     if(user.FailedLoginAttempts > 6)
                     {
-                        Guid unLocked = Guid.NewGuid();
-                        
-                        var email = new Email
+                        var isLockedTokenAlreadyAvailable = _context.Users.Any(u => u.UserId == user.UserId && u.LockoutId == null);
+                        if(isLockedTokenAlreadyAvailable)
                         {
-                            To = userLogin.Email,
-                            Subject = "Account UnLocked",
-                            Body = $"Please click on this link to verify your account: https://localhost:7136/Accounts/Dashboard/UnLocked?token={unLocked}"
-                        };
+                            Guid unLocked = Guid.NewGuid();
+                            user.LockoutId = unLocked;
+                            _context.SaveChanges();
+                            var email = new Email
+                            {
+                                To = userLogin.Email,
+                                Subject = "Account UnLocked",
+                                Body = $"Please click on this link to verify your account: https://localhost:7136/Accounts/Dashboard/UnLocked?token={unLocked}"
+                            };
+                            _emailService.SendEmail(email);
+                        }
+                         
 
                         return BadRequest("You have enter wrong credentials numerous times! We have send a Account UnLocked Code in the email");
                       
