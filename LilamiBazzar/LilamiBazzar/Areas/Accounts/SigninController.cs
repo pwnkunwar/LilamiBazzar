@@ -3,6 +3,9 @@ using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
 using LilamiBazzar.Services;
 using LilamiBazzar.Services.PasswordHashingService;
+using LilamiBazzar.Utility.Services.EmailService;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,16 +24,19 @@ namespace LilamiBazzar.Areas.Accounts
         private readonly IConfiguration _configuration;
         private readonly IJwtService _jwtService;
         private readonly IPasswordHashingService _passwordHashingService;
+        private readonly IEmailService _emailService;
         public SigninController(
             ApplicationDbContext context, 
             IConfiguration configuration, 
             IJwtService jwtService,
-            IPasswordHashingService passwordHashingService)
+            IPasswordHashingService passwordHashingService,
+            IEmailService emailService)
         {
             _context = context;
             _configuration = configuration;
             _jwtService = jwtService;
             _passwordHashingService = passwordHashingService;
+            _emailService = emailService;
         }
         /*public IActionResult Index()
         {
@@ -48,8 +54,25 @@ namespace LilamiBazzar.Areas.Accounts
                     {
                         return BadRequest("User or Password Incorrect");
                     }
+                    if(user.FailedLoginAttempts > 6)
+                    {
+                        Guid unLocked = Guid.NewGuid();
+                        
+                        var email = new Email
+                        {
+                            To = userLogin.Email,
+                            Subject = "Account UnLocked",
+                            Body = $"Please click on this link to verify your account: https://localhost:7136/Accounts/Dashboard/UnLocked?token={unLocked}"
+                        };
+
+                        return BadRequest("You have enter wrong credentials numerous times! We have send a Account UnLocked Code in the email");
+                      
+
+                    }
                     if (!_passwordHashingService.VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
                     {
+                        user.FailedLoginAttempts += 1;
+                        _context.SaveChanges();
                         return BadRequest("User or Password Incorrect");
                     }
                     /*if(user.VerifiedAt == null)
@@ -57,7 +80,6 @@ namespace LilamiBazzar.Areas.Accounts
                         return BadRequest("Please verified your email address");
                     }*/
                     // return Ok($"Welcome Back {userLogin.Email}");
-
 
                     var token = _jwtService.AuthClaim(user);
 
