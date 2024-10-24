@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootssigintrap-icons.css">
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="////cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
 
 
 
@@ -240,7 +240,7 @@
                 </ul>
             </div>
             <!-- Logout Confirmation Modal -->
-            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal fade" id="logoutModal" tabindex="-5" aria-labelledby="logoutModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -257,6 +257,7 @@
                     </div>
                 </div>
             </div>
+            
 
 
             @if (User.Identity.IsAuthenticated)
@@ -424,12 +425,17 @@
                                                             <label for="signinPassword">Password</label>
                                                         </div>
                                                     </div>
+
+
+                                                   
                                                     <div class="col-12 d-flex justify-content-between align-items-center">
-                                                        <div class="form-check">
+                                                        @* <div class="form-check">
                                                             <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
                                                             <label class="form-check-label" for="rememberMe">Remember me</label>
-                                                        </div>
-                                                        <a href="#!" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Forgot password?</a>
+                                                        </div> *@
+                                                        <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
+                                                            Forgot password?
+                                                        </button>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="d-grid">
@@ -477,6 +483,33 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <!-- Add 'modal-dialog-centered' class here -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="forgotPasswordForm" method="post">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="emailAddress" placeholder="Enter your email" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <p>We will send you an email with a link to reset your password.</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary" asp-area="Accounts" asp-controller="ForgotPassword" asp-action="Index">Send Password Reset Link</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
   
  <script>
      $(document).ready(function () {
@@ -632,12 +665,21 @@
         // Close Sign Up modal when Sign In modal is opened
         $('#signinModal').on('show.bs.modal', function () {
             $('#signupModal').modal('hide');
+            $('#forgotPasswordModal').modal('hide'); // Close Forgot Password modal if it is open
         });
 
         // Close Sign In modal when Sign Up modal is opened
         $('#signupModal').on('show.bs.modal', function () {
             $('#signinModal').modal('hide');
+            $('#forgotPasswordModal').modal('hide'); // Close Forgot Password modal if it is open
         });
+
+        // Close both Sign In and Sign Up modals when Forgot Password modal is opened
+        $('#forgotPasswordModal').on('show.bs.modal', function () {
+            $('#signinModal').modal('hide');
+            $('#signupModal').modal('hide');
+        });
+
 
 
     </script>
