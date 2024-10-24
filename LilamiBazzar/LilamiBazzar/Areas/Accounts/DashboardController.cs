@@ -43,11 +43,11 @@ namespace LilamiBazzar.Areas.Accounts
         public IActionResult ProfileUpdate(Guid Id, string fullName, string Address)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if(userId is null)
+            if (userId is null)
             {
                 return Unauthorized();
             }
-            else if(userId != Id.ToString())
+            else if (userId != Id.ToString())
             {
                 return Unauthorized();
             }
@@ -63,8 +63,8 @@ namespace LilamiBazzar.Areas.Accounts
             var token = _jwtService.AuthClaim(user);
 
 
-            
-            
+
+
 
 
             Response.Cookies.Append("Authorization", token, new CookieOptions
@@ -102,17 +102,17 @@ namespace LilamiBazzar.Areas.Accounts
             {
                 return Unauthorized();
             }
-            else if(newEmail == null)
+            else if (newEmail == null)
             {
                 return BadRequest();
             }
-            else if(oldEmail == newEmail)
+            else if (oldEmail == newEmail)
             {
                 return BadRequest();
             }
             var user = _dbcontext.Users.Find(Id);
             bool emailExists = _dbcontext.Users.Any(u => u.Email == newEmail);
-            if(emailExists)
+            if (emailExists)
             {
                 return BadRequest();
             }
@@ -144,15 +144,15 @@ namespace LilamiBazzar.Areas.Accounts
         [HttpPost]
         public IActionResult ChangePassword(string oldPassword, string newPassword, string confirmPassword)
         {
-            if(newPassword != confirmPassword)
+            if (newPassword != confirmPassword)
             {
                 return BadRequest();
             }
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var guUserId = Guid.Parse(userId);
             var user = _dbcontext.Users.Find(guUserId);
-            if(!_passwordHashingService.VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
-            { 
+            if (!_passwordHashingService.VerifyPasswordHash(oldPassword, user.PasswordHash, user.PasswordSalt))
+            {
                 return BadRequest("Password not Matched");
             }
             _passwordHashingService.GeneratePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
@@ -175,12 +175,12 @@ namespace LilamiBazzar.Areas.Accounts
 
         public IActionResult AccountVerification(string token)
         {
-            if(token == null)
+            if (token == null)
             {
                 return BadRequest();
             }
             var isTokenValid = _dbcontext.Users.FirstOrDefault(t => t.VerificationToken == token);
-            if(isTokenValid == null)
+            if (isTokenValid == null)
             {
                 return BadRequest();
             }
@@ -193,19 +193,30 @@ namespace LilamiBazzar.Areas.Accounts
         }
         public IActionResult UnLocked(string token)
         {
-           if(token == null)
-           {
+            if (token == null)
+            {
                 return BadRequest();
-           }
-           var user =  _dbcontext.Users.FirstOrDefault(t => t.LockoutId == Guid.Parse(token));
-            if(user == null)
+            }
+            var user = _dbcontext.Users.FirstOrDefault(t => t.LockoutId == Guid.Parse(token));
+            if (user == null)
             {
                 return BadRequest();
             }
             user.FailedLoginAttempts = 0;
             _dbcontext.SaveChanges();
 
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult LogOut()
+        {
+            if (Request.Cookies["Authorization"] != null)
+            {
+                Response.Cookies.Delete("Authorization");
+            }
+
+            return RedirectToAction("Index", "Home", new { area = "Users" });
+
+
         }
         public IActionResult TwoFactorAuthentication()
         {
@@ -215,6 +226,6 @@ namespace LilamiBazzar.Areas.Accounts
         {
             return View();
         }
-       
+
     }
 }

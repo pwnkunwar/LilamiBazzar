@@ -238,23 +238,44 @@
                     }
                 </ul>
             </div>
+            <!-- Logout Confirmation Modal -->
+            <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="logoutModalLabel">Confirm Logout</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to log out?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a id="confirmLogout" class="btn btn-danger" asp-area="Accounts" asp-controller="Dashboard" asp-action="LogOut">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <!-- Right side (Sign Up and Login) -->
-            @if(User.Identity.IsAuthenticated)
+
+            @if (User.Identity.IsAuthenticated)
             {
                 var fullName = User.FindFirst(ClaimTypes.GivenName)?.Value ?? "User";
                 <div class="nav-link">
                     <a class="" asp-area="Accounts" asp-controller="Dashboard" asp-action="Index">Hello @fullName</a>
-                    <button class="" data-bs-toggle="modal" data-bs-target="#signinModal">Logout</button>
+                    <!-- Trigger modal for Logout -->
+                    <a href="#" class="" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
                 </div>
             }
+        
             else
             {
-                <div class="d-flex ms-auto">
-                    <button class="btn btn-outline-light btn-signup me-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
-                    <button class="btn btn-outline-light btn-login" data-bs-toggle="modal" data-bs-target="#signinModal">Login</button>
-                </div>
+            <div class="d-flex ms-auto">
+                <button class="btn btn-outline-light btn-signup me-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+                <button class="btn btn-outline-light btn-login" data-bs-toggle="modal" data-bs-target="#signinModal">Login</button>
+            </div>
             }
+
         </div>
     </nav>
 

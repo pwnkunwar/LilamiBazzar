@@ -50,20 +50,61 @@ namespace LilamiBazzar.DataAccess.DbInitializer
                     Address = "localhost",
                     FullName = "admin",
                     PasswordHash = passwordHash,
-                    PasswordSalt = passwordSalt
+                    PasswordSalt = passwordSalt,
+                    VerifiedAt = DateTime.UtcNow
                 };
-                _applicationDbContext.Users.Add(adminUser);
-                _applicationDbContext.SaveChanges();
+                try
+                {
+                    _applicationDbContext.Users.Add(adminUser);
+                    _applicationDbContext.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{ex.ToString()}");
+                    return;
+                }
 
                 var role = _applicationDbContext.Roles.FirstOrDefault(r => r.Name == StaticUserRoles.ADMIN);
-
-                var userRole = new UserRole
+                if(role == null)
                 {
-                    UserId = adminUser.UserId,
-                    RoleId = role.RoleId
-                };
-                _applicationDbContext.UserRoles.Add(userRole);
-                _applicationDbContext.SaveChanges();
+                    role = new Role
+                    {
+                        RoleId = Guid.NewGuid(),
+                        Name = StaticUserRoles.ADMIN
+                    };
+                    try
+                    {
+                        _applicationDbContext.Roles.Add(role);
+                        _applicationDbContext.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString() );
+                        return;
+                    }
+                }
+                // Check if the admin user already has the admin role assigned
+                var userRoleExists = _applicationDbContext.UserRoles
+                    .Any(ur => ur.UserId == adminUser.UserId && ur.RoleId == role.RoleId);
+
+                if(!userRoleExists )
+                {
+                    var userRole = new UserRole
+                    {
+                        UserId = adminUser.UserId,
+                        RoleId = role.RoleId
+                    };
+                    try
+                    {
+                        _applicationDbContext.UserRoles.Add(userRole);
+                        _applicationDbContext.SaveChanges();
+                    }catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
+               
+               
             }
             else
             {
