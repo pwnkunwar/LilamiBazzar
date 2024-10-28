@@ -51,8 +51,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                         // Ensure file is an image and less than 10MB
                         if (!allowedImageExtensions.Contains(imageExtension) || photo.Length > 10 * 1024 * 1024)
                         {
-                            ViewBag.Message = "Invalid image file(s) or file size exceeds 10MB.";
-                            return View("Index");
+                            TempData["error"] = "Invalid image file(s) or file size exceeds 10MB.";
+                            return RedirectToAction("Index", "Sell", new { ares = "Users" });
                         }
 
                         // Generate a unique filename and save image

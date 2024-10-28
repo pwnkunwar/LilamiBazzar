@@ -428,12 +428,30 @@
             </div>
             </br>
             </br>
+            @if(User.Identity.IsAuthenticated)
+            {
                 <div class="form-group row mb-4">
                     <div class="col-12 text-center">
                         <button type="button" class="btn btn-outline-secondary mx-2" id="back-to-upload">Back</button>
-                        <button type="submit" class="btn btn-primary mx-2">Submit</button>
+                        <button type="submit" class="btn btn-primary mx-2" id="submitButton">Submit</button>
                     </div>
                 </div>
+            }
+                else
+                {
+            <div class="form-group row mb-4">
+                <div class="col-12 text-center">
+                    <button type="button" class="btn btn-outline-secondary mx-2" id="back-to-upload">Back</button>
+                        <button type="button" class="btn btn-primary mx-2 disabled" >Submit</button>
+                </div>
+            </div>
+            <br />
+            <h3>You need to log in before posting!</h3>
+
+                }
+         
+
+                
         </div>
     </div>
 </div>

@@ -80,6 +80,7 @@ namespace LilamiBazzar.Areas.Accounts
                     {
                         user.FailedLoginAttempts += 1;
                         _context.SaveChanges();
+                        TempData["error"] = "User or Password Incorrect";
                         return BadRequest("User or Password Incorrect");
                     }
                     /*if(user.VerifiedAt == null)
@@ -91,16 +92,17 @@ namespace LilamiBazzar.Areas.Accounts
                     var token = _jwtService.AuthClaim(user);
 
                     // localStorage.setItem('Authorization', token);
-
+                    /*return token*/
 
                     Response.Cookies.Append("Authorization", token, new CookieOptions
                     {
-                        /*HttpOnly = true,
+                        HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.Now.AddDays(1)*/
+                        Expires = DateTime.Now.AddDays(1)
                     });
-                    return RedirectToAction("Index", "Home");
+                    return Redirect("/");
+
 
                 }
                 return BadRequest("Please use correct entries");

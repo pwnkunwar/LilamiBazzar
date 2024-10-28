@@ -413,6 +413,7 @@
                                         <div class="col-12 col-lg-5">
                                             <form method="post">
                                                 <div class="row gy-3">
+                                                    <div id="error1" style="color:red"></div>
                                                     <div class="col-12">
                                                         <div class="form-floating mb-3">
                                                             <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="signinEmail" placeholder="name@example.com" required>
@@ -563,16 +564,17 @@
                 // Create the data object
                 var data = {
                     email: $('#signinEmail').val(),
-                    password: $('#signinPassword').val(),
-                    rememberMe: $('#rememberMe').is(':checked')
+                    password: $('#signinPassword').val()
                 };
 
                 try {
+                    debugger
                     // Await the result from AjaxCall
                     var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
-                    debugger
-                    document.cookie = `Authorization=${loginResponse}; path=/;`;
+                    location.reload();
 
+                    // document.cookie = `Authorization=${loginResponse}; path=/;`;
+                    // location.href = "/";
                     
 
                     // Save the token in localStorage
@@ -587,6 +589,7 @@
                     // window.location.href = "dashboard.html"; // Example redirection
 
                 } catch (error) {
+                    document.getElementById("error1").innerText = "Email or Password is incorrect!!";
                     // Handle any errors that occurred during the AJAX call
                     console.error("Login failed:", error);
                 }
