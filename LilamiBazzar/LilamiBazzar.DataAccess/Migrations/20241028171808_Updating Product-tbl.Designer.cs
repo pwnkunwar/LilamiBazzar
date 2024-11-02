@@ -4,6 +4,7 @@ using LilamiBazzar.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LilamiBazzar.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241028171808_Updating Product-tbl")]
+    partial class UpdatingProducttbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -131,6 +134,7 @@ namespace LilamiBazzar.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductRoles")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Provenance")
@@ -212,13 +216,13 @@ namespace LilamiBazzar.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("2e32f1ad-477c-4a64-892e-fe8fe5219a4e"),
+                            RoleId = new Guid("65f7e4bf-0e75-4044-b72e-4bd9ae8c1841"),
                             Description = "Administrator role",
                             Name = "ADMIN"
                         },
                         new
                         {
-                            RoleId = new Guid("6a79c7a4-cc02-400f-928d-b13b71dbaba3"),
+                            RoleId = new Guid("92861a16-367c-46eb-9db8-d20ecc93e38d"),
                             Description = "Regular user role",
                             Name = "USER"
                         });
@@ -235,13 +239,6 @@ namespace LilamiBazzar.DataAccess.Migrations
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmailChangeToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("EmailChangeTokenExpires")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("FailedLoginAttempts")
                         .HasColumnType("int");

@@ -27,6 +27,8 @@ namespace LilamiBazzar.Models.Models
         public DateTime? VerifiedAt { get; set; }
         public string PasswordResetToken { get; set; } = string.Empty;
         public DateTime? PasswordResetTokenExpires { get; set; }
+        public string EmailChangeToken {  get; set; } 
+        public DateTime EmailChangeTokenExpires { get; set; }
 
         public Guid  LockoutId { get; set; }
         [NotMapped]
