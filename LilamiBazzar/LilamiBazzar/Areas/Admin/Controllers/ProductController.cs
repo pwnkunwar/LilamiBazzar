@@ -25,6 +25,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         {
             _context = context;
         }
+        [Authorize(Roles = "Admin")]
 
         public IActionResult Index()
         {
@@ -39,7 +40,6 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateAsync(Product product)
         {
             if (!ModelState.IsValid)
@@ -166,6 +166,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 return View("Index");
             }
         }
+        [Authorize(Roles="Admin")]
         public IActionResult Edit(Guid id)
         {
             if(id == null)
@@ -180,6 +181,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return View(product);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Edit(Product product)
         {
             if(product == null)
@@ -217,6 +220,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return RedirectToAction("Index", "Product");
 
         }
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Delete(Guid id)
         {
             if(id == null)
