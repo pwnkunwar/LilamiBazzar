@@ -217,5 +217,22 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return RedirectToAction("Index", "Product");
 
         }
+        public IActionResult Delete(Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+            var product = _context.Products.FirstOrDefault(p=>p.ProductId == id);
+            if(product == null)
+            {
+                return NotFound();
+            }
+            _context.Remove(product);
+            _context.SaveChanges();
+            TempData["success"] = "Product Item deleted successfully";
+            return RedirectToAction("Index", "Product");
+
+        }
     }
 }
