@@ -1,0 +1,105 @@
+﻿@model LilamiBazzar.Models.Models.Product
+
+@{
+    ViewData["NoFooter"] = true;
+}
+
+<style>
+    .custom-card {
+        border-radius: 25px;
+        overflow: hidden;
+        margin: 20px;
+    }
+
+    .custom-header {
+        background-color: #192E2E;
+    }
+</style>
+
+<div class="card shadow border-0 mt-4 custom-card">
+    <div class="card-header py-3 custom-header">
+        <div class="text-center">
+            <h2 class="text-white py-2">Edit Product</h2>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            <div class="border p-3 mt-4 rounded">
+                <input asp-for="ProductId" hidden />
+                <input asp-for="Height" hidden />
+                <input asp-for="Width" hidden />
+                <input asp-for="Depth" hidden />
+                <input asp-for="PhotoFilesNames" hidden />
+                <input asp-for="DocumentsNames" hidden />
+                <input asp-for="SellerId" hidden />
+
+
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label asp-for="Location" class="form-label">Location</label>
+                    <input asp-for="Location" class="form-control" />
+                </div>
+
+                <!-- Starting Price -->
+                <div class="mb-3">
+                    <label asp-for="StartingPrice" class="form-label">Starting Price</label>
+                    <input asp-for="StartingPrice" class="form-control" />
+                </div>
+
+                <!-- Status Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="ProductRoles" class="form-label">Status</label>
+                    <select asp-for="ProductRoles" class="form-select">
+                        <option value="PENDING">Pending</option>
+                        <option value="APPROVED">Approved</option>
+                        <option value="REJECTED">Rejected</option>
+                    </select>
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="CategoryName" class="form-label">Category</label>
+                    <select asp-for="CategoryName" class="form-select">
+                        <option value="Arts">Arts</option>
+                        <option value="Painting">Painting</option>
+                        <option value="Other">Other</option>
+                        <!-- Add other categories here -->
+                    </select>
+                </div>
+
+                <!-- Days Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="Days" class="form-label">Days</label>
+                    <select asp-for="Days" class="form-select">
+                        <option value="1">1 Days</option>
+                        <option value="3">3 Days</option>
+                        <option value="7">7 Days</option>
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row mt-3">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Update</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

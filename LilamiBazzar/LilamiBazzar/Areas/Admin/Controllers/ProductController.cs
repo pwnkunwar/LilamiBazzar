@@ -8,6 +8,11 @@ using System.Linq;
 using LilamiBazzar.DataAccess.Database;
 using Microsoft.AspNetCore.Http;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using LilamiBazzar.Utility;
+using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace LilamiBazzar.Areas.Admin.Controllers
 {
@@ -27,10 +32,17 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return View(products);
         }
 
+        public IActionResult Category()
+        {
+            var categories = _context.Categories.ToList();
+            return Json(categories);
+        }
+
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateAsync(Product product)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View("Index");
             }
@@ -74,6 +86,10 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     }
                     product.PhotoFilesNames = string.Join(",", uploadedImageFiles);
                 }
+                else
+                {
+                    TempData["error"] = "Error uploading images";
+                }
 
                 // Handle Document Uploads
                 if (product.Documents != null && product.Documents.Any())
@@ -113,8 +129,14 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     product.DocumentsNames = string.Join(",", uploadedDocumentFiles);
                 }
 
-            
-
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (userIdClaim is null)
+                {
+                    return Unauthorized();
+                }
+                var userId = Guid.Parse(userIdClaim);
+                product.SellerId = userId;
+                product.ProductRoles = StaticProductRoles.Pending;
                 // Save product with file references
                 await _context.Products.AddAsync(product);
                 await _context.SaveChangesAsync();
@@ -135,7 +157,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
 
                 ViewBag.Message = "Files uploaded successfully!";
-                return View("Index");
+                return RedirectToAction("Index","Home");
             }
             catch (Exception ex)
             {
@@ -143,6 +165,57 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 Console.WriteLine(ex.ToString());
                 return View("Index");
             }
+        }
+        public IActionResult Edit(Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+            var product = _context.Products.FirstOrDefault(p=>p.ProductId == id);
+            if(product == null)
+            {
+                return BadRequest();    
+            }
+            return View(product);
+        }
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            if(product == null)
+            {
+                return BadRequest();
+            }
+            if(product.ProductRoles == "APPROVED")
+            {
+                if (product.Days.ToString() == "1")
+                {
+                    product.ListingDate = DateTime.UtcNow;
+                    product.AunctionEndDate = DateTime.UtcNow.AddDays(1);
+                }
+
+                else if (product.Days.ToString() == "3")
+                {
+                    product.ListingDate = DateTime.UtcNow;
+                    product.AunctionEndDate = DateTime.UtcNow.AddDays(3);
+                }
+                else if (product.Days.ToString() == "7")
+                {
+                    product.ListingDate = DateTime.UtcNow;
+                    product.AunctionEndDate = DateTime.UtcNow.AddDays(7);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+               
+            }
+            product.ProductRoles = "APPROVED";
+            _context.Update(product);
+            _context.SaveChanges();
+            TempData["success"] = "Data Uploaded Successfully!!";
+            return RedirectToAction("Index", "Product");
+
         }
     }
 }

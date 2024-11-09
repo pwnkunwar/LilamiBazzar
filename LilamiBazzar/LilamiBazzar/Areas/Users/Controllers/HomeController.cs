@@ -31,7 +31,7 @@ namespace LilamiBazzar.Areas.User.Controllers
 
         public IActionResult Index()
         {
-            List<Product> products = _context.Products.ToList();
+            List<Product> products = _context.Products.Where(a => a.ProductRoles == "APPROVED").ToList();
 
             return View(products);
 

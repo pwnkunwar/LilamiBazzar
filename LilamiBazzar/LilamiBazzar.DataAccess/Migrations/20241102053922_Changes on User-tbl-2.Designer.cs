@@ -4,6 +4,7 @@ using LilamiBazzar.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LilamiBazzar.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241102053922_Changes on User-tbl-2")]
+    partial class ChangesonUsertbl2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,13 +215,13 @@ namespace LilamiBazzar.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("e951f3a3-e43c-4516-abee-f5b1e1d76198"),
+                            RoleId = new Guid("156f9671-d994-4dc3-83b1-0b2b8ed43307"),
                             Description = "Administrator role",
                             Name = "ADMIN"
                         },
                         new
                         {
-                            RoleId = new Guid("79186627-a2f0-4093-8e8f-fe07606a4482"),
+                            RoleId = new Guid("a0961fe2-061a-4749-bd94-fe7afbeb5624"),
                             Description = "Regular user role",
                             Name = "USER"
                         });
@@ -237,9 +240,10 @@ namespace LilamiBazzar.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailChangeToken")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EmailChangeTokenExpires")
+                    b.Property<DateTime>("EmailChangeTokenExpires")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("FailedLoginAttempts")
@@ -252,6 +256,7 @@ namespace LilamiBazzar.DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NewEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
@@ -263,8 +268,7 @@ namespace LilamiBazzar.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PasswordResetTokenExpires")
-                        .HasPrecision(0)
-                        .HasColumnType("datetime2(0)");
+                        .HasColumnType("datetime2");
 
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()

@@ -45,6 +45,11 @@ namespace LilamiBazzar.DataAccess.Database
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)  // A Role can have many UserRoles
                 .HasForeignKey(ur => ur.RoleId); // Foreign key
+
+            modelBuilder.Entity<User>()
+    .Property(u => u.PasswordResetTokenExpires)
+    .HasPrecision(0);
+
         }
     }
 }

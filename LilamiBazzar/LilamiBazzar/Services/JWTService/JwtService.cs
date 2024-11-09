@@ -1,5 +1,6 @@
 ﻿using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -23,6 +24,10 @@ namespace LilamiBazzar.Services
 
             Role roleName = new Role();
             var roleId = _dbcontext.UserRoles.FirstOrDefault(r => r.UserId == user.UserId);
+            if (roleId == null)
+            {
+                return "Error in roleId";
+            }
             roleName = _dbcontext.Roles.FirstOrDefault(r => r.RoleId == roleId.RoleId);
 
             var authClaims = new List<Claim>

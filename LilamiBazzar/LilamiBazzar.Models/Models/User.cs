@@ -26,11 +26,12 @@ namespace LilamiBazzar.Models.Models
 
         public DateTime? VerifiedAt { get; set; }
         public string PasswordResetToken { get; set; } = string.Empty;
-        public DateTime? PasswordResetTokenExpires { get; set; }
-        public string EmailChangeToken {  get; set; } 
-        public DateTime EmailChangeTokenExpires { get; set; }
+        public DateTime PasswordResetTokenExpires { get; set; }
+        public string? NewEmail { get; set; }
+        public string? EmailChangeToken {  get; set; } 
+        public DateTime? EmailChangeTokenExpires { get; set; }
 
-        public Guid  LockoutId { get; set; }
+        public Guid  LockoutId { get; set; } 
         [NotMapped]
         public ICollection<UserRole> UserRoles { get; set; }
         public int FailedLoginAttempts { get; set; } = 0;
