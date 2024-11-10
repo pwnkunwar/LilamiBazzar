@@ -57,7 +57,10 @@ internal class Program
                 }
             };
         });
-
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.AccessDeniedPath = "/Users/Home/Unauthorized"; // Redirect to your Unauthorized page
+        });
 
         var app = builder.Build();
 
