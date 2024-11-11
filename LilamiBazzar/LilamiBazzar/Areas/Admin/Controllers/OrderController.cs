@@ -47,7 +47,11 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 default:
                     break;
             }
-            return Json(new { data = obj });
+            if (obj.Count > 0)
+            {
+                return Json(new { data = obj });
+            }
+            return Json(null);
         }
     }
     

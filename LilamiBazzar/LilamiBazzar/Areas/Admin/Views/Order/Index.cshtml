@@ -26,7 +26,7 @@
     var inprocess = "text-primary";
     var completed = "text-primary";
     var rejected = "text-primary";
-    var all = "text-primary";
+    var purchased = "text-primary";
 
     switch (status)
     {
@@ -41,6 +41,9 @@
             break;
         case "rejected":
             rejected = "active text-white bg-primary";
+            break;
+        case "purchased":
+            purchased = "active text-white bg-primary";
             break;
         default:
             //all = "active text-white bg-primary";
@@ -74,9 +77,9 @@
                 <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="rejected">
                 <li class="list-group-item @rejected">Rejected</li>
                 </a>
-               @*  <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
-                <li class="list-group-item @all">All</li>
-                </a> *@
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="purchased">
+                <li class="list-group-item @purchased">Purchased</li>
+                </a>
             </ul>
         </div>
         <table id="tblData" class="table table-bordered table-striped" style="width:100%">
