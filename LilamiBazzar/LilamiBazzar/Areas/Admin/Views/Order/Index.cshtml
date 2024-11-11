@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["NoFooter"] = true;
+}
+<!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+
+<style>
+    .custom-card {
+        border-radius: 25px; /* Adjust the value for more or less curvature */
+        overflow: hidden;
+        margin-left: 23px;
+        margin-right: 23px;
+    }
+
+    .custom-header {
+        background-color: #192E2E; /* Background color of the header */
+        /* margin-left: 15px;
+                margin-right: 23px; */
+    }
+
+</style>
+
+@{
+    var status = Context.Request.Query["status"];
+    var pending = "text-primary";
+    var inprocess = "text-primary";
+    var completed = "text-primary";
+    var rejected = "text-primary";
+    var all = "text-primary";
+
+    switch (status)
+    {
+        case "pending":
+            pending = "active text-white bg-primary";
+            break;
+        case "inprocess":
+            inprocess = "active text-white bg-primary";
+            break;
+        case "completed":
+            completed = "active text-white bg-primary";
+            break;
+        case "rejected":
+            rejected = "active text-white bg-primary";
+            break;
+        default:
+            //all = "active text-white bg-primary";
+            break;
+
+    }
+
+}
+
+<div class="card shadow border-0 mt-4 custom-card">
+    <div class="card-header  mt-0 py-3 custom-header">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Order List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between pb-5 pt-2">
+            <span></span>
+            <ul class="list-group list-group-horizontal-sm">
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+                <li class="list-group-item @pending">Pending Approval</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+                <li class="list-group-item @inprocess">In Process</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+                <li class="list-group-item @completed">Completed</li>
+                </a>
+                <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="rejected">
+                <li class="list-group-item @rejected">Rejected</li>
+                </a>
+               @*  <a style="text-decoration:none;" asp-controller="Order" asp-action="Index" asp-route-status="all">
+                <li class="list-group-item @all">All</li>
+                </a> *@
+            </ul>
+        </div>
+        <table id="tblData" class="table table-bordered table-striped" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Location</th>
+                    <th>Starting Price</th>
+                    <th>Category</th>
+                    <th></th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+
+<script src="~/js/order.js"></script>
+
