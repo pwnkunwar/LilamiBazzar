@@ -279,7 +279,6 @@
                         <div class="col-sm-7">
                             <select id="mySelect" class="form-control form-control-sm" name="category" required>
                                 <option value="">Select a category</option>
-                                <!-- Options will be populated here -->
                             </select>
                         </div>
                     </div>
@@ -291,7 +290,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Step 2: Upload Photos -->
 
 
 
@@ -304,10 +302,9 @@
 
 <script>
     $.ajax({
-        url: '/Admin/Product/Category', // Your actual endpoint
+        url: '/Admin/Product/Category',
         method: 'GET',
         success: function (data) {
-            // Assuming data is an array of objects with 'id' and 'name' properties
             $.each(data, function (index, item) {
                 $('#mySelect').append(
                     $('<option></option>').val(item.id).text(item.name)
@@ -316,7 +313,6 @@
         },
         error: function (xhr, status, error) {
             console.error('Error fetching data:', error);
-            // Optionally handle the error
         }
     });
 </script>

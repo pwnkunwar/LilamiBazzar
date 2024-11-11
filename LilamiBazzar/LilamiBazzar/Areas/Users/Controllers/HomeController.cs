@@ -58,8 +58,6 @@ namespace LilamiBazzar.Areas.User.Controllers
                 AlreadyPayAmount = _context.Bids.Where(a => a.UserId == userId && a.Auction.ProductId == productId).Select(a => a.Amount).FirstOrDefault();
                 decimal highestBiddingAmount = _context.Auctions.Where(a => a.ProductId == productId).Select(a => a.CurrentHighestBid).FirstOrDefault();
                 RequiredPayAmount = highestBiddingAmount - AlreadyPayAmount;
-
-                 
             }
             var AuctionEnds = _context.Auctions.Where(p => p.ProductId == productId).Select(d => d.EndDate).FirstOrDefault();
 
@@ -78,7 +76,15 @@ namespace LilamiBazzar.Areas.User.Controllers
 
             IEnumerable<dynamic> Feedbacks;
             var feedbacks = _context.Reviews.Where(p => p.ProductId == productId).ToList();
-           
+            var currentHighestBid  = _context.Auctions
+    .Where(p => p.ProductId == productId)
+    .Max(b => (decimal?)b.CurrentHighestBid) ?? 0;
+            var sellerName = _context.Products.Where(p => p.ProductId == productId).Join(
+                _context.Users,
+                product => product.SellerId,
+                user => user.UserId,
+                (product, user)=>user.FullName
+                ).FirstOrDefault();
 
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
 
@@ -110,7 +116,9 @@ namespace LilamiBazzar.Areas.User.Controllers
                     AuctionEndDate = AuctionEnds,
                     CanReview = canReview,
                     ProductId = productId,
-                    Feedbacks = feedbacks
+                    Feedbacks = feedbacks,
+                    CurrentHighestBid = currentHighestBid,
+                    SellerName = sellerName
                 });
             }
 

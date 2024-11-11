@@ -25,7 +25,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         {
             _context = context;
         }
-        [Authorize(Roles = "Admin")]
+        /*[Authorize(Roles = "Admin")]*/
 
         public IActionResult Index()
         {
@@ -166,7 +166,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 return View("Index");
             }
         }
-        [Authorize(Roles="Admin")]
+       /* [Authorize(Roles="Admin")]*/
         public IActionResult Edit(Guid id)
         {
             if(id == null)
@@ -181,7 +181,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return View(product);
         }
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        /*[Authorize(Roles = "Admin")]*/
 
         public IActionResult Edit(Product product)
         {
@@ -191,36 +191,60 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             }
             if(product.ProductRoles == "APPROVED")
             {
+                Auction auction = new Auction
+                {
+                    ProductId = product.ProductId,
+                    StartDate = DateTime.UtcNow
+                };
                 if (product.Days.ToString() == "1")
                 {
-                    product.ListingDate = DateTime.UtcNow;
-                    product.AunctionEndDate = DateTime.UtcNow.AddDays(1);
+                    auction.EndDate = DateTime.UtcNow.AddDays(1);
                 }
 
                 else if (product.Days.ToString() == "3")
                 {
-                    product.ListingDate = DateTime.UtcNow;
-                    product.AunctionEndDate = DateTime.UtcNow.AddDays(3);
+                    auction.EndDate = DateTime.UtcNow.AddDays(3);
                 }
                 else if (product.Days.ToString() == "7")
                 {
-                    product.ListingDate = DateTime.UtcNow;
-                    product.AunctionEndDate = DateTime.UtcNow.AddDays(7);
+                    auction.EndDate = DateTime.UtcNow.AddDays(7);
                 }
                 else
                 {
                     return BadRequest();
                 }
-               
+                product.ProductRoles = "APPROVED";
+                _context.Auctions.Update(auction);
+                _context.Products.Update(product);
+                _context.Update(product);
+                _context.SaveChanges();
+                TempData["success"] = "Data Uploaded Successfully!!";
+                return RedirectToAction("Index", "Product");
             }
-            product.ProductRoles = "APPROVED";
-            _context.Update(product);
-            _context.SaveChanges();
-            TempData["success"] = "Data Uploaded Successfully!!";
-            return RedirectToAction("Index", "Product");
+            else if(product.ProductRoles == "REJECTED")
+            {
+                product.ProductRoles = "REJECTED";
+                _context.Update(product);
+                _context.SaveChanges();
+                TempData["success"] = "Data Uploaded Successfully!!";
+                return RedirectToAction("Index", "Product");
+            }
+            else if (product.ProductRoles == "PENDING")
+            {
+                product.ProductRoles = "PENDING";
+                _context.Update(product);
+                _context.SaveChanges();
+                TempData["success"] = "Data Uploaded Successfully!!";
+                return RedirectToAction("Index", "Product");
+            }
+            else
+            {
+                return NoContent(); 
+            }
+           
 
         }
-        [Authorize(Roles = "Admin")]
+        /*[Authorize(Roles = "Admin")]*/
 
         public IActionResult Delete(Guid id)
         {
