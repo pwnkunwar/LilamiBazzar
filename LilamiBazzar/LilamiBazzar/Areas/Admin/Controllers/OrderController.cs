@@ -1,6 +1,7 @@
 ﻿using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Security;
 using System.Security.Claims;
 
@@ -22,11 +23,12 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status)
         {
+            
             List<Product> obj = new List<Product>();
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim is null)
             {
-                return Unauthorized();
+                return Json(null);
             }
             var userId = Guid.Parse(userIdClaim);
 
@@ -52,6 +54,34 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 return Json(new { data = obj });
             }
             return Json(null);
+        }
+        public IActionResult Details(Guid orderId)
+        {
+            if (orderId == null)
+            {
+                return BadRequest();
+            }
+            var product = _dbContext.Products.FirstOrDefault(p => p.ProductId == orderId);
+            if (product == null)
+            {
+                return BadRequest();
+            }
+            return View(product);
+        }
+        [HttpPost]
+        public IActionResult Details(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                if (product.Photos != null && product.Photos.Any())
+                {
+                    // Handle file saving logic here
+                }
+
+                // Other logic...
+                return RedirectToAction("Index");
+            }
+            return View();
         }
     }
     

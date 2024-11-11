@@ -1,0 +1,126 @@
+﻿@model LilamiBazzar.Models.Models.Product
+
+@{
+    ViewData["NoFooter"] = true;
+}
+
+<style>
+    .custom-card {
+        border-radius: 25px;
+        overflow: hidden;
+        margin: 20px;
+    }
+
+    .custom-header {
+        background-color: #192E2E;
+    }
+</style>
+
+<div class="card shadow border-0 mt-4 custom-card">
+    <div class="card-header py-3 custom-header">
+        <div class="text-center">
+            <h2 class="text-white py-2">Edit Product</h2>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="border p-3 mt-4 rounded">
+                <input asp-for="ProductId" hidden />
+                <input asp-for="Height" hidden />
+                <input asp-for="Width" hidden />
+                <input asp-for="Depth" hidden />
+                <input asp-for="PhotoFilesNames" hidden />
+                <input asp-for="DocumentsNames" hidden />
+                <input asp-for="SellerId" hidden />
+
+                <!-- Title -->
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                </div>
+                <!-- Description -->
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label asp-for="Location" class="form-label">Location</label>
+                    <input asp-for="Location" class="form-control" />
+                </div>
+
+                <!-- Starting Price -->
+                <div class="mb-3">
+                    <label asp-for="StartingPrice" class="form-label">Starting Price</label>
+                    <input asp-for="StartingPrice" class="form-control" />
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="CategoryName" class="form-label">Category</label>
+                    <select asp-for="CategoryName" class="form-select">
+                        <option value="Arts">Arts</option>
+                        <option value="Painting">Painting</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Days Dropdown -->
+                <div class="mb-3">
+                    <label asp-for="Days" class="form-label">Days</label>
+                    <select asp-for="Days" class="form-select">
+                        <option value="1">1 Day</option>
+                        <option value="3">3 Days</option>
+                        <option value="7">7 Days</option>
+                    </select>
+                </div>
+
+                <!-- Image Uploads -->
+                <div class="mb-3">
+                    <label class="form-label">Upload Images</label>
+                    <input type="file" asp-for="Photos" id="imageInput" class="form-control" accept="image/*" multiple />
+                    <ul id="fileList"></ul>
+                    <small class="form-text text-muted">You can upload up to 3 images.</small>
+                </div>
+
+                <!-- Document Uploads -->
+                <div class="mb-3">
+                    <label class="form-label">Upload Documents</label>
+                    <input type="file" asp-for="Documents" name="Documents" class="form-control" accept=".pdf,.doc,.docx" multiple />
+                    <small class="form-text text-muted">You can upload up to 3 documents.</small>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row mt-3">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">Update</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Order" asp-action="Index" class="btn btn-secondary form-control">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const imageInput = document.getElementById('imageInput');
+    const fileList = document.getElementById('fileList');
+    let selectedFiles = [];
+
+    imageInput.addEventListener('change', function (e) {
+        const files = e.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+            selectedFiles.push(files[i]);
+            const listItem = document.createElement('li');
+            listItem.textContent = files[i].name;
+            fileList.appendChild(listItem);
+        }
+
+        // Clear the input field (this is just for visual clarity)
+        e.target.value = "";
+    });
+</script>
