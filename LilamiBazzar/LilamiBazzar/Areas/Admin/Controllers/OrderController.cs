@@ -83,6 +83,21 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             }
             return View();
         }
+        public IActionResult Delete(Guid orderId)
+        {
+            if(orderId == null)
+            {
+                return BadRequest();
+            }
+            var product = _dbContext.Products.FirstOrDefault(p=>p.ProductId == orderId);
+            if(product == null)
+            {
+                return BadRequest();
+            }
+            _dbContext.Products.Remove(product);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index","Order",new {area = "Admin"});
+        }
     }
     
 }
