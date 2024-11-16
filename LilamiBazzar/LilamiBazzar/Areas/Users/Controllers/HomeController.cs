@@ -22,12 +22,14 @@ namespace LilamiBazzar.Areas.User.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+        /*private readonly HttpClient _client;*/
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IConfiguration configuration/*, IHttpClientFactory httpClientFactory*/)
         {
             _logger = logger;
             _context = context;
             _configuration = configuration;
+            /*_client = httpClientFactory.CreateClient("KhaltiClient");*/
         }
 
         public IActionResult Index()
@@ -276,6 +278,78 @@ namespace LilamiBazzar.Areas.User.Controllers
             }*/
 
         }
+        //khalti integrations
+        [HttpPost]
+        public async Task<IActionResult> PaymentKhalti(decimal amountKhalti, Guid ProductId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim is null)
+            {
+                return Unauthorized();
+            }
+            var userId = Guid.Parse(userIdClaim);
+            decimal previousBidAmount = 0;
+            decimal amountToPay = 0;
+            var productAunction = _context.Auctions.FirstOrDefault(a => a.ProductId == ProductId);
+            if (productAunction is null)
+            {
+                return BadRequest();
+            }
+            var isUserAlreadyBidder = _context.Bids.FirstOrDefault(u => u.UserId == userId && u.Auction.ProductId == ProductId);
+
+            if (isUserAlreadyBidder == null)
+            {
+                if (productAunction.CurrentHighestBid < amountKhalti)
+                {
+                    amountToPay = amountKhalti;
+
+                }
+                else
+                {
+                    TempData["error"] = "Amount should be greater than Highest bidding amount!!";
+                    return RedirectToAction("Details", "Home");
+                }
+
+            }
+            else
+            {
+                var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == ProductId);
+                var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
+                amountToPay = auction.CurrentHighestBid - previousBid.Amount;
+
+            }
+
+            var payload = new
+            {
+                return_url = "http://",
+                website_url = "http://",
+                amount = amountToPay,
+                purchase_order_id= "",
+                purchase_order_name = "test"
+            };
+            var jsonPayload = JsonConvert.SerializeObject(payload);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var client = new HttpClient();
+            var secretKey = _configuration["Khalti:live_secret_key"];
+            /*client.DefaultRequestHeaders.Add("Authorization", $"Key {secretKey}");*/
+            client.DefaultRequestHeaders.Authorization =
+    new System.Net.Http.Headers.AuthenticationHeaderValue("key", secretKey);
+            var response = await client.PostAsync(_configuration["Khalti:url"], content);
+            var repsonseContent = await response.Content.ReadAsStringAsync();
+
+            /* _client.DefaultRequestHeaders.Authorization =
+             new System.Net.Http.Headers.AuthenticationHeaderValue("key", _configuration["Kalti:live_secret_key"]);
+
+             var response = await _client.PostAsync("/api/v2/epayment/initiate/", content);
+             var repsonseContent = await response.Content.ReadAsStringAsync();*/
+
+            return RedirectToAction("Index");
+
+        }
+
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> ReviewAsync([FromBody]  ReviewInput reviewInput)

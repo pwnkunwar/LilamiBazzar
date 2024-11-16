@@ -85,10 +85,6 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         }
         public IActionResult Delete(Guid orderId)
         {
-            if(orderId == null)
-            {
-                return BadRequest();
-            }
             var product = _dbContext.Products.FirstOrDefault(p=>p.ProductId == orderId);
             if(product == null)
             {

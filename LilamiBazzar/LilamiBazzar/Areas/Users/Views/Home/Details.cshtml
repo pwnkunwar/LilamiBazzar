@@ -187,6 +187,18 @@
         }
     </p>
 </div>
+<script>
+    document.getElementById('bidAmount').addEventListener('input', function () {
+        var auctionAmount = this.value; // Get the current input value
+        console.log("amount: " + auctionAmount);
+
+        // Update the hidden input field
+        document.getElementById('amountKhalti').value = auctionAmount;
+
+        // Optionally update a preview element if needed
+    });
+</script>
+
 <!-- Bid Confirmation Modal -->
 <div class="modal fade" id="bidConfirmationModal" tabindex="-1" aria-labelledby="bidConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -212,9 +224,20 @@
                 </form>
                 <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancel</button>
             </div>
+
+            <div class="modal-footer">
+                <form asp-controller="Home" asp-action="PaymentKhalti"  method="POST" id="bidFormKhalti">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    <input type="hidden" id="amountKhalti" name="amountKhalti">
+                    <button type="submit" class="btn btn-primary w-100">Confirm Bid</button>
+                </form>
+                <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancel</button>
+            </div>
         </div>
     </div>
 </div>
+
+
 <script>
     document.getElementById('viewAllBidsBtn').addEventListener('click', function (e) {
         e.preventDefault();  // Prevent the default link behavior

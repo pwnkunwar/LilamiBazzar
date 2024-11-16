@@ -51,6 +51,7 @@ internal class Program
             {
                 OnMessageReceived = context =>
                 
+               
                 {
                     context.Token = context.Request.Cookies["Authorization"];
                     return Task.CompletedTask;
@@ -61,6 +62,12 @@ internal class Program
         {
             options.AccessDeniedPath = "/Users/Home/Unauthorized"; // Redirect to your Unauthorized page
         });
+
+        /*builder.Services.AddHttpClient("KhaltiClient", client =>
+        {
+            client.BaseAddress = new Uri("https://a.khalti.com");
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });*/
 
         var app = builder.Build();
 
