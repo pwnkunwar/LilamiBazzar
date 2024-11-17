@@ -8,6 +8,7 @@ using Microsoft.Identity.Client;
 using MimeKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -302,13 +303,15 @@ namespace LilamiBazzar.Areas.User.Controllers
             {
                 if (productAunction.CurrentHighestBid < amountKhalti)
                 {
-                    amountToPay = amountKhalti;
-
+                    // as khalti take as paisa 1 Rs = 100 paisa
+                    amountToPay = amountKhalti * 100;
+                    TempData["amountToPay"] = amountToPay.ToString();
                 }
                 else
                 {
                     TempData["error"] = "Amount should be greater than Highest bidding amount!!";
-                    return RedirectToAction("Details", "Home");
+                return RedirectToAction("Details", "Home", new { productId = ProductId });
+
                 }
 
             }
@@ -316,7 +319,19 @@ namespace LilamiBazzar.Areas.User.Controllers
             {
                 var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == ProductId);
                 var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
-                amountToPay = auction.CurrentHighestBid - previousBid.Amount;
+                if(auction.CurrentHighestBid == previousBid.Amount)
+                {
+                    amountToPay = amountKhalti * 100;
+                    TempData["amountToPay"] = amountToPay.ToString();
+
+                }
+                else
+                {
+                    amountToPay = amountToPay * 100;
+                    TempData["amountToPay"] = amountToPay.ToString();
+                }
+                
+
 
             }
 
@@ -325,24 +340,17 @@ namespace LilamiBazzar.Areas.User.Controllers
                 return_url = "https://localhost:7136/Users/Home/PaymentVerifyKhalti",
                 website_url = "https://localhost:7136/",
                 amount = amountToPay,
-                purchase_order_id= Guid.NewGuid(),
+                purchase_order_id= ProductId,
                 purchase_order_name = "test"
             };
             var jsonPayload = JsonConvert.SerializeObject(payload);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
             var client = new HttpClient();
             var secretKey = _configuration["Khalti:live_secret_key"];
-            /*client.DefaultRequestHeaders.Add("Authorization", $"Key {secretKey}");*/
             client.DefaultRequestHeaders.Authorization =
     new System.Net.Http.Headers.AuthenticationHeaderValue("key", secretKey);
-            var response = await client.PostAsync(_configuration["Khalti:url"], content);
+            var response = await client.PostAsync(_configuration["Khalti:urlToMakePayment"], content);
             var repsonseContent = await response.Content.ReadAsStringAsync();
-
-            /* _client.DefaultRequestHeaders.Authorization =
-             new System.Net.Http.Headers.AuthenticationHeaderValue("key", _configuration["Kalti:live_secret_key"]);
-
-             var response = await _client.PostAsync("/api/v2/epayment/initiate/", content);
-             var repsonseContent = await response.Content.ReadAsStringAsync();*/
 
             var parsedResponse = JObject.Parse(repsonseContent);
             var paymentUrl = parsedResponse["payment_url"]?.ToString();
@@ -356,7 +364,85 @@ namespace LilamiBazzar.Areas.User.Controllers
 
         }
 
+        public async Task<IActionResult> PaymentVerifyKhaltiAsync()
+        {
+            var queryParams = HttpContext.Request.Query;
+            var pidx = queryParams["pidx"];
+            var transactionId = queryParams["transaction_id"];
+            decimal amount = decimal.Parse(queryParams["amount"]) / 100;
+            var status = queryParams["status"];
+            if(status == "Completed")
+            {
+                var payload = new
+                {
+                    pidx = pidx.ToString()
+                };
+                var jsonPayload = JsonConvert.SerializeObject(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                var client = new HttpClient();
+                var secretKey = _configuration["Khalti:live_secret_key"];
+                client.DefaultRequestHeaders.Authorization =
+        new System.Net.Http.Headers.AuthenticationHeaderValue("key", secretKey);
+                var response = await client.PostAsync(_configuration["Khalti:urlToValidatePayment"], content);
+                var repsonseContent = await response.Content.ReadAsStringAsync();
 
+                var jsonObject = JObject.Parse(repsonseContent);
+
+                // Access values dynamically
+                var pidxResponse = jsonObject["pidx"]?.ToString();
+                decimal totalAmount = (jsonObject["total_amount"]?.ToObject<decimal>() ?? 0) / 100;
+
+
+                var statusResponse = jsonObject["status"]?.ToString();
+                var transactionIdResponse = jsonObject["transaction_id"]?.ToString();
+                Guid productId = (Guid)TempData["ProductId"];
+
+                if (statusResponse == "Completed")
+                {
+                    if(pidx == pidxResponse && amount == totalAmount && transactionId == transactionIdResponse)
+                    {
+                        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        if (userIdClaim is null)
+                        {
+                            return Unauthorized();
+                        }
+                        var userId = Guid.Parse(userIdClaim);
+                        var bid = new Bid
+                        {
+                            BidId = Guid.NewGuid(),
+                            AuctionId = _context.Auctions.Where(p => p.ProductId == productId).Select(p => p.AunctionId).FirstOrDefault(),
+                            UserId = userId,
+                            Amount = totalAmount,
+                            BidTime = DateTime.UtcNow
+                        };
+
+                        var auction = _context.Auctions.FirstOrDefault(p => p.ProductId == productId);
+                        auction.CurrentHighestBid =decimal.Parse(TempData["amountToPay"].ToString()) /100;
+
+                        /*var isUserAlreadyBidder =
+                            _context.Bids.FirstOrDefault(u => u.UserId == userId && u.Auction.ProductId == productId);
+                        if(isUserAlreadyBidder != null)
+                        {
+                            _context.Bids.Update(bid);
+                            _context.SaveChanges();
+                        }*/
+                        _context.Auctions.Update(auction);
+                        _context.Bids.Add(bid);
+                        _context.SaveChanges();
+
+
+                    }
+                }
+                return RedirectToAction("Details", "Home", new { productId = productId });
+
+            }
+            else
+            {
+                return BadRequest("Something went wrong");
+            }
+
+
+        }
 
 
 
