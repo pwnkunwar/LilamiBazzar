@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using MimeKit;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -321,10 +322,10 @@ namespace LilamiBazzar.Areas.User.Controllers
 
             var payload = new
             {
-                return_url = "http://",
-                website_url = "http://",
+                return_url = "https://localhost:7136/Users/Home/PaymentVerifyKhalti",
+                website_url = "https://localhost:7136/",
                 amount = amountToPay,
-                purchase_order_id= "",
+                purchase_order_id= Guid.NewGuid(),
                 purchase_order_name = "test"
             };
             var jsonPayload = JsonConvert.SerializeObject(payload);
@@ -342,6 +343,14 @@ namespace LilamiBazzar.Areas.User.Controllers
 
              var response = await _client.PostAsync("/api/v2/epayment/initiate/", content);
              var repsonseContent = await response.Content.ReadAsStringAsync();*/
+
+            var parsedResponse = JObject.Parse(repsonseContent);
+            var paymentUrl = parsedResponse["payment_url"]?.ToString();
+            if (!string.IsNullOrEmpty(paymentUrl))
+            {
+                // Redirect to the payment URL
+                return Redirect(paymentUrl);
+            }
 
             return RedirectToAction("Index");
 
