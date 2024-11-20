@@ -59,7 +59,10 @@ namespace LilamiBazzar.Areas.User.Controllers
             {
                
                 productBids = _context.Bids.Where(b => b.Auction.ProductId == productId).ToList();
-                AlreadyPayAmount = _context.Bids.Where(a => a.UserId == userId && a.Auction.ProductId == productId).Select(a => a.Amount).FirstOrDefault();
+                AlreadyPayAmount = _context.Bids
+    .Where(a => a.UserId == userId && a.Auction.ProductId == productId)
+    .Sum(a => a.Amount);
+
                 decimal highestBiddingAmount = _context.Auctions.Where(a => a.ProductId == productId).Select(a => a.CurrentHighestBid).FirstOrDefault();
                 RequiredPayAmount = highestBiddingAmount - AlreadyPayAmount;
             }
@@ -305,7 +308,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                 {
                     // as khalti take as paisa 1 Rs = 100 paisa
                     amountToPay = amountKhalti * 100;
-                    TempData["amountToPay"] = amountToPay.ToString();
+                    TempData["amountToPay"] = amountKhalti.ToString();
                 }
                 else
                 {
@@ -322,13 +325,24 @@ namespace LilamiBazzar.Areas.User.Controllers
                 if(auction.CurrentHighestBid == previousBid.Amount)
                 {
                     amountToPay = amountKhalti * 100;
-                    TempData["amountToPay"] = amountToPay.ToString();
+                    var tAmount = previousBid.Amount + amountKhalti;
+                    TempData["amountToPay"] = tAmount.ToString();
 
                 }
                 else
                 {
-                    amountToPay = amountToPay * 100;
-                    TempData["amountToPay"] = amountToPay.ToString();
+                    decimal totalAmount = amountKhalti + previousBid.Amount;
+                    if(productAunction.CurrentHighestBid < totalAmount)
+                    {
+                        amountToPay = amountKhalti * 100;
+                        TempData["amountToPay"] = previousBid.Amount + amountKhalti;
+                    }
+                    else
+                    {
+                        TempData["error"] = "Amount should be greater than Highest bidding amount!!";
+                        return RedirectToAction("Details", "Home", new { productId = ProductId });
+                    }
+                    
                 }
                 
 
@@ -363,7 +377,7 @@ namespace LilamiBazzar.Areas.User.Controllers
             return RedirectToAction("Index");
 
         }
-
+        [Authorize]
         public async Task<IActionResult> PaymentVerifyKhaltiAsync()
         {
             var queryParams = HttpContext.Request.Query;
@@ -417,7 +431,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                         };
 
                         var auction = _context.Auctions.FirstOrDefault(p => p.ProductId == productId);
-                        auction.CurrentHighestBid =decimal.Parse(TempData["amountToPay"].ToString()) /100;
+                        auction.CurrentHighestBid =decimal.Parse(TempData["amountToPay"].ToString());
 
                         /*var isUserAlreadyBidder =
                             _context.Bids.FirstOrDefault(u => u.UserId == userId && u.Auction.ProductId == productId);
