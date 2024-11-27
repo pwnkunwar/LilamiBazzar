@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["NoFooter"] = true;
+}
+</br>
+<div class="container">
+    <div class="card">
+        <div class="card-header bg-dark text-light ml-0">
+            <div class="container row">
+                <div class="col-12 d-none d-md-block col-md-6 pb-1">
+                    <i class="fas fa-shopping-cart"></i> &nbsp; Order Summary
+                </div>
+                <div class="col-12 col-md-4 offset-md-2 text-right">
+                    <a class="btn btn-outline-info form-control btn-sm" href="/admin/Order">Back to Orders</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container rounded p-2">
+                <div class="row">
+                    <div class="col-12 col-lg-6 pb-4">
+                        <div class="row">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-primary">Item Details:</span>
+                            </h4>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Title</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" data-val="true" data-val-required="The Name field is required." id="OrderHeader_Name" name="OrderHeader.Name" value="asda" />
+
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Location Of Item</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" data-val="true" data-val-required="The PhoneNumber field is required." id="OrderHeader_PhoneNumber" name="OrderHeader.PhoneNumber" value="9846109393" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Starting Bid</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" data-val="true" data-val-required="The StreetAddress field is required." id="OrderHeader_StreetAddress" name="OrderHeader.StreetAddress" value="pkra" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">
+                                Auction Duration
+                            </div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" data-val="true" data-val-required="The City field is required." id="OrderHeader_City" name="OrderHeader.City" value="pkra" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Highest Bidding</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" data-val="true" data-val-required="The State field is required." id="OrderHeader_State" name="OrderHeader.State" value="okay" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Zip Code</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" data-val="true" data-val-required="The PostalCode field is required." id="OrderHeader_PostalCode" name="OrderHeader.PostalCode" value="12345" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Email</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" id="OrderHeader_ApplicationUser_Email" name="OrderHeader.ApplicationUser.Email" value="admin@pawan.com" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Order Date</div>
+                            <div class="col-9">
+                                <input value="11/27/2024" readonly type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Carrier</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" id="OrderHeader_Carrier" name="OrderHeader.Carrier" value="" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Tracking</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" id="OrderHeader_TrackingNumber" name="OrderHeader.TrackingNumber" value="" />
+                            </div>
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Shipping Date</div>
+                            <div class="col-9">
+                                <input value="1/1/0001" readonly type="text" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row my-1">
+
+                            <div class="col-3">Payment Date</div>
+                            <div class="col-9">
+                                <input value="1/1/0001" readonly type="text" class="form-control" />
+                            </div>
+
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3">Payment Status</div>
+                            <div class="col-9">
+                                <input readonly type="text" class="form-control" id="OrderHeader_PaymentStatus" name="OrderHeader.PaymentStatus" value="Pending" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-5 offset-lg-1">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-primary">Order Summary</span>
+                        </h4>
+                        <label class="btn btn-outline-primary form-control my-2">Order Status - Pending</label>
+
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between p-2">
+                                <div class="row container">
+                                    <div class="col-8">
+
+                                        <h6 class="my-0 text-primary">Fortune of Time</h6>
+                                        <small class="text-muted">Price : $90.00</small><br />
+                                        <small class="text-muted">Quantity : 1</small>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <p class="text-success">$90.00</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item bg-primary">
+                                <div class="row container">
+                                    <div class="col-6">
+                                        <h5 class="text-white">TOTAL </h5>
+                                    </div>
+                                    <div class="col-6 text-end">
+                                        <h5 class="text-white">$90.00</h5>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

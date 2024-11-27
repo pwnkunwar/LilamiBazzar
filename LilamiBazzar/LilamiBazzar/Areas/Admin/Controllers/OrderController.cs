@@ -98,6 +98,10 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index","Order",new {area = "Admin"});
         }
+        public IActionResult Purchased()
+        {
+            return View();
+        }
     }
     
 }

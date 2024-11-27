@@ -34,7 +34,8 @@ namespace LilamiBazzar.Areas.Accounts
                 {
                     if (_context.Users.Any(u => u.Email == user.Email))
                     {
-                        return BadRequest("User already exists!.");
+                        TempData["ErrorMessage"] = "Email already in use!.";
+                        return RedirectToAction("Index","Home",new {area="Users"});
                     }
 
                     var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == StaticUserRoles.USER);
