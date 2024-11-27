@@ -200,6 +200,7 @@
 </script>
 
 <!-- Bid Confirmation Modal -->
+<!-- Bid Confirmation Modal -->
 <div class="modal fade" id="bidConfirmationModal" tabindex="-1" aria-labelledby="bidConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -208,9 +209,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to place a bid of <strong id="bidAmountDisplay">$0</strong>?</p>
+                <p>Are you sure you want to place a bid of <strong id="bidAmountDisplay"></strong>?</p>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+                <!-- Esewa Form -->
                 <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST" id="bidForm">
                     <input type="hidden" id="amount" name="amount">
                     <input type="hidden" id="tax_amount" name="tax_amount" value="0">
@@ -220,22 +222,23 @@
                     <input type="hidden" id="success_url" name="success_url" value="https://localhost:7136/Users/Home/PaymentVerify" required>
                     <input type="hidden" id="failure_url" name="failure_url" value="https://google.com" required>
                     <input type="hidden" id="signature" name="signature">
-                    <button type="submit" class="btn btn-primary w-100">Confirm Bid</button>
+                    <button type="submit" class="btn btn-primary">Via Esewa</button>
                 </form>
-                <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancel</button>
-            </div>
 
-            <div class="modal-footer">
-                <form asp-controller="Home" asp-action="PaymentKhalti"  method="POST" id="bidFormKhalti">
+                <!-- Khalti Form -->
+                <form asp-controller="Home" asp-action="PaymentKhalti" method="POST" id="bidFormKhalti">
                     <input type="hidden" name="ProductId" value="@Model.ProductId" />
                     <input type="hidden" id="amountKhalti" name="amountKhalti">
-                    <button type="submit" class="btn btn-primary w-100">Confirm Bid</button>
+                    <button type="submit" class="btn btn-primary">Via Khalti</button>
                 </form>
-                <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Cancel</button>
+
+                <!-- Cancel Button -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -255,7 +258,7 @@
         // Set bid amount dynamically
         $('#bidAmount').on('input', function () {
             var bidAmount = $(this).val();
-            $('#bidAmountDisplay').text('$' + bidAmount);
+            $('#bidAmountDisplay').text('Rs' + bidAmount);
         });
 
         // Start countdown

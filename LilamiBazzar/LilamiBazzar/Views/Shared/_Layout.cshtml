@@ -571,7 +571,6 @@
                 };
 
                 try {
-                    debugger
                     // Await the result from AjaxCall
                     var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
                     location.reload();
@@ -592,8 +591,13 @@
                     // window.location.href = "dashboard.html"; // Example redirection
 
                 } catch (error) {
-                    document.getElementById("error1").innerText = "Email or Password is incorrect!!";
-                    // Handle any errors that occurred during the AJAX call
+                    if (error.responseJSON && error.responseJSON.code === 2) {
+                        // Handle email not verified error
+                        document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
+                    } else {
+                        // Handle general login error
+                        document.getElementById("error1").innerText = "Email or Password is incorrect!";
+                    }
                     console.error("Login failed:", error);
                 }
             });

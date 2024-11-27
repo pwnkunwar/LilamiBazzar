@@ -11,7 +11,7 @@ $(document).ready(function () {
         }
         else {
             if (url.includes("purchased")) {
-                loadDataTable("purchased");
+                loadDataTable1("purchased");
             }
             else {
                 if (url.includes("rejected")) {
@@ -84,14 +84,13 @@ function loadDataTable1(status) {
     dataTable = $('#tblData').DataTable({
         "ajax": {
             url: '/admin/order/getall?status=' + status,
-            type: 'GET',  // Ensure you're using the correct HTTP method
-            dataType: 'json', // Ensure you're expecting JSON response
+            type: 'GET',
+            dataType: 'json',
             error: function (xhr, error, thrown) {
                 // Handle AJAX error
                 console.error("Error fetching data:", thrown);
                 console.log("XHR Response:", xhr.responseText);
 
-                // Show a friendly error message if there's an issue
                 $('#tblData').html('<tr><td colspan="6" class="text-center">Error fetching data. Please try again later.</td></tr>');
             },
             dataSrc: function (json) {
@@ -115,7 +114,7 @@ function loadDataTable1(status) {
                 data: 'productId',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
-                        <a href="/admin/order/details?orderId=${data}" class="btn btn-primary mx-2">
+                        <a href="/Users/Home/Details?productId=${data}" class="btn btn-primary mx-2">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                        

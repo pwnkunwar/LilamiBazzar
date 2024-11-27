@@ -43,9 +43,11 @@ namespace LilamiBazzar.Models.Models
         public Guid SellerId { get; set; }
         [NotMapped]
         public int Days { get; set; }
-
+        public Auction Auction { get; set; }    
         public string? ProductRoles { get; set; }
-       // public List<Bid>? Bids { get; set; }
+        [NotMapped]
+        public Bid Bids { get; set; }
+        // public List<Bid>? Bids { get; set; }
         /*public bool Authenticity { get; set; }
         public ItemStatus Status { get; set; }*/
     }

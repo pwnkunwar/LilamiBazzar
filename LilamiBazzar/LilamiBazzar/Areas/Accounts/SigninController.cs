@@ -70,11 +70,7 @@ namespace LilamiBazzar.Areas.Accounts
                             };
                             _emailService.SendEmail(email);
                         }
-                         
-
                         return BadRequest("You have enter wrong credentials numerous times! We have send a Account UnLocked Code in the email");
-                      
-
                     }
                     if (!_passwordHashingService.VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
                     {
@@ -83,10 +79,11 @@ namespace LilamiBazzar.Areas.Accounts
                         TempData["error"] = "User or Password Incorrect";
                         return BadRequest("User or Password Incorrect");
                     }
-                    /*if(user.VerifiedAt == null)
+                    if (user.VerifiedAt == null)
                     {
-                        return BadRequest("Please verified your email address");
-                    }*/
+                        return BadRequest(new { code = 2, message = "Email not verified" });
+                    }
+
                     // return Ok($"Welcome Back {userLogin.Email}");
 
                     var token = _jwtService.AuthClaim(user);

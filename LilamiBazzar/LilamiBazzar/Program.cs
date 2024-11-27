@@ -23,7 +23,6 @@ internal class Program
         // Add FluentValidation services using the new recommended methods
         builder.Services.AddFluentValidationAutoValidation()
                         .AddFluentValidationClientsideAdapters();
-
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
@@ -50,8 +49,6 @@ internal class Program
             options.Events = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
-                
-               
                 {
                     context.Token = context.Request.Cookies["Authorization"];
                     return Task.CompletedTask;

@@ -231,20 +231,22 @@ namespace LilamiBazzar.Areas.Accounts
             if (token == null)
             {
                 TempData["error"] = "Invalid verification token.";
-                return BadRequest();
+                return RedirectToAction("Index","Home", new {area="Users"});
             }
             var isTokenValid = _dbcontext.Users.FirstOrDefault(t => t.VerificationToken == token);
             if (isTokenValid == null)
             {
                 TempData["error"] = "Invalid verification token.";
-                return BadRequest();
+                return RedirectToAction("Index","Home", new {area="Users"});
+
             }
             else
             {
                 isTokenValid.VerifiedAt = DateTime.UtcNow;
                 _dbcontext.SaveChanges();
                 TempData["success"] = "Email Address Verified.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home", new {area="Users"});
+
             }
         }
 

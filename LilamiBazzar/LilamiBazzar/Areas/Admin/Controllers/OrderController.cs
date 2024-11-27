@@ -35,6 +35,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             switch (status)
             {
                 case "pending":
+                    /*obj = _dbContext.Products.Where(b => b.ProductRoles == "PENDING" && b.bid.UserId == userId).ToList();*/
                     obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "PENDING").ToList();
                     break;
                 case "inprocess":
@@ -45,6 +46,9 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     break;
                 case "rejected":
                     obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "REJECTED").ToList();
+                    break;
+                case "purchased":
+                    obj = _dbContext.Products.Where(u => u.Auction.HighestBidderId == userId && u.Auction.IsCompleted == true).ToList();
                     break;
                 default:
                     break;

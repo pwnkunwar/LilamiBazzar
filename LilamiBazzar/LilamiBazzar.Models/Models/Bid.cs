@@ -23,5 +23,9 @@ namespace LilamiBazzar.Models.Models
         public decimal Amount { get; set; }
         public DateTime BidTime { get; set; }
         public User User { get; set; }
+        [NotMapped]
+        public Guid ProductId { get; set; }
+        [NotMapped]
+        public Product Product { get; set; }
     }
 }

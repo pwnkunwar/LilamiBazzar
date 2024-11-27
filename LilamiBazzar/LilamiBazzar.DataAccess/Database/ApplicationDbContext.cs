@@ -40,7 +40,10 @@ namespace LilamiBazzar.DataAccess.Database
                .WithMany(u => u.UserRoles)  // A User can have many UserRoles
                 .HasForeignKey(ur => ur.UserId); // Foreign key
 
-
+            modelBuilder.Entity<Product>()
+       .HasOne(p => p.Auction) // Product has one Auction
+       .WithOne(a => a.Product) // Auction has one Product
+       .HasForeignKey<Auction>(a => a.ProductId);
             modelBuilder.Entity<UserRole>()
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)  // A Role can have many UserRoles

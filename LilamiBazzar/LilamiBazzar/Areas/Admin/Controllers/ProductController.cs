@@ -199,15 +199,19 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 if (product.Days.ToString() == "1")
                 {
                     auction.EndDate = DateTime.UtcNow.AddDays(1);
+                    product.AunctionEndDate = DateTime.UtcNow.AddDays(1);
                 }
 
                 else if (product.Days.ToString() == "3")
                 {
                     auction.EndDate = DateTime.UtcNow.AddDays(3);
+                    product.AunctionEndDate = DateTime.UtcNow.AddDays(3);
                 }
                 else if (product.Days.ToString() == "7")
                 {
                     auction.EndDate = DateTime.UtcNow.AddDays(7);
+                    product.AunctionEndDate = DateTime.UtcNow.AddDays(7);
+
                 }
                 else
                 {
@@ -216,7 +220,6 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 product.ProductRoles = "APPROVED";
                 _context.Auctions.Update(auction);
                 _context.Products.Update(product);
-                _context.Update(product);
                 _context.SaveChanges();
                 TempData["success"] = "Data Uploaded Successfully!!";
                 return RedirectToAction("Index", "Product");
