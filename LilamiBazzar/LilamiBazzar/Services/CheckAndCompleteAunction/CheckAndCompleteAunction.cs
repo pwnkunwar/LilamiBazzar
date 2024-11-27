@@ -1,4 +1,5 @@
 ﻿using LilamiBazzar.DataAccess.Database;
+using LilamiBazzar.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection; // To create service scopes
 using Microsoft.Extensions.Hosting;
@@ -50,9 +51,24 @@ namespace LilamiBazzar.Services.CheckAndCompleteAuction
                         auction.HighestBidderId = winningBid.UserId;
                         auction.CurrentHighestBid = winningBid.Amount;
                         auction.IsCompleted = true;
+
+                        var itemTracking = new ItemTracking
+                        {
+                            ItemTrackingId = Guid.NewGuid(),
+                            ItemId = auction.ProductId,
+                            BuyerId = auction.HighestBidderId ?? Guid.Empty,
+                            SellerId = auction.Product.SellerId,
+                            CurrentStatus = "PENDING",
+                            StatusUpdatedAt = DateTime.UtcNow,
+                            ShippingProvider = "FedEx",
+                            TrackingNumber = Guid.NewGuid().ToString(),
+                            EstimatedDeliveryDate = DateTime.UtcNow.AddDays(7),
+                            DeliverdAt = DateTime.UtcNow
+                         };
+                        _context.ItemTracking.Add(itemTracking);
                     }
                 }
-
+               
                 await _context.SaveChangesAsync();
             }
         }
