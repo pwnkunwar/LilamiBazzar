@@ -20,6 +20,7 @@ namespace LilamiBazzar.DataAccess.Database
         public DbSet<Auction> Auctions { get; set; }
         public DbSet<Bid> Bids { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ItemTracking> ItemTracking { get; set; }   
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace LilamiBazzar.Models.Models
 {
     public class ItemTracking
     {
+        [Key]
         public Guid ItemTrackingId { get; set; }
         public Guid ItemId { get; set; }
         public Guid BuyerId { get; set; }
