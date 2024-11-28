@@ -14,7 +14,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         private readonly ApplicationDbContext _dbContext;
         public OrderController(ApplicationDbContext dbContext)
         {
-            _dbContext = dbContext; 
+            _dbContext = dbContext;
         }
         public IActionResult Index()
         {
@@ -23,7 +23,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status)
         {
-            
+
             List<Product> obj = new List<Product>();
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim is null)
@@ -89,19 +89,58 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         }
         public IActionResult Delete(Guid orderId)
         {
-            var product = _dbContext.Products.FirstOrDefault(p=>p.ProductId == orderId);
-            if(product == null)
+            var product = _dbContext.Products.FirstOrDefault(p => p.ProductId == orderId);
+            if (product == null)
             {
                 return BadRequest();
             }
             _dbContext.Products.Remove(product);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index","Order",new {area = "Admin"});
+            return RedirectToAction("Index", "Order", new { area = "Admin" });
         }
-        public IActionResult Purchased()
+        public IActionResult Purchased(Guid productId)
         {
+            if (productId == Guid.Empty)
+            {
+                return BadRequest();
+            }
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim is null)
+            {
+                return Unauthorized();
+            }
+            var userId = Guid.Parse(userIdClaim);
+            var isCompletedAuction = _dbContext.Auctions.Any(i => i.IsCompleted == true);
+            if (isCompletedAuction)
+            {
+                var completedAuctions = (from auction in _dbContext.Auctions
+                                         join product in _dbContext.Products
+                                         on auction.ProductId equals product.ProductId
+                                         join seller in _dbContext.Users
+                                         on product.SellerId equals seller.UserId
+                                         join itemTracking in _dbContext.ItemTracking
+                                         on product.ProductId equals itemTracking.ItemId
+                                         join buyer in _dbContext.Users
+                                         on auction.HighestBidderId equals buyer.UserId
+                                         where auction.ProductId == productId && buyer.UserId == userId
+                                         select new CompletedAuction
+                                         {
+                                             ProductId = product.ProductId,
+                                             Title = product.Title,
+                                             StartingPrice = product.StartingPrice,
+                                             HighestBid = auction.CurrentHighestBid,
+                                             Location = product.Location,
+                                             Category = product.CategoryName,
+                                             ShippingProvider = itemTracking.ShippingProvider,
+                                             BuyerName = buyer.FullName,
+                                             SellerName = seller.FullName,
+                                             DeliveryStatus = itemTracking.CurrentStatus,
+                                             EstimatedDeliveryDate = itemTracking.EstimatedDeliveryDate
+                                         }).FirstOrDefault();
+
+                return View(completedAuctions);
+            }
             return View();
         }
     }
-    
 }

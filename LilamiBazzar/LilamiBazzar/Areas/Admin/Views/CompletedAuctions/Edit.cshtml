@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["NoFooter"] = true;
+}
+@model LilamiBazzar.Models.Models.CompletedAuction
+<style>
+    .custom-card {
+        border-radius: 25px;
+        overflow: hidden;
+        margin: 20px;
+    }
+
+    .custom-header {
+        background-color: #192E2E;
+    }
+</style>
+
+<div class="card shadow border-0 mt-4 custom-card">
+    <div class="card-header py-3 custom-header">
+        <div class="text-center">
+            <h2 class="text-white py-2">Edit Completed Auction Item</h2>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post">
+            <div class="border p-3 mt-4 rounded">
+                <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input value="@Model.Title" name="Title" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">StartingPrice</label>
+                    <input value="@Model.StartingPrice" name="StartingPrice" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">HighestBid</label>
+                    <input value="@Model.HighestBid" name="HighestBid" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Location</label>
+                    <input value="@Model.Location" name="Location" class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <input name="Category" value="@Model.Category" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">ShippingProvider</label>
+                    <select class="form-select" name="ShippingProvider">
+                        <option value="FedEx">FedEx</option>
+                        <option value="UPS">UPS</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">BuyerName</label>
+                    <input value="@Model.BuyerName" name="BuyerName" class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">SellerName</label>
+                    <input value="@Model.SellerName" name="SellerName" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <input value="@Model.Category" name="Category" class="form-control" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="DeliveryStatus" class="form-label">DeliveryStatus</label>
+                    <select class="form-select" name="DeliveryStatus">
+                        <option value="PENDING">PENDING</option>
+                        <option value="SHIPPED">SHIPPED</option>
+                        <option value="INTRANSIT">INTRANSIT</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                    </select>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" asp-controller="CompletedAuctions" asp-action="Update" class="btn btn-primary form-control">Update</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="CompletedAuctions" asp-action="Index" class="btn btn-secondary form-control">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

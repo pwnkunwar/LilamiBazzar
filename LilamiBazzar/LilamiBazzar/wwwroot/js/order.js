@@ -114,7 +114,7 @@ function loadDataTable1(status) {
                 data: 'productId',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
-                        <a href="/Users/Home/Details?productId=${data}" class="btn btn-primary mx-2">
+                        <a href="/Admin/Order/Purchased?productId=${data}" class="btn btn-primary mx-2">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                        
