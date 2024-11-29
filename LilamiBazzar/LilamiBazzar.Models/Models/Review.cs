@@ -17,9 +17,7 @@ namespace LilamiBazzar.Models.Models
         public Guid SellerId { get; set; }
         public Guid UserId { get; set; }
         public virtual User Reviewer { get; set; }
-
-        public int NegativeRating { get; set; }
-        public int PositiveRating { get; set; }
+        public string feedback { get; set; }
         [MaxLength(1000)]
         public string Comment { get; set; }
         public DateTime ReviewDate { get; set; } = DateTime.UtcNow;
