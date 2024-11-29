@@ -1,7 +1,8 @@
-﻿@{
+﻿@model LilamiBazzar.Models.Models.CompletedAuction
+
+@{
     ViewData["NoFooter"] = true;
 }
-@model LilamiBazzar.Models.Models.CompletedAuction
 </br>
 <div class="container">
     <div class="card">
@@ -19,44 +20,41 @@
             <div class="container rounded p-2">
                 <div class="row">
                     <div class="col-12 col-lg-6 pb-4">
-                        <div class="row">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-primary">Item Details:</span>
-                            </h4>
-                        </div>
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-primary">Item Details:</span>
+                        </h4>
                         <div class="row my-1">
                             <div class="col-3">Title</div>
                             <div class="col-9">
-                                <input readonly type="text" class="form-control" data-val="true"  value="@Model.Title" />
-
+                                <input readonly type="text" class="form-control" value="@Model.Title" />
                             </div>
                         </div>
                         <div class="row my-1">
                             <div class="col-3">Location Of Item</div>
                             <div class="col-9">
-                                <input readonly type="text" class="form-control" data-val="true"    value="@Model.Location" />
+                                <input readonly type="text" class="form-control" value="@Model.Location" />
                             </div>
                         </div>
                         <div class="row my-1">
                             <div class="col-3">Starting Bid</div>
                             <div class="col-9">
-                                <input readonly type="text" class="form-control" data-val="true" value="@Model.StartingPrice" />
+                                <input readonly type="text" class="form-control" value="@Model.StartingPrice" />
                             </div>
                         </div>
                         <div class="row my-1">
                             <div class="col-3">Highest Bidding</div>
                             <div class="col-9">
-                                <input readonly type="text" class="form-control" data-val="true" value="@Model.HighestBid" />
+                                <input readonly type="text" class="form-control" value="@Model.HighestBid" />
                             </div>
                         </div>
                         <div class="row my-1">
-                            <div class="col-3">Buyers Name</div>
+                            <div class="col-3">Buyer's Name</div>
                             <div class="col-9">
-                                <input readonly type="text" class="form-control"  value="@Model.BuyerName" />
+                                <input readonly type="text" class="form-control" value="@Model.BuyerName" />
                             </div>
                         </div>
                         <div class="row my-1">
-                            <div class="col-3">Sellers Name</div>
+                            <div class="col-3">Seller's Name</div>
                             <div class="col-9">
                                 <input readonly type="text" class="form-control" value="@Model.SellerName" />
                             </div>
@@ -70,11 +68,11 @@
                         <div class="row my-1">
                             <div class="col-3">Shipping Provider</div>
                             <div class="col-9">
-                                <input readonly type="text" class="form-control"  value="@Model.ShippingProvider" />
+                                <input readonly type="text" class="form-control" value="@Model.ShippingProvider" />
                             </div>
                         </div>
                         <div class="row my-1">
-                            <div class="col-3">DeliveryStatus</div>
+                            <div class="col-3">Delivery Status</div>
                             <div class="col-9">
                                 <input readonly type="text" class="form-control" value="@Model.DeliveryStatus" />
                             </div>
@@ -82,61 +80,71 @@
                         <div class="row my-1">
                             <div class="col-3">Estimated Delivery Date</div>
                             <div class="col-9">
-                                <input value="@Model.EstimatedDeliveryDate" readonly type="text" class="form-control" />
+                                <input readonly type="text" class="form-control" value="@Model.EstimatedDeliveryDate" />
                             </div>
                         </div>
-
-                    
-                        
                     </div>
                     <div class="col-12 col-lg-5 offset-lg-1">
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-primary">Order Summary</span>
                         </h4>
-                        @if(Model.DeliveryStatus == "PENDING")
-                        {
-                            <label class="btn btn-outline-primary form-control my-2">Order Status - Pending</label>
-                        }else if(Model.DeliveryStatus == "DELIVERED")
-                        {
-                            <label class="btn btn-outline-primary form-control my-2">Order Status - DELIVERED</label>
-                        }
-                        else if (Model.DeliveryStatus == "SHIPPED")
-                        {
-                            <label class="btn btn-outline-primary form-control my-2">Order Status - SHIPPED</label>
-                        }
-                        else if (Model.DeliveryStatus == "INTRANSIT")
-                        {
-                            <label class="btn btn-outline-primary form-control my-2">Order Status - INTRANSIT</label>
-                        }
-
+                        <label class="btn btn-outline-primary form-control my-2">
+                            Order Status - @Model.DeliveryStatus
+                        </label>
                         <ul class="list-group mb-3">
                             <li class="list-group-item d-flex justify-content-between p-2">
                                 <div class="row container">
                                     <div class="col-8">
-
-                                        <h6 class="my-0 text-primary">Fortune of Time</h6>
-                                        <small class="text-muted">Price :Rs.@Model.HighestBid</small><br />
-                                        <small class="text-muted">Quantity : 1</small>
+                                        <h6 class="my-0 text-primary">@Model.Title</h6>
+                                        <small class="text-muted">Price: Rs. @Model.HighestBid</small><br />
+                                        <small class="text-muted">Quantity: 1</small>
                                     </div>
                                     <div class="col-4 text-end">
-                                        <p class="text-success">Rs.@Model.HighestBid</p>
+                                        <p class="text-success">Rs. @Model.HighestBid</p>
                                     </div>
                                 </div>
                             </li>
                             <li class="list-group-item bg-primary">
                                 <div class="row container">
                                     <div class="col-6">
-                                        <h5 class="text-white">TOTAL </h5>
+                                        <h5 class="text-white">TOTAL</h5>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <h5 class="text-white">Rs.@Model.HighestBid</h5>
+                                        <h5 class="text-white">Rs. @Model.HighestBid</h5>
                                     </div>
                                 </div>
                             </li>
                         </ul>
-
                     </div>
                 </div>
+                @if (Model.DeliveryStatus == "DELIVERED")
+                {
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <h4 class="text-primary">Leave Feedback</h4>
+                            <form method="post" action="/Users/Home/Feedback">
+                                <input type="hidden" name="productId" value="@Model.ProductId" />
+
+                                <div class="mb-3">
+                                    <label for="feedback" class="form-label">Your Feedback</label>
+                                    <textarea id="feedback" name="feedback" class="form-control" rows="4" placeholder="Write your feedback here..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rating" class="form-label">Rating</label>
+                                    <select id="rating" name="rating" class="form-select">
+                                        <option value="ASEXPECTED">As Expected</option>
+                                        <option value="DAMAGED">Damaged</option>
+                                        <option value="FAKE">Fake</option>
+                                        <option value="MiSSINGPARTS">Missing Parts</option>
+                                        <option value="NOTRECEIVED">Not Received</option>
+                                        <option value="OTHERS">Others</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                            </form>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

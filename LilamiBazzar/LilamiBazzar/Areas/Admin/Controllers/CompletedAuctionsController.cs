@@ -98,7 +98,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             itemTracking.CurrentStatus = DeliveryStatus;
             itemTracking.ShippingProvider = ShippingProvider;
             _dbContext.SaveChanges();
-            return View("Index");
+            TempData["success"] = "Auction data updated successfully!";
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,5 +1,6 @@
 //using LilamiBazzar.Models;
 using LilamiBazzar.DataAccess.Database;
+using LilamiBazzar.DataAccess.Migrations;
 using LilamiBazzar.Models.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Ocsp;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -344,11 +346,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                     }
                     
                 }
-                
-
-
             }
-
             var payload = new
             {
                 return_url = "https://localhost:7136/Users/Home/PaymentVerifyKhalti",
@@ -460,7 +458,7 @@ namespace LilamiBazzar.Areas.User.Controllers
 
 
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> ReviewAsync([FromBody]  ReviewInput reviewInput)
         {
             try
@@ -473,8 +471,8 @@ namespace LilamiBazzar.Areas.User.Controllers
                 var userId = Guid.Parse(userIdClaim);
                 Guid productId = Guid.Parse(reviewInput.ProductId);
                 var isAllowedReview = _context.Auctions.Any(u => u.HighestBidderId == userId && u.ProductId == productId && u.IsCompleted);
-                /*if (isAllowedReview)
-                {*/
+                *//*if (isAllowedReview)
+                {*//*
                     Guid sellerId = _context.Products.Where(s => s.ProductId == productId).Select(s => s.SellerId).FirstOrDefault();
                     var review = new Review
                     {
@@ -496,7 +494,6 @@ namespace LilamiBazzar.Areas.User.Controllers
                     }
                     await _context.Reviews.AddAsync(review);
                     await _context.SaveChangesAsync();
-               /* }*/
 
 
                 return View(reviewInput);
@@ -507,7 +504,38 @@ namespace LilamiBazzar.Areas.User.Controllers
             {
                 Console.WriteLine(ex);
             }
-            return View();
+            return View();*/
+       // }
+        public IActionResult Feedback(string feedback, string rating, Guid productId)
+        {
+            if(feedback == null && rating == null && productId == Guid.Empty)
+            {
+                return BadRequest("Error");
+            }
+            if(rating!="ASEXPECTED" && rating != "DAMAGED" && rating !="FAKE" && rating != "MiSSINGPARTS" && rating != "NOTRECEIVED" && rating!= "OTHERS")
+            {
+                return BadRequest("Error");
+            }
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim is null)
+            {
+                return Unauthorized();
+            }
+            var userId = Guid.Parse(userIdClaim);
+            var review = new Review
+            {
+                ReviewId = Guid.NewGuid(),
+                ProductId = productId,
+                SellerId = _context.Products.Where(i=>i.ProductId == productId).Select(i => i.SellerId).FirstOrDefault(),
+                UserId = userId,
+                Comment = feedback,
+                ReviewDate = DateTime.UtcNow,
+                feedback = rating
+            };
+            _context.Reviews.Add(review);
+            _context.SaveChanges();
+            TempData["success"] = "Feedback send successfully";
+            return RedirectToAction("Purchased", "Order", new { area = "Admin", productId = productId });
         }
 
         public IActionResult Unauthorized()
