@@ -101,5 +101,26 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             TempData["success"] = "Auction data updated successfully!";
             return RedirectToAction("Index");
         }
+        public IActionResult Feedback(string productid)
+        {
+           
+            if(productid == null)
+            {
+                return BadRequest();
+            }
+            Guid pId;
+            bool isValid = Guid.TryParse(productid, out pId);
+            if (!isValid)
+            {
+                return Json(new { message = "Invalid product ID format." });
+            }
+            var feedback = _dbContext.Reviews.Where(i=>i.ProductId == pId).FirstOrDefault();
+            return Json(new
+            {
+                Feedback = feedback.Comment,
+                Rating = feedback.feedback
+            });
+            
+        }
     }
 }

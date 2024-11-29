@@ -94,8 +94,8 @@
                                         <a href="/Admin/CompletedAuctions/Edit/@auction.ProductId" class="btn btn-warning btn-sm">
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
-                                        <a class="btn btn-info btn-sm more-info-button" href="/Admin/CompletedAuctions/MoreInfo/@auction.ProductId">
-                                            <i class="bi bi-info-circle"></i> More Info
+                                        <a class="btn btn-info btn-sm more-info-button" data-bs-toggle="modal" data-bs-target="#feedbackModal" data-productid="@auction.ProductId">
+                                            <i class="bi bi-info-circle"></i> Feedbacks
                                         </a>
                                     </td>
                                 </tr>
@@ -106,4 +106,61 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="feedbackModalLabel">Feedbacks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="feedbackContent">
+                        <p>No feedback available yet.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+<script>
+    $('.more-info-button').on('click', function () {
+        var productId = $(this).data('productid');  // Get the ProductId from the data attribute
+
+        // Show loading message
+        $('#feedbackContent').html('<p>Loading feedback...</p>');
+
+        // Make AJAX request to fetch feedback
+        $.ajax({
+            url: '/Admin/CompletedAuctions/Feedback',  // Adjust the URL to match your endpoint
+            method: 'GET',
+            data: { productid: productId },
+            success: function (response) {
+                // Clear any existing content
+                $('#feedbackContent').empty();
+
+                if (response.message) {
+                    // If there's a message, show it
+                    $('#feedbackContent').html('<p>' + response.message + '</p>');
+                } else {
+                    debugger
+                    // If feedback data is returned, display it
+                    var feedbackHtml = `
+                            <p><strong>Feedback:</strong> ${response.feedback}</p>
+                        <p><strong>Rating:</strong> ${response.rating}</p>
+                    `;
+                    $('#feedbackContent').text(feedbackHtml);
+                }
+            },
+            error: function () {
+                $('#feedbackContent').text('<p>Error loading feedback.</p>');
+            }
+        });
+    });
+
+
+</script>
