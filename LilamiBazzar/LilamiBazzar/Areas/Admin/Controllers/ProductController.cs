@@ -42,7 +42,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(Product product)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 return View("Index");
             }
@@ -185,68 +185,81 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
         public IActionResult Edit(Product product)
         {
-            if(product == null)
+            if (product == null)
             {
-                return BadRequest();
+                return BadRequest("Product cannot be null.");
             }
-            if(product.ProductRoles == "APPROVED")
+
+            // Check for APPROVED status
+            if (product.ProductRoles == "APPROVED")
             {
-                Auction auction = new Auction
-                {
-                    ProductId = product.ProductId,
-                    StartDate = DateTime.UtcNow
-                };
-                if (product.Days.ToString() == "1")
-                {
-                    auction.EndDate = DateTime.UtcNow.AddDays(1);
-                    product.AunctionEndDate = DateTime.UtcNow.AddDays(1);
-                }
+                // Retrieve the existing auction for the product, if it exists
+                var existingAuction = _context.Auctions.FirstOrDefault(a => a.ProductId == product.ProductId);
 
-                else if (product.Days.ToString() == "3")
+                if (existingAuction != null)
                 {
-                    auction.EndDate = DateTime.UtcNow.AddDays(3);
-                    product.AunctionEndDate = DateTime.UtcNow.AddDays(3);
-                }
-                else if (product.Days.ToString() == "7")
-                {
-                    auction.EndDate = DateTime.UtcNow.AddDays(7);
-                    product.AunctionEndDate = DateTime.UtcNow.AddDays(7);
+                    // Update the auction end date based on product days
+                    switch (product.Days.ToString())
+                    {
+                        case "1":
+                            existingAuction.EndDate = DateTime.UtcNow.AddDays(1);
+                            product.AunctionEndDate = DateTime.UtcNow.AddDays(1);
+                            break;
+                        case "3":
+                            existingAuction.EndDate = DateTime.UtcNow.AddDays(3);
+                            product.AunctionEndDate = DateTime.UtcNow.AddDays(3);
+                            break;
+                        case "7":
+                            existingAuction.EndDate = DateTime.UtcNow.AddDays(7);
+                            product.AunctionEndDate = DateTime.UtcNow.AddDays(7);
+                            break;
+                        default:
+                            return BadRequest("Invalid number of days.");
+                    }
 
+                    // Update the auction in the database
+                    _context.Auctions.Update(existingAuction);
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest("Something went wrong");
                 }
+
                 product.ProductRoles = "APPROVED";
-                _context.Auctions.Update(auction);
                 _context.Products.Update(product);
+
                 _context.SaveChanges();
-                TempData["success"] = "Data Uploaded Successfully!!";
+
+                TempData["success"] = "Auction and Product updated successfully!";
                 return RedirectToAction("Index", "Product");
             }
-            else if(product.ProductRoles == "REJECTED")
+
+            if (product.ProductRoles == "REJECTED")
             {
                 product.ProductRoles = "REJECTED";
-                _context.Update(product);
+                _context.Products.Update(product);
                 _context.SaveChanges();
-                TempData["success"] = "Data Uploaded Successfully!!";
+
+                TempData["success"] = "Product marked as rejected.";
                 return RedirectToAction("Index", "Product");
             }
-            else if (product.ProductRoles == "PENDING")
+
+            if (product.ProductRoles == "PENDING")
             {
                 product.ProductRoles = "PENDING";
-                _context.Update(product);
+                _context.Products.Update(product);
                 _context.SaveChanges();
-                TempData["success"] = "Data Uploaded Successfully!!";
+
+                TempData["success"] = "Product marked as pending.";
                 return RedirectToAction("Index", "Product");
             }
-            else
-            {
-                return NoContent(); 
-            }
-           
 
+            return NoContent();
         }
+
+
+
+
         /*[Authorize(Roles = "Admin")]*/
 
         public IActionResult Delete(Guid id)
