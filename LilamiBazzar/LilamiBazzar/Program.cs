@@ -40,10 +40,10 @@ internal class Program
             options.RequireHttpsMetadata = false;
             options.TokenValidationParameters = new TokenValidationParameters()
             {
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                /* ValidIssuer = builder.Configuration["JWT:ValidIssuer"],*/
-                /* ValidAudience = builder.Configuration["JWT:ValidAudience"],*/
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                ValidAudience = builder.Configuration["JWT:ValidAudience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
             };
             options.Events = new JwtBearerEvents
