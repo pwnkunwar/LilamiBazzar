@@ -61,7 +61,6 @@ namespace LilamiBazzar.DataAccess.DbInitializer
                 catch (Exception ex)
                 {
                     Console.WriteLine($"{ex.ToString()}");
-                    return;
                 }
 
                 var role = _applicationDbContext.Roles.FirstOrDefault(r => r.Name == StaticUserRoles.ADMIN);
