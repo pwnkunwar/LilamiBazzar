@@ -39,7 +39,10 @@ namespace LilamiBazzar.Areas.User.Controllers
         public IActionResult Index()
         {
             List<Product> products = _context.Products.Where(a => a.ProductRoles == "APPROVED" && a.AunctionEndDate > DateTime.UtcNow).ToList();
-
+            if(products == null)
+            {
+                return BadRequest();
+            }
             return View(products);
 
         }
@@ -349,8 +352,8 @@ namespace LilamiBazzar.Areas.User.Controllers
             }
             var payload = new
             {
-                return_url = "https://localhost:7136/Users/Home/PaymentVerifyKhalti",
-                website_url = "https://localhost:7136/",
+                return_url = "https://lilamibazzar.runasp.net/Users/Home/PaymentVerifyKhalti",
+                website_url = "https://lilamibazzar.runasp.net/",
                 amount = amountToPay,
                 purchase_order_id= ProductId,
                 purchase_order_name = "test"
