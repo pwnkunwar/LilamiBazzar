@@ -489,7 +489,6 @@
     </div>
     <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <!-- Add 'modal-dialog-centered' class here -->
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="forgotPasswordModalLabel">Forgot Password</h5>
@@ -519,8 +518,6 @@
      $(document).ready(function () {
             $('#SignUpButton').on('click', async function (e) {
                 e.preventDefault();
-
-                // Create the data object
                 var data = {
                     fullname : $('#fullName').val(),
                     address : $('#Address').val(),
@@ -530,25 +527,12 @@
                 };
 
                 try {
-                    debugger
-                    // Await the result from AjaxCall
                     var signUpResponse = await AjaxCall("Accounts/SignUp/Create", data);
-
-                    
-
-                    // Save the token in localStorage
-                    const token = localStorage.getItem('Authorization');
-
-                    // Call a protected resource using the Bearer token
-                    var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
-
-                    // Handle successful response from the protected resource
-                    console.log("Dashboard Data:", dashboard);
-                    // Optionally, redirect to the dashboard or handle the response
-                    // window.location.href = "dashboard.html"; // Example redirection
-
+                    if (signUpResponse.success) {
+                        //alert(signUpResponse.message);
+                        location.reload();
+                    }
                 } catch (error) {
-                    // Handle any errors that occurred during the AJAX call
                     console.error("Login failed:", error);
                 }
             });
@@ -577,19 +561,14 @@
 
                     // document.cookie = `Authorization=${loginResponse}; path=/;`;
                     // location.href = "/";
-                    
-
                     // Save the token in localStorage
                     // const token = localStorage.getItem('Authorization');
-
                     // Call a protected resource using the Bearer token
                     // var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
-
                     // Handle successful response from the protected resource
                  //   console.log("Dashboard Data:", dashboard);
                     // Optionally, redirect to the dashboard or handle the response
                     // window.location.href = "dashboard.html"; // Example redirection
-
                 } catch (error) {
                     if (error.responseJSON && error.responseJSON.code === 2) {
                         // Handle email not verified error

@@ -70,11 +70,11 @@ namespace LilamiBazzar.Areas.Accounts
                     {
                         To = user.Email,
                         Subject = "Please Verify Your Account",
-                        Body = $"Please click on this link to verify your account: https://localhost:7136/Accounts/Dashboard/AccountVerification?token={create.VerificationToken}"
+                        Body = $"Please click on this link to verify your account: https://lilamibazzar.runasp.net/Accounts/Dashboard/AccountVerification?token={create.VerificationToken}"
                     };
                     _emailService.SendEmail(email);
-
-                    return Ok("User created successfully");
+                    TempData["success"] = "Account Created Successfully, Please visit Email Service to verify it!!";
+                    return Json(new { success = true, message = "Account Created Successfully, Please visit Email Service to verify it!" });
                 }
                 else
                 {
