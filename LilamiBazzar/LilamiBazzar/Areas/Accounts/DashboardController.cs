@@ -131,7 +131,7 @@ namespace LilamiBazzar.Areas.Accounts
             {
                 To = _dbcontext.Users.Where(u=>u.UserId==Guid.Parse(userId)).Select(u=>u.NewEmail).FirstOrDefault(),
                 Subject = "Confirm Email",
-                Body = $"Please click on this link to confirm {newEmail}your Email Address: https://localhost:7136/Accounts/Dashboard/ChangeEmail?token={updateEmailToken}"
+                Body = $"Please click on this link to confirm {newEmail}your Email Address: https://lilamibazzar.runasp.net/Accounts/Dashboard/ChangeEmail?token={updateEmailToken}"
             };
             _emailService.SendEmail(email);
             // Send email verification token to the user email client and later save the email

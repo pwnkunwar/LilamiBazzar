@@ -45,7 +45,7 @@ namespace LilamiBazzar.Areas.Accounts
             {
                 To = emailAddress,
                 Subject = "Password Reset",
-                Body = $"Please click on this link to reset your account password: https://localhost:7136/Accounts/ForgotPassword/Reset?token={token}"
+                Body = $"Please click on this link to reset your account password: https://lilamibazzar.runasp.net/Accounts/ForgotPassword/Reset?token={token}"
             };
             _emailService.SendEmail(email);
 

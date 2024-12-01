@@ -66,7 +66,7 @@ namespace LilamiBazzar.Areas.Accounts
                             {
                                 To = userLogin.Email,
                                 Subject = "Account UnLocked",
-                                Body = $"Please click on this link to verify your account: https://localhost:7136/Accounts/Dashboard/UnLocked?token={unLocked}"
+                                Body = $"Please click on this link to verify your account: https://lilamibazzar.runasp.net/Accounts/Dashboard/UnLocked?token={unLocked}"
                             };
                             _emailService.SendEmail(email);
                         }
