@@ -1,5 +1,6 @@
 ﻿using LilamiBazzar.DataAccess.Database;
 using LilamiBazzar.Models.Models;
+using LilamiBazzar.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,51 +13,104 @@ namespace LilamiBazzar.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public UserController(ApplicationDbContext dbContext)
+        private readonly IJwtService _jwtService;
+        public UserController(ApplicationDbContext dbContext,
+            IJwtService jwtService)
         {
             _dbContext = dbContext;
+            _jwtService = jwtService;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        /* public IActionResult RoleManagement(Guid userId)
-         {
-             var user = _dbContext.Users.FirstOrDefault(u => u.UserId == userId);
-             var mapper = new RoleManagmentVM
-             {
-                 user = user,
-                 Role = user.Role
-             };
-             return View(mapper);
-         */
+        public IActionResult RoleManagement(Guid userId)
+        {
+            // Fetch the user
+            var user = _dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Fetch the user role
+            var userRole = _dbContext.UserRoles.FirstOrDefault(u => u.UserId == user.UserId);
+            if (userRole == null)
+            {
+                return NotFound();
+            }
+
+            // Fetch the role name
+            var roleName = _dbContext.Roles
+                .Where(r => r.RoleId == userRole.RoleId)
+                .Select(r => r.Name)
+                .FirstOrDefault();
+
+            // Map to the view model
+            var mapper = new RoleManagmentVM
+            {
+                UserId = user.UserId,
+                Name = user.FullName,
+                Role = roleName
+            };
+
+            return View(mapper);
+        }
 
 
-        /* [HttpPost]
-         public IActionResult RoleManagement(LilamiBazzar.Models.Models.RoleManagmentVM roleManagmentVM)
-         {
 
-             var user = _dbContext.Users.FirstOrDefault(u => u.UserId == roleManagmentVM.user.UserId);
-             string oldRole = user.Role;
+        [HttpPost]
+        public IActionResult RoleManagement(LilamiBazzar.Models.Models.RoleManagmentVM roleManagmentVM)
+        {
+
+            var user = _dbContext.Users.FirstOrDefault(u => u.UserId == roleManagmentVM.UserId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if(roleManagmentVM.Role == "ADMIN")
+            {
+                Guid roleId = _dbContext.Roles
+    .Where(rn => rn.Name == roleManagmentVM.Role)
+    .Select(rn => rn.RoleId)
+    .FirstOrDefault();
+
+                var role = _dbContext.UserRoles.FirstOrDefault(u => u.UserId == roleManagmentVM.UserId);
+                role.RoleId = roleId;
+                _dbContext.Update(role);
+                _dbContext.SaveChanges();
 
 
 
-             if (!(roleManagmentVM.user.Role == oldRole))
-             {
-                 user.Role = roleManagmentVM.user.Role;
-                 _dbContext.Users.Update(user);
-                 _dbContext.SaveChanges();
-             }
-             else
-             {
-                 return RedirectToAction("Index");
+            }
+            else if(roleManagmentVM.Role == "USER")
+            {
+                Guid roleId = _dbContext.Roles
+.Where(rn => rn.Name == roleManagmentVM.Role)
+.Select(rn => rn.RoleId)
+.FirstOrDefault();
 
-             }
+                var role = _dbContext.UserRoles.FirstOrDefault(u => u.UserId ==roleManagmentVM.UserId);
+                if (role == null)
+                {
+                    return BadRequest();
+                }
+                role.RoleId = roleId;
+                _dbContext.Update(role);
+                _dbContext.SaveChanges();
 
-             return RedirectToAction("Index");
-         }*/
+            }
+            var token = _jwtService.AuthClaim(user);
+            Response.Cookies.Append("Authorization", token, new CookieOptions
+            {
+                // Configure these as needed
+            });
+
+
+            return RedirectToAction("Index");
+        }
 
 
 
@@ -73,7 +127,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     user.FullName,
                     user.Email,
                     user.Address,
-                    Role = userRole.Role.Name
+                    Role = userRole.Role.Name,
+                    LockoutEnd = user.LockoutEnd
                 })
                 .ToList();
 
@@ -82,7 +137,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             return Json(new { data = objUserList });
         }
 
-        /*
+
         [HttpPost]
         public IActionResult LockUnlock([FromBody] Guid id)
         {
@@ -96,16 +151,16 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             if (objFromDb.LockoutEnd != null && objFromDb.LockoutEnd > DateTime.Now)
             {
                 //user is currently locked and we need to unlock them
-                objFromDb.LockoutEnd = DateTime.Now;
+                objFromDb.LockoutEnd = DateTime.UtcNow;
             }
             else
             {
-                objFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
+                objFromDb.LockoutEnd = DateTime.UtcNow.AddYears(100);
             }
             _dbContext.Users.Update(objFromDb);
             _dbContext.SaveChanges();
             return Json(new { success = true, message = "Operation Successful" });
-        }*/
+        }
     }
 }
 

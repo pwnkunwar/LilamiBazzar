@@ -1,7 +1,48 @@
 ﻿@model LilamiBazzar.Models.Models.RoleManagmentVM
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+@{
+    ViewData["NoFooter"] = true;
+}
+<head>
+    <style>
+        .modal-body img {
+            width: 80px;
+            height: 80px;
+            margin-right: 5px;
+            cursor: pointer;
+        }
+
+        .custom-card {
+            border-radius: 25px; /* Adjust the value for more or less curvature */
+            overflow: hidden;
+            margin-left: 23px;
+            margin-right: 23px;
+        }
+
+        .custom-header {
+            background-color: #192E2E; /* Background color of the header */
+            /* margin-left: 15px;
+                            margin-right: 23px; */
+        }
+
+        /* Remove or comment out these lines */
+        .btn-info {
+            /* background-color: #0dcaf0 !important; */
+        }
+
+        .btn-warning {
+            /* background-color: #ffc107 !important; */
+        }
+
+        .btn-danger {
+            /* background-color: #dc3545 !important; */
+        }
+
+    </style>
+</head>
+
+<div class="card shadow border-0 mt-4 custom-card">
+    <div class="card-header py-3 custom-header">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">Manage User Role</h2>
@@ -10,17 +51,17 @@
     </div>
     <div class="card-body p-4">
         <form method="post" class="row">
-            <input asp-for="user.UserId" hidden />
+            <input asp-for="UserId" hidden />
             <div class="border p-3">
                 @*<div asp-validation-summary="ModelOnly"></div>*@
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="user.FullName" readonly class="form-control border-0 shadow" />
-                    <label asp-for="user.FullName" class="ms-2"></label>
+                    <input asp-for="Name" readonly class="form-control border-0 shadow" />
+                    <label asp-for="Name" class="ms-2"></label>
                 </div>
                 <div class="form-floating py-2 col-12">
                     <select asp-for="Role"  class="form-select">
-                        <option value="Admin">Admin</option>
-                        <option value="User">User</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="USER">User</option>
                     </select> @* asp-items="@Model.RoleList" *@
                 </div>
                

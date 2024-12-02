@@ -17,12 +17,12 @@ function loadDataTable() {
                 "render": function (data) {
                     var today = new Date().getTime();
                     var lockout = new Date(data.lockoutEnd).getTime();
-
+                    debugger
                     if (lockout > today) {
                         return `
                         <div class="text-center">
                              <a onclick=LockUnlock('${data.userId}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
-                                    <i class="bi bi-lock-fill"></i>  Lock
+                                    <i class="bi bi-lock-fill"></i>  UnLock
                                 </a> 
                                 <a href="/admin/user/RoleManagement?userId=${data.userId}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
                                      <i class="bi bi-pencil-square"></i> Permission
@@ -34,7 +34,7 @@ function loadDataTable() {
                         return `
                         <div class="text-center">
                               <a onclick=LockUnlock('${data.userId}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
-                                    <i class="bi bi-unlock-fill"></i>  UnLock
+                                    <i class="bi bi-unlock-fill"></i>  Lock
                                 </a>
                                 <a href="/admin/user/RoleManagement?userId=${data.userId}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
                                      <i class="bi bi-pencil-square"></i> Permission

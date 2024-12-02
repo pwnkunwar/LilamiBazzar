@@ -9,6 +9,8 @@ namespace LilamiBazzar.Models.Models
 {
     public class RoleManagmentVM
     {
+        public Guid UserId { get; set; }
+        public string Name { get; set; }
         public User user { get; set; }  // Represents the user data
         public IEnumerable<SelectListItem> RoleList { get; set; }  // List of roles for the dropdown
         public string Role { get; set; }  // The selected role from the dropdown
