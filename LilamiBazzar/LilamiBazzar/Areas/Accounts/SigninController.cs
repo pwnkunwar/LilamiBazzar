@@ -83,6 +83,10 @@ namespace LilamiBazzar.Areas.Accounts
                     {
                         return BadRequest(new { code = 2, message = "Email not verified" });
                     }
+                    if(user.LockoutEnd > DateTime.UtcNow)
+                    {
+                        return BadRequest(new { code = 3, message = "Account Blocked" });
+                    }
 
                     // return Ok($"Welcome Back {userLogin.Email}");
 

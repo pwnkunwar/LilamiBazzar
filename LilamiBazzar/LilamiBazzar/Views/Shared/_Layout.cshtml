@@ -573,7 +573,12 @@
                     if (error.responseJSON && error.responseJSON.code === 2) {
                         // Handle email not verified error
                         document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
-                    } else {
+                    }
+                    if (error.responseJSON && error.responseJSON.code === 3) {
+                        // Handle email not verified error
+                        document.getElementById("error1").innerText = "Account Locked!!";
+                    }
+                    else {
                         // Handle general login error
                         document.getElementById("error1").innerText = "Email or Password is incorrect!";
                     }
