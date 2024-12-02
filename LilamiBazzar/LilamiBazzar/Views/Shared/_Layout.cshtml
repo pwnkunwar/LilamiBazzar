@@ -548,38 +548,21 @@
             $('#loginButton').on('click', async function (e) {
                 e.preventDefault();
 
-                // Create the data object
-                var data = {
                     email: $('#signinEmail').val(),
                     password: $('#signinPassword').val()
                 };
 
                 try {
-                    // Await the result from AjaxCall
                     var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
                     location.reload();
-
-                    // document.cookie = `Authorization=${loginResponse}; path=/;`;
-                    // location.href = "/";
-                    // Save the token in localStorage
-                    // const token = localStorage.getItem('Authorization');
-                    // Call a protected resource using the Bearer token
-                    // var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
-                    // Handle successful response from the protected resource
-                 //   console.log("Dashboard Data:", dashboard);
-                    // Optionally, redirect to the dashboard or handle the response
-                    // window.location.href = "dashboard.html"; // Example redirection
                 } catch (error) {
                     if (error.responseJSON && error.responseJSON.code === 2) {
-                        // Handle email not verified error
                         document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
                     }
                     if (error.responseJSON && error.responseJSON.code === 3) {
-                        // Handle email not verified error
                         document.getElementById("error1").innerText = "Account Locked!!";
                     }
                     else {
-                        // Handle general login error
                         document.getElementById("error1").innerText = "Email or Password is incorrect!";
                     }
                     console.error("Login failed:", error);
@@ -587,7 +570,6 @@
             });
         });
 
-        // Function to call an API with Bearer Token
          function AjaxCallWithToken(url, token) {
              $.ajax({
                 url: url,
@@ -605,54 +587,6 @@
             });
         }
     </script>
-
-
-
-    <!-- Forgot Password Modal -->
- @*    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <section class="py-3 py-md-5 py-xl-8">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-5 text-center">
-                                        <h2 class="display-5 fw-bold">Forgot Password</h2>
-                                        <p>Enter your email address and we'll send you a link to reset your password.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12 col-lg-10 col-xl-8">
-                                    <form asp-controller="Account" asp-action="ForgotPassword" method="post">
-                                        <div class="row gy-3">
-                                            <div class="col-12">
-                                                <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="forgotPasswordEmail" placeholder="name@example.com" required>
-                                                    <label for="forgotPasswordEmail">Email</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="d-grid">
-                                                    <button class="btn btn-primary btn-lg" type="submit">Send Reset Link</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div> *@
-
-
-
-
-
 
 
     <script>
@@ -678,19 +612,7 @@
 
     </script>
 
- @*    <script>
-        // Password visibility toggle
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-        const eyeIcon = document.getElementById('eyeIcon');
 
-        togglePassword.addEventListener('click', function () {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            eyeIcon.classList.toggle('bi-eye', !isPassword);
-            eyeIcon.classList.toggle('bi-eye-slash', isPassword);
-        });
-    </script> *@
 
 
     <div class="container1">
