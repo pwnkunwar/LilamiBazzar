@@ -4,6 +4,7 @@ using LilamiBazzar.DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LilamiBazzar.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241202142347_adding LockoutEnd cloumn in User-tbl")]
+    partial class addingLockoutEndcloumninUsertbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,13 +255,13 @@ namespace LilamiBazzar.DataAccess.Migrations
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("ca6124c3-0b45-4122-9ea0-d2d3099dacca"),
+                            RoleId = new Guid("ed07219c-f75f-49b1-a4c0-71ca34f049f5"),
                             Description = "Administrator role",
                             Name = "ADMIN"
                         },
                         new
                         {
-                            RoleId = new Guid("4658543a-3ecf-418b-87a1-c03d59a98cf2"),
+                            RoleId = new Guid("41c74959-ca99-47c9-a265-41a0926b6896"),
                             Description = "Regular user role",
                             Name = "USER"
                         });
@@ -287,9 +290,6 @@ namespace LilamiBazzar.DataAccess.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LockoutEnd")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("LockoutId")
                         .HasColumnType("uniqueidentifier");
