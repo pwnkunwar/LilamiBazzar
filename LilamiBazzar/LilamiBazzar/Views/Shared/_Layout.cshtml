@@ -560,9 +560,17 @@
                         document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
                     }
                     if (error.responseJSON && error.responseJSON.code === 3) {
+<<<<<<< HEAD
                         document.getElementById("error1").innerText = "Account Locked!!";
                     }
                     else {
+=======
+                        // Handle email not verified error
+                        document.getElementById("error1").innerText = "Account Locked!!";
+                    }
+                    else {
+                        // Handle general login error
+>>>>>>> c5e2b506285da667770d1561a56406b4c27b002f
                         document.getElementById("error1").innerText = "Email or Password is incorrect!";
                     }
                     console.error("Login failed:", error);
