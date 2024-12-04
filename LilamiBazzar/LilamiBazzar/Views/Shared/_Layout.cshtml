@@ -659,33 +659,89 @@
     @if (ViewData["NoFooter"] == null || !(bool)ViewData["NoFooter"])
     {
         <!-- Footer -->
-        <section class="footer">
-            <div class="footer-container container">
-                <a>About LilamiBazzar</a>
-                <div class="footer-box">
-                    <h3>Quick Links</h3>
-                    <a href="">About Us</a>
-                    <a href="">Contact Us</a>
-                    <a href="">Rates</a>
-                </div>
-                <div class="footer-box">
-                    <h3>Items</h3>
-                    <a href="#">Notes</a>
-                    <a href="#">chair</a>
-                    <a href="#">watch</a>
-                    <a href="#">amm</a>
-                </div>
-                <div class="footer-box">
-                    <h3>Contact</h3>
-                    <a href="tel:9866317885">980223323</a>
-                    <a href="mailto:lilamibazzar@lilamibazzar.com">lilamibazzar@lilamibazzar.com</a>
-                    <div class="social">
-                        <a href="#"><i class='bx bxl-facebook'></i></a>
-                        <a href="#"><i class='bx bxl-twitter'></i></a>
-                        <a href="#"><i class='bx bxl-instagram'></i></a>
+        <section class="footer" style="background-color:#1b2b2d">
+          
+                <div class="container pt-lg-4" style="background-color:#1b2b2d">
+                    <div class="row pb-5">
+                    
+                        <div class="col-lg-4 col-md-6">
+                            <div class="navbar-brand text-dark p-0 me-0 mb-3 mb-lg-4">
+                                <h1 style="color:white">LilamiBazzar</h1>
+                            </div>
+                            <p class="fs-5 text-light opacity-70 pb-lg-3 mb-4">
+                                Sell your antique items at high prices
+                            </p>
+                        </div>
+
+                        <!-- Footer Links -->
+                        <div class="col-xl-6 col-lg-7 col-md-5 offset-xl-2 offset-md-1 pt-4 pt-md-1 pt-lg-0">
+                            <div id="footer-links" class="row">
+                                <!-- Useful Links -->
+                                <div class="col-lg-4">
+                                    <h6 class="mb-2">
+                                        <a href="#useful-links" class="d-block text-light dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">
+                                            Useful Links
+                                        </a>
+                                    </h6>
+                                    <div id="useful-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                                        <ul class="nav flex-column pb-lg-1 mb-lg-3">
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Home</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">About</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Sell</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Login</a></li>
+                                        </ul>
+                                        <ul class="nav flex-column mb-2 mb-lg-0">
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Terms &amp; Conditions</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Privacy Policy</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Social Links -->
+                                <div class="col-xl-4 col-lg-3">
+                                    <h6 class="mb-2">
+                                        <a href="#social-links" class="d-block text-light dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">
+                                            Socials
+                                        </a>
+                                    </h6>
+                                    <div id="social-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                                        <ul class="nav flex-column mb-2 mb-lg-0">
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Facebook</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">LinkedIn</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">Twitter</a></li>
+                                            <li class="nav-item"><a href="#" class="nav-link d-inline-block px-0 pt-1 pb-2">YouTube</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Us -->
+                                <div class="col-xl-4 col-lg-5 pt-2 pt-lg-0">
+                                    <h6 class="mb-2">
+                                        <a href="#contact-links" class="d-block text-light dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">
+                                            Contact Us
+                                        </a>
+                                    </h6>
+                                    <div id="contact-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+                                        <ul class="nav flex-column mb-2 mb-lg-0">
+                                            <li class="nav-item"><a href="mailto:info@lilamibazzar.com" class="fw-medium text-light">info@lilamibazzar.com</a></li>
+                                            <li class="nav-item"><a href="tel:+98032909" class="fw-medium text-light">98000023</a></li>
+                                            <li class="nav-item"><a href="tel:+98923032" class="fw-medium text-light">+09923209</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Copyright -->
+                    <div class="text-center">
+                        <p class="fs-xs text-light opacity-50 mb-0">
+                            Copyright &copy; 2024 All rights reserved. Made by
+                            <a class="text-light" href="#" target="_blank" rel="noopener">LilamiBazaar</a>
+                        </p>
                     </div>
                 </div>
-            </div>
+           
         </section>
         <!-- Copyright -->
         <div class="copyright">
