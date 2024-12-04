@@ -3,7 +3,7 @@
 $(document).ready(function () {
     var url = window.location.search;
     if (url.includes("inprocess")) {
-        loadDataTable1("inprocess");
+        loadDataTable2("inprocess");
     }
     else {
         if (url.includes("completed")) {
@@ -115,6 +115,58 @@ function loadDataTable1(status) {
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
                         <a href="/Admin/Order/Purchased?productId=${data}" class="btn btn-primary mx-2">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                       
+                    </div>`;
+                },
+                "width": "10%"
+            }
+        ],
+        "initComplete": function (settings, json) {
+            // Check if no data was returned and handle accordingly
+            if (json.data && json.data.length === 0) {
+                $('#tblData').html('<tr><td colspan="6" class="text-center">No data available for this status.</td></tr>');
+            }
+        }
+    });
+}
+
+function loadDataTable2(status) {
+    dataTable = $('#tblData').DataTable({
+        "ajax": {
+            url: '/admin/order/getall?status=' + status,
+            type: 'GET',
+            dataType: 'json',
+            error: function (xhr, error, thrown) {
+                // Handle AJAX error
+                console.error("Error fetching data:", thrown);
+                console.log("XHR Response:", xhr.responseText);
+
+                $('#tblData').html('<tr><td colspan="6" class="text-center">Error fetching data. Please try again later.</td></tr>');
+            },
+            dataSrc: function (json) {
+                // Check if data is empty or null and handle accordingly
+                if (!json || !json.data || json.data.length === 0) {
+                    // Show a message for no data available
+                    $('#tblData').html('<tr><td colspan="6" class="text-center">No data available for this status.</td></tr>');
+                    return [];  // Return empty array to prevent DataTables from displaying incorrect data
+                }
+                return json.data; // Return the valid data
+            }
+        },
+        "columns": [
+            { data: 'title', "width": "17%" },
+            { data: 'location', "width": "17%" },
+            { data: 'startingPrice', "width": "13%" },
+            { data: 'listingDate', "width": "12%" },
+            { data: 'aunctionEndDate', "width": "12%" },
+            { data: 'categoryName', "width": "8%" },
+            {
+                data: 'productId',
+                "render": function (data) {
+                    return `<div class="w-75 btn-group" role="group">
+                        <a href="/Users/Home/Details?productId=${data}" class="btn btn-primary mx-2">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                        
