@@ -292,8 +292,8 @@
                         }
 
                         <img src="~/uploads/images/@thirdImage" alt="Product Image" />
-                        <h5 class="card-title">Title</h5>
-                        <h6 class="card-title">Rs.300</h6>
+                        <h5 class="card-title">@product.Title</h5>
+                        <h6 class="card-title">Rs.@product.StartingPrice</h6>
                         <a class="btn1" href="/Users/Home/Details?productId=@product.ProductId">Details</a>
                        
                     </a>
@@ -314,3 +314,6 @@
         </form>
     </section>
 </body>
+
+
+

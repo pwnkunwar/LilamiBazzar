@@ -79,7 +79,7 @@
                             {
                                 <tr>
                                     <td>@(product?.Title ?? "No Title")</td>
-                                    <td>@(product?.StartingPrice != null ? product.StartingPrice.ToString("C") : "No Price")</td>
+                                    <td>Rs.@(product?.StartingPrice != null ? product.StartingPrice.ToString("#,0.00") : "No Price")</td>
                                     <td>@(product?.Location ?? "No Location")</td>
                                     <td>@(product?.CategoryName ?? "No Category")</td>
                                     <td>@(product?.ListingDate.ToString("yyyy-MM-dd") ?? "No Date")</td>
