@@ -39,7 +39,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "PENDING").ToList();
                     break;
                 case "inprocess":
-                    obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "APPROVED").ToList();
+                    obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "APPROVED" && u.AunctionEndDate > DateTime.UtcNow).ToList();
                     break;
                 case "completed":
                     obj = _dbContext.Products.Where(u => u.SellerId == userId && u.AunctionEndDate < DateTime.UtcNow).ToList();
@@ -75,14 +75,23 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Details(Product product)
         {
-            if (ModelState.IsValid)
+            if(product == null)
             {
-                if (product.Photos != null && product.Photos.Any())
-                {
-                    // Handle file saving logic here
-                }
-
-                // Other logic...
+                return BadRequest("BadRequest");
+            }
+            var pdt = _dbContext.Products.FirstOrDefault(P=>P.ProductId == product.ProductId);
+       
+            if (pdt is not null)
+            {
+                pdt.Title = product.Title;
+                pdt.Description = product.Description;
+                pdt.Location = product.Location;
+                pdt.StartingPrice = product.StartingPrice;
+                pdt.CategoryName = product.CategoryName;
+                pdt.Days = product.Days;
+                _dbContext.Products.Update(pdt);
+                _dbContext.SaveChanges();
+                TempData["success"] = "Updated Successfully!";
                 return RedirectToAction("Index");
             }
             return View();
