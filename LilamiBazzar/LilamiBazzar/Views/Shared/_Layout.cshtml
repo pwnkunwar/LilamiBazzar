@@ -541,52 +541,60 @@
 
  </script>
 
-    
 
     <script>
         $(document).ready(function () {
             $('#loginButton').on('click', async function (e) {
                 e.preventDefault();
 
+                // Collecting form data
+                var data = {
                     email: $('#signinEmail').val(),
                     password: $('#signinPassword').val()
                 };
 
                 try {
-                    var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
+                    // Replace AjaxCall with a standard jQuery AJAX call
+                    var loginResponse = await $.ajax({
+                        url: "/Accounts/Signin/Login",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        dataType: 'json'
+                    });
+
+                    // Reload the page if login is successful
                     location.reload();
                 } catch (error) {
-                    if (error.responseJSON && error.responseJSON.code === 2) {
-                        document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
-                    }
-                    if (error.responseJSON && error.responseJSON.code === 3) {
-<<<<<<< HEAD
-                        document.getElementById("error1").innerText = "Account Locked!!";
-                    }
-                    else {
-=======
-                        // Handle email not verified error
-                        document.getElementById("error1").innerText = "Account Locked!!";
-                    }
-                    else {
-                        // Handle general login error
->>>>>>> c5e2b506285da667770d1561a56406b4c27b002f
-                        document.getElementById("error1").innerText = "Email or Password is incorrect!";
+                    if (error.responseJSON) {
+                        switch (error.responseJSON.code) {
+                            case 2:
+                                document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
+                                break;
+                            case 3:
+                                document.getElementById("error1").innerText = "Account Locked!!";
+                                break;
+                            default:
+                                document.getElementById("error1").innerText = "Email or Password is incorrect!";
+                                break;
+                        }
+                    } else {
+                        location.reload();
                     }
                     console.error("Login failed:", error);
                 }
             });
         });
 
-         function AjaxCallWithToken(url, token) {
-             $.ajax({
+        function AjaxCallWithToken(url, token) {
+            $.ajax({
                 url: url,
-                type: 'GET', // or POST based on your API
+                type: 'GET', // or POST based on your API requirements
                 headers: {
                     'Authorization': 'Bearer ' + token // Attach the Bearer token
                 },
                 success: function (response) {
-                    console.log("Authenticate");// Handle response
+                    console.log("Authenticated");
                     location.href = "/Accounts/Dashboard";
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -595,6 +603,7 @@
             });
         }
     </script>
+
 
 
     <script>
@@ -615,9 +624,23 @@
             $('#signinModal').modal('hide');
             $('#signupModal').modal('hide');
         });
-
-
-
+    </script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            debugger
+            // Ensure the URL has the necessary parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('pidx') && urlParams.has('transaction_id')) {
+                // Automatically hit the PaymentVerifyKhalti endpoint on page load
+                fetch(`/Users/Home/PaymentVerifyKhalti?pidx=${urlParams.get('pidx')}&transaction_id=${urlParams.get('transaction_id')}&amount=${urlParams.get('amount')}&status=${urlParams.get('status')}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Process the response, e.g., show success message
+                        console.log(data); // Handle success or failure response
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
     </script>
 
 
