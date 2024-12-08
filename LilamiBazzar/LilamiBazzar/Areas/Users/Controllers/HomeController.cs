@@ -37,9 +37,9 @@ namespace LilamiBazzar.Areas.User.Controllers
         }
 
         public IActionResult Index()
-        {
+        { 
             List<Product> products = _context.Products.Where(a => a.ProductRoles == "APPROVED" && a.AunctionEndDate > DateTime.UtcNow).ToList();
-            if(products == null)
+            if (products == null)
             {
                 return BadRequest();
             }
@@ -58,11 +58,11 @@ namespace LilamiBazzar.Areas.User.Controllers
             var isUserAlreadyBidder = _context.Bids.Any(b => b.UserId == userId && b.Auction.ProductId == productId);
             List<Bid> productBids = new List<Bid>();
             string username = string.Empty;
-            decimal AlreadyPayAmount  = 0;  
+            decimal AlreadyPayAmount = 0;
             decimal RequiredPayAmount = 0;
             if (isUserAlreadyBidder)
             {
-               
+
                 productBids = _context.Bids.Where(b => b.Auction.ProductId == productId).ToList();
                 AlreadyPayAmount = _context.Bids
     .Where(a => a.UserId == userId && a.Auction.ProductId == productId)
@@ -77,25 +77,25 @@ namespace LilamiBazzar.Areas.User.Controllers
     .Any(a => a.ProductId == productId && a.HighestBidderId == userId && a.IsCompleted);
 
             IEnumerable<dynamic> bidsWithUsers = (from bid in _context.Bids
-                             join user in _context.Users
-                             on bid.UserId equals user.UserId
-                             where bid.Auction.ProductId == productId
-                             select new
-                             {
-                                 Username = user.FullName,
-                                 BidAmount = bid.Amount
-                             }).ToList();
+                                                  join user in _context.Users
+                                                  on bid.UserId equals user.UserId
+                                                  where bid.Auction.ProductId == productId
+                                                  select new
+                                                  {
+                                                      Username = user.FullName,
+                                                      BidAmount = bid.Amount
+                                                  }).ToList();
 
             IEnumerable<dynamic> Feedbacks;
             var feedbacks = _context.Reviews.Where(p => p.ProductId == productId).ToList();
-            var currentHighestBid  = _context.Auctions
+            var currentHighestBid = _context.Auctions
     .Where(p => p.ProductId == productId)
     .Max(b => (decimal?)b.CurrentHighestBid) ?? 0;
             var sellerName = _context.Products.Where(p => p.ProductId == productId).Join(
                 _context.Users,
                 product => product.SellerId,
                 user => user.UserId,
-                (product, user)=>user.FullName
+                (product, user) => user.FullName
                 ).FirstOrDefault();
 
             var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
@@ -112,7 +112,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                 var thirdImage = images.Length >= 3 ? images[2] : images.LastOrDefault();
 
 
-                
+
 
                 return View(new
                 {
@@ -155,18 +155,18 @@ namespace LilamiBazzar.Areas.User.Controllers
             {
                 return BadRequest("Bid amount is less than actual");
             }*/
-           /* if(productAunction.EndDate < DateTime.UtcNow)
-            {
-                return BadRequest("Acunction already ended");
-            }*/
+            /* if(productAunction.EndDate < DateTime.UtcNow)
+             {
+                 return BadRequest("Acunction already ended");
+             }*/
 
             decimal previousBidAmount = 0;
             decimal amountToPay = 0;
             var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == productAmt.ProductId);
             var isUserAlreadyBidder = _context.Bids.FirstOrDefault(u => u.UserId == userId);
-            if(isUserAlreadyBidder == null)
+            if (isUserAlreadyBidder == null)
             {
-                if(auction.CurrentHighestBid < productAmt.Amount)
+                if (auction.CurrentHighestBid < productAmt.Amount)
                 {
                     amountToPay = productAmt.Amount;
 
@@ -181,7 +181,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                 var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
                 amountToPay = auction.CurrentHighestBid - previousBid.Amount;
             }
-            
+
 
 
 
@@ -219,7 +219,7 @@ namespace LilamiBazzar.Areas.User.Controllers
             };
 
             return Json(Esewa);
-           
+
 
         }
         public async Task<IActionResult> PaymentVerify(string data)
@@ -240,46 +240,46 @@ namespace LilamiBazzar.Areas.User.Controllers
             /* if (generatedSignature != paymentData.Signature)
              {*/
 
-           /* var paymets = new Payments
-            {
-                PaymentId = Guid.NewGuid(),
-                TrasactionId = transactionId,
-                UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
-                AunctionId = transactionId, 
-                BidId 
-                
+            /* var paymets = new Payments
+             {
+                 PaymentId = Guid.NewGuid(),
+                 TrasactionId = transactionId,
+                 UserId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value),
+                 AunctionId = transactionId, 
+                 BidId 
 
-            };
-              */  
 
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+             };
+               */
+
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim is null)
             {
                 return Unauthorized();
             }
             var userId = Guid.Parse(userIdClaim);
-               
-                Guid productId = (Guid)TempData["ProductId"];
+
+            Guid productId = (Guid)TempData["ProductId"];
             var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == productId);
-            if(auction is null)
+            if (auction is null)
             {
                 return BadRequest();
             }
-                var bid = new Bid
-                {
-                    BidId = Guid.NewGuid(),
-                    AuctionId = auction.AunctionId,
-                    UserId = userId,
-                    Amount = totalAmount,
-                    BidTime = DateTime.Now
+            var bid = new Bid
+            {
+                BidId = Guid.NewGuid(),
+                AuctionId = auction.AunctionId,
+                UserId = userId,
+                Amount = totalAmount,
+                BidTime = DateTime.Now
 
-                };
+            };
 
-                await _context.Bids.AddAsync(bid);
-                await _context.SaveChangesAsync();
+            await _context.Bids.AddAsync(bid);
+            await _context.SaveChangesAsync();
 
-                //send mail to the users regarding the infomration of BId/Aunction
-                return View();
+            //send mail to the users regarding the infomration of BId/Aunction
+            return View();
             /*}
             else
             {
@@ -292,6 +292,11 @@ namespace LilamiBazzar.Areas.User.Controllers
         [HttpPost]
         public async Task<IActionResult> PaymentKhalti(decimal amountKhalti, Guid ProductId)
         {
+            if (amountKhalti < 10 ||  amountKhalti > 1000)
+            {
+                TempData["error"] = "Amount should be greater Rs.10 and less than Rs.1000 at a time!!";
+                return RedirectToAction("Details", "Home", new { productId = ProductId });
+            }
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim is null)
             {
@@ -327,7 +332,10 @@ namespace LilamiBazzar.Areas.User.Controllers
             {
                 var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == ProductId);
                 var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
-                if(auction.CurrentHighestBid == previousBid.Amount)
+                var totalAmountUser = _context.Bids  // Or Payments, depending on your table
+        .Where(bid => bid.UserId == userId)  // Filter by UserId
+        .Sum(bid => bid.Amount);
+                if (auction.CurrentHighestBid == totalAmountUser)
                 {
                     amountToPay = amountKhalti * 100;
                     var tAmount = previousBid.Amount + amountKhalti;
@@ -340,7 +348,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                     if(productAunction.CurrentHighestBid < totalAmount)
                     {
                         amountToPay = amountKhalti * 100;
-                        TempData["amountToPay"] = previousBid.Amount + amountKhalti;
+                        TempData["amountToPay"] = (previousBid.Amount + amountKhalti).ToString();
                     }
                     else
                     {
@@ -353,7 +361,7 @@ namespace LilamiBazzar.Areas.User.Controllers
             var payload = new
             {
                 return_url = "https://lilamibazzar.runasp.net/Users/Home/PaymentVerifyKhalti",
-                website_url = "https://lilamibazzar.runasp.net/",
+                website_url = "https://lilamibazzar.runasp.net",
                 amount = amountToPay,
                 purchase_order_id= ProductId,
                 purchase_order_name = "test"
@@ -379,7 +387,8 @@ namespace LilamiBazzar.Areas.User.Controllers
 
         }
         [Authorize]
-        public async Task<IActionResult> PaymentVerifyKhaltiAsync()
+        [HttpGet]
+        public async Task<IActionResult> PaymentVerifyKhalti()
         {
             var queryParams = HttpContext.Request.Query;
             var pidx = queryParams["pidx"];
@@ -431,8 +440,23 @@ namespace LilamiBazzar.Areas.User.Controllers
                             BidTime = DateTime.UtcNow
                         };
 
+                        _context.Bids.Add(bid);
+                        _context.SaveChanges();
                         var auction = _context.Auctions.FirstOrDefault(p => p.ProductId == productId);
-                        auction.CurrentHighestBid =decimal.Parse(TempData["amountToPay"].ToString());
+
+                        var bidSums = _context.Bids
+    .Where(bid => bid.AuctionId == auction.AunctionId)  // Filter bids by auctionId
+    .GroupBy(bid => bid.UserId)  // Group by UserId to calculate total for each user
+    .Select(group => new { UserId = group.Key, TotalBidAmount = group.Sum(bid => bid.Amount) })  // Calculate the sum of bids for each user
+    .ToList()  // Bring data into memory
+    .Select(group => group.TotalBidAmount)  // Select the sum of bids
+    .DefaultIfEmpty(0)  // If no bids exist, return 0
+    .Max();  // Find the maximum total bid amount
+
+
+
+
+                        auction.CurrentHighestBid = bidSums;
 
                         /*var isUserAlreadyBidder =
                             _context.Bids.FirstOrDefault(u => u.UserId == userId && u.Auction.ProductId == productId);
@@ -442,7 +466,6 @@ namespace LilamiBazzar.Areas.User.Controllers
                             _context.SaveChanges();
                         }*/
                         _context.Auctions.Update(auction);
-                        _context.Bids.Add(bid);
                         _context.SaveChanges();
 
 

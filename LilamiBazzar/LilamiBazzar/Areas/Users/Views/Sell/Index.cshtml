@@ -179,15 +179,6 @@
     </ul>
 </div>
 
-
-<!-- Step 3: Review and Submit -->
-
-
-
-
- 
-
-
 <div class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-7 mx-auto">
@@ -257,7 +248,7 @@
                     <div class="form-group row align-items-center">
                         <label for="price" class="col-form-label col-sm-4 text-sm-center mb-0">Starting Bid</label>
                         <div class="col-sm-7">
-                            <input type="text" autocomplete="off" class="form-control form-control-sm" name="starting_bid" placeholder="ex. Rs.100" maxlength="500" required id="price">
+                            <input type="number" autocomplete="off" class="form-control form-control-sm" name="starting_bid" placeholder="ex. Rs.100" maxlength="500" required id="price">
                         </div>
                     </div>
                     <br>
@@ -767,7 +758,8 @@ $(document).ready(function () {
 
                     // Handle successful response
                     console.log('Upload successful:', response);
-
+                    alert("Data Uploaded Successfully");
+                window.location.href = "/";
                     // Optionally, handle the response, e.g., redirecting the user
                     // window.location.href = "somePage.html"; // Example redirection
 

@@ -94,7 +94,7 @@
                             @foreach (var bid in Model.BidsWithUsers)
                             {
                                 <tr>
-                                    <td>@bid.Username</td>
+                                    <td>Anynomous User</td>
                                     <td>@bid.BidAmount</td>
                                 </tr>
                             }
@@ -149,10 +149,13 @@
     </div>
 </div>
 
-
+<br />
+<br />
+<br />
+<br />
 @*  @if (Model.CanReview)
     { *@
-<div class="row mt-5" style="padding-left: 55px; padding-right: 55px;">
+@* <div class="row mt-5" style="padding-left: 55px; padding-right: 55px;">
     <input type="hidden" id="productId" value="@Model.ProductId" />
 
     <div class="card">
@@ -174,8 +177,8 @@
             <button type="button" class="btn btn-primary mt-2" id="submitReview">Submit Review</button>
         </div>
     </div>
-</div>
-@*   } *@
+</div> *@
+
 
 <div>
     <p>

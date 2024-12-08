@@ -26,24 +26,27 @@ namespace LilamiBazzar.Areas.Accounts
         {
             try
             {
-                /*TempData["ErrorMessage"] = "User already exists!";
-                return RedirectToAction("Index", "Home", new { area = "Users" })*/;
-
                 ModelState.Remove("UserRoles");
                 if (ModelState.IsValid)
                 {
-                    if (_context.Users.Any(u => u.Email == user.Email))
+                    // Use `FirstOrDefaultAsync` with a combined condition to reduce redundant checks
+                    var existingUser = await _context.Users
+                        .FirstOrDefaultAsync(u => u.Email == user.Email);
+
+                    if (existingUser != null)
                     {
-                        TempData["ErrorMessage"] = "Email already in use!.";
-                        return RedirectToAction("Index","Home",new {area="Users"});
+                        TempData["ErrorMessage"] = "Email already in use!";
+                        return RedirectToAction("Index", "Home", new { area = "Users" });
                     }
 
                     var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == StaticUserRoles.USER);
-                    if(role is null)
+                    if (role == null)
                     {
                         return BadRequest();
                     }
+
                     _passwordHashingService.GeneratePasswordHash(user.Password, out byte[] passwordHash, out byte[] passwordSalt);
+
                     var create = new LilamiBazzar.Models.Models.User
                     {
                         UserId = Guid.NewGuid(),
@@ -54,17 +57,17 @@ namespace LilamiBazzar.Areas.Accounts
                         PasswordSalt = passwordSalt,
                         VerificationToken = GenerateRandomToken(),
                     };
-                    _context.Users.Add(create);
-                    await _context.SaveChangesAsync();
 
-                    var userRole = new UserRole
+                    // Add user and role in a batch
+                    await _context.Users.AddAsync(create);
+                    await _context.UserRoles.AddAsync(new UserRole
                     {
                         UserId = create.UserId,
                         RoleId = role.RoleId
-                        
-                    };
-                   await _context.UserRoles.AddAsync(userRole);
-                   await _context.SaveChangesAsync();
+                    });
+
+                    // Save changes in a single operation
+                    await _context.SaveChangesAsync();
 
                     var email = new Email
                     {
@@ -73,7 +76,8 @@ namespace LilamiBazzar.Areas.Accounts
                         Body = $"Please click on this link to verify your account: https://lilamibazzar.runasp.net/Accounts/Dashboard/AccountVerification?token={create.VerificationToken}"
                     };
                     _emailService.SendEmail(email);
-                    TempData["success"] = "Account Created Successfully, Please visit Email Service to verify it!!";
+
+                    TempData["success"] = "Account Created Successfully, Please visit Email Service to verify it!";
                     return Json(new { success = true, message = "Account Created Successfully, Please visit Email Service to verify it!" });
                 }
                 else
@@ -81,20 +85,17 @@ namespace LilamiBazzar.Areas.Accounts
                     var errors = ModelState.Values.SelectMany(v => v.Errors);
                     foreach (var error in errors)
                     {
-                        Console.WriteLine(error.ErrorMessage); // Or use a logger
+                        Console.WriteLine(error.ErrorMessage);
                     }
                     return View();
-
                 }
-
-
             }
             catch (Exception ex)
             {
+                // Log exception here for debugging
+                Console.WriteLine(ex.Message);
                 return View();
-
             }
-
         }
 
 

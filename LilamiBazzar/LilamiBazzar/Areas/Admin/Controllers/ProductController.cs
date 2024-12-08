@@ -156,8 +156,8 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
 
 
-                ViewBag.Message = "Files uploaded successfully!";
-                return RedirectToAction("Index","Home");
+                TempData["success"] = "Uploaded Successfully!!";
+                return RedirectToAction("Index","Home",new {area="Users"});
             }
             catch (Exception ex)
             {

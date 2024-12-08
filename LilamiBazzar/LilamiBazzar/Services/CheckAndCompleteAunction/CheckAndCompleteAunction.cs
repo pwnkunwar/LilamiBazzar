@@ -25,7 +25,7 @@ namespace LilamiBazzar.Services.CheckAndCompleteAuction
             {
                 await CheckAndCompleteAuctionAsync();
                 await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
-            }
+             }
         }
 
         private async Task CheckAndCompleteAuctionAsync()
@@ -41,30 +41,51 @@ namespace LilamiBazzar.Services.CheckAndCompleteAuction
 
                 foreach (var auction in completedAuctions)
                 {
-                    var winningBid = await _context.Bids
-                        .Where(b => b.AuctionId == auction.AunctionId)
-                        .OrderByDescending(b => b.Amount)
-                        .FirstOrDefaultAsync();
+                    var maxTotalBid = _context.Bids
+        .GroupBy(bid => bid.UserId)  // Group by UserId
+        .Select(group => new
+        {
+            UserId = group.Key,
+            TotalBidAmount = group.Sum(bid => bid.Amount)
+        })
+        .Max(x => x.TotalBidAmount);  // Get the max bid amount
 
-                    if (winningBid != null)
+                    // Retrieve the user(s) with the max bid
+                    var topBidder = _context.Bids
+                        .GroupBy(bid => bid.UserId)
+                        .Select(group => new
+                        {
+                            UserId = group.Key,
+                            TotalBidAmount = group.Sum(bid => bid.Amount)
+                        })
+                        .Where(x => x.TotalBidAmount == maxTotalBid)
+                        .FirstOrDefault();
+
+                    if (topBidder != null)
                     {
-                        auction.HighestBidderId = winningBid.UserId;
-                        auction.CurrentHighestBid = winningBid.Amount;
+                        auction.HighestBidderId = topBidder.UserId;
+                        auction.CurrentHighestBid = maxTotalBid;
                         auction.IsCompleted = true;
-
+                        _context.SaveChanges();
                         var itemTracking = new ItemTracking
                         {
                             ItemTrackingId = Guid.NewGuid(),
                             ItemId = auction.ProductId,
+
+
+                            // Check for null before accessing HighestBidderId
                             BuyerId = auction.HighestBidderId ?? Guid.Empty,
-                            SellerId = auction.Product.SellerId,
+
+                            // Check for null before accessing SellerId
+                            SellerId = auction.Product?.SellerId ?? Guid.Empty,  // Use null-conditional operator and default to Guid.Empty if null
+
                             CurrentStatus = "PENDING",
                             StatusUpdatedAt = DateTime.UtcNow,
                             ShippingProvider = "FedEx",
                             TrackingNumber = Guid.NewGuid().ToString(),
                             EstimatedDeliveryDate = DateTime.UtcNow.AddDays(7),
                             DeliverdAt = DateTime.UtcNow
-                         };
+                        };
                         _context.ItemTracking.Add(itemTracking);
                     }
                 }

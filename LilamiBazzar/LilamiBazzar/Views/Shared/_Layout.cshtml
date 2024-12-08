@@ -306,65 +306,79 @@
                             <div class="col-12 col-lg-10 col-xl-8">
                                 <div class="row gy-5 justify-content-center">
                                     <div class="col-12 col-lg-5">
-                                        <form  method="post">
+                                        <form method="post">
                                             <div class="row gy-3">
-                                                <div class="col-12">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control border-0 border-bottom rounded-0" name="fullName" id="fullName" placeholder="Full Name" required>
-                                                        <label for="fullName">First Name</label>
+                                                <!-- Full Name -->
+                                                <div class="col-12 col-md-8 mx-auto">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control border-0 border-bottom rounded-0"
+                                                               name="fullName" id="fullName" placeholder="Full Name" required>
+                                                        <label for="fullName">Full Name</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control border-0 border-bottom rounded-0" name="Address" id="Address" placeholder="Address" required>
+
+                                                <!-- Address -->
+                                                <div class="col-12 col-md-8 mx-auto">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control border-0 border-bottom rounded-0"
+                                                               name="Address" id="Address" placeholder="Address" required>
                                                         <label for="Address">Address</label>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="signupEmail" placeholder="name@example.com" required>
-                                                        <label for="email">Email</label>
+
+                                                <!-- Email -->
+                                                <div class="col-12 col-md-8 mx-auto">
+                                                    <div class="form-floating">
+                                                        <input type="email" class="form-control border-0 border-bottom rounded-0"
+                                                               name="email" id="signupEmail" placeholder="name@example.com" required>
+                                                        <label for="signupEmail">Email</label>
                                                         @if (TempData["ErrorMessage"] != null)
                                                         {
-                                                            <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+                                                            <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
                                                         }
                                                     </div>
                                                 </div>
-                                                <div class="col-12 position-relative">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="signUppassword" placeholder="Password" required>
-                                                        <label for="password">Password</label>
-                                                        <button type="button" id="togglePassword" class="btn btn-link position-absolute" style="right: 15px; top: 50%; transform: translateY(-50%);">
-                                                            <i class="bi bi-eye" id="eyeIcon" style="color: black; font-size: 1.0rem;"></i>
+
+                                                <!-- Password -->
+                                                <div class="col-12 col-md-8 mx-auto position-relative">
+                                                    <div class="form-floating">
+                                                        <input type="password" class="form-control border-0 border-bottom rounded-0"
+                                                               name="password" id="signUppassword" placeholder="Password" required>
+                                                        <label for="signUppassword">Password</label>
+                                                        <button type="button" id="togglePassword" class="btn btn-link position-absolute p-0"
+                                                                style="right: 15px; top: 50%; transform: translateY(-50%);">
+                                                            <i class="bi bi-eye" id="eyeIcon" style="font-size: 1.2rem;"></i>
                                                         </button>
-
-
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
+
+                                                <!-- Terms and Conditions -->
+                                                <div class="col-12 col-md-8 mx-auto">
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" name="iAgree" id="iAgree" required>
-                                                        <label class="form-check-label text-secondary" for="iAgree">
-                                                            I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>
+                                                        <label class="form-check-label" for="iAgree">
+                                                            I agree to the <a href="#!" class="link-primary text-decoration-none">terms and conditions</a>.
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
-                                                        <div class="d-grid">
-                                                            <button class="btn btn-primary btn-lg" type="button" id="SignUpButton">Sign Up</button>
-                                                        </div>
+
+                                                <!-- Sign Up Button -->
+                                                <div class="col-12 col-md-8 mx-auto">
+                                                    <div class="d-grid">
+                                                        <button class="btn btn-primary btn-lg" type="submit" id="SignUpButton">Sign Up</button>
                                                     </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
+                                   @*  <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
                                         <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
                                         <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
                                         <div>or</div>
                                         <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
                                         <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
-                                    </div>
-                                    <div class="col-12 col-lg-5 d-flex align-items-center">
+                                    </div> *@
+                                    @* <div class="col-12 col-lg-5 d-flex align-items-center">
                                         <div class="d-flex gap-3 flex-column w-100">
                                             <a href="#!" class="btn btn-sm btn-danger" style="padding: 10px 18px; font-size: 14px;">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
@@ -379,7 +393,7 @@
                                                 <span class="ms-2">Sign in with Facebook</span>
                                             </a>
                                         </div>
-                                    </div>
+                                    </div> *@
                                 </div>
                             </div>
                         </div>
@@ -449,7 +463,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
+                                       @*  <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center gap-3 flex-lg-column">
                                             <div class="bg-dark d-none d-lg-block" style="width: 1px; height: 100%; --bs-bg-opacity: .1;"></div>
                                             <div class="bg-dark d-lg-none" style="height: 1px; width: 100%; --bs-bg-opacity: .1;"></div>
                                             <div>or</div>
@@ -477,7 +491,7 @@
                                                     <span class="ms-2">Sign in with Twitter</span>
                                                 </a>
                                             </div>
-                                        </div>
+                                        </div> *@
                                     </div>
                                 </div>
                             </div>
@@ -541,62 +555,60 @@
 
  </script>
 
-    
 
     <script>
         $(document).ready(function () {
             $('#loginButton').on('click', async function (e) {
                 e.preventDefault();
 
-                // Create the data object
+                // Collecting form data
                 var data = {
                     email: $('#signinEmail').val(),
                     password: $('#signinPassword').val()
                 };
 
                 try {
-                    // Await the result from AjaxCall
-                    var loginResponse = await AjaxCall("/Accounts/Signin/Login", data);
-                    location.reload();
+                    // Replace AjaxCall with a standard jQuery AJAX call
+                    var loginResponse = await $.ajax({
+                        url: "/Accounts/Signin/Login",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        dataType: 'json'
+                    });
 
-                    // document.cookie = `Authorization=${loginResponse}; path=/;`;
-                    // location.href = "/";
-                    // Save the token in localStorage
-                    // const token = localStorage.getItem('Authorization');
-                    // Call a protected resource using the Bearer token
-                    // var dashboard =  AjaxCallWithToken("Accounts/Dashboard" , token);
-                    // Handle successful response from the protected resource
-                 //   console.log("Dashboard Data:", dashboard);
-                    // Optionally, redirect to the dashboard or handle the response
-                    // window.location.href = "dashboard.html"; // Example redirection
+                    // Reload the page if login is successful
+                    location.reload();
                 } catch (error) {
-                    if (error.responseJSON && error.responseJSON.code === 2) {
-                        // Handle email not verified error
-                        document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
-                    }
-                    if (error.responseJSON && error.responseJSON.code === 3) {
-                        // Handle email not verified error
-                        document.getElementById("error1").innerText = "Account Locked!!";
-                    }
-                    else {
-                        // Handle general login error
-                        document.getElementById("error1").innerText = "Email or Password is incorrect!";
+                    if (error.responseJSON) {
+                        switch (error.responseJSON.code) {
+                            case 2:
+                                document.getElementById("error1").innerText = "Your email is not verified. Please check your inbox.";
+                                break;
+                            case 3:
+                                document.getElementById("error1").innerText = "Account Locked!!";
+                                break;
+                            default:
+                                document.getElementById("error1").innerText = "Email or Password is incorrect!";
+                                break;
+                        }
+                    } else {
+                        location.reload();
                     }
                     console.error("Login failed:", error);
                 }
             });
         });
 
-        // Function to call an API with Bearer Token
-         function AjaxCallWithToken(url, token) {
-             $.ajax({
+        function AjaxCallWithToken(url, token) {
+            $.ajax({
                 url: url,
-                type: 'GET', // or POST based on your API
+                type: 'GET', // or POST based on your API requirements
                 headers: {
                     'Authorization': 'Bearer ' + token // Attach the Bearer token
                 },
                 success: function (response) {
-                    console.log("Authenticate");// Handle response
+                    console.log("Authenticated");
                     location.href = "/Accounts/Dashboard";
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -605,53 +617,6 @@
             });
         }
     </script>
-
-
-
-    <!-- Forgot Password Modal -->
- @*    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <section class="py-3 py-md-5 py-xl-8">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-5 text-center">
-                                        <h2 class="display-5 fw-bold">Forgot Password</h2>
-                                        <p>Enter your email address and we'll send you a link to reset your password.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-12 col-lg-10 col-xl-8">
-                                    <form asp-controller="Account" asp-action="ForgotPassword" method="post">
-                                        <div class="row gy-3">
-                                            <div class="col-12">
-                                                <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="forgotPasswordEmail" placeholder="name@example.com" required>
-                                                    <label for="forgotPasswordEmail">Email</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="d-grid">
-                                                    <button class="btn btn-primary btn-lg" type="submit">Send Reset Link</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </div> *@
-
-
-
-
 
 
 
@@ -673,24 +638,26 @@
             $('#signinModal').modal('hide');
             $('#signupModal').modal('hide');
         });
-
-
-
+    </script>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            debugger
+            // Ensure the URL has the necessary parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('pidx') && urlParams.has('transaction_id')) {
+                // Automatically hit the PaymentVerifyKhalti endpoint on page load
+                fetch(`/Users/Home/PaymentVerifyKhalti?pidx=${urlParams.get('pidx')}&transaction_id=${urlParams.get('transaction_id')}&amount=${urlParams.get('amount')}&status=${urlParams.get('status')}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Process the response, e.g., show success message
+                        console.log(data); // Handle success or failure response
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
     </script>
 
- @*    <script>
-        // Password visibility toggle
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
-        const eyeIcon = document.getElementById('eyeIcon');
 
-        togglePassword.addEventListener('click', function () {
-            const isPassword = passwordInput.type === 'password';
-            passwordInput.type = isPassword ? 'text' : 'password';
-            eyeIcon.classList.toggle('bi-eye', !isPassword);
-            eyeIcon.classList.toggle('bi-eye-slash', isPassword);
-        });
-    </script> *@
 
 
     <div class="container1">
