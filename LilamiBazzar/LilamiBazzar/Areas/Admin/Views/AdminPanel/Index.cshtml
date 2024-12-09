@@ -1,4 +1,5 @@
-﻿@{
+﻿@model LilamiBazzar.Models.Models.AdminPanel
+@{
     ViewData["NoFooter"] = true;
 
 }
@@ -10,7 +11,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>LilamiBazzar Admin</title>
+    <title>LilamiBazzar Admin Panel</title>
 
     <link rel="stylesheet" href="">
     <link rel="stylesheet" href="~/assets/vendors/ti-icons/css/themify-icons.css" />
@@ -172,7 +173,7 @@
                                     <h4 class="font-weight-normal mb-3">
                                         Total Listings <i class="mdi mdi-chart-line mdi-24px float-end"></i>
                                     </h4>
-                                    <h2 class="mb-5">$ 15,0000</h2>
+                                    <h2 class="mb-5">@Model.TotalListings</h2>
                                     @* <h6 class="card-text">Increased by 60%</h6> *@
                                 </div>
                             </div>
@@ -184,7 +185,7 @@
                                     <h4 class="font-weight-normal mb-3">
                                          Total Ongoing Auctions<i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
                                     </h4>
-                                    <h2 class="mb-5">45,6334</h2>
+                                    <h2 class="mb-5">@Model.TotalOngoingAuction</h2>
                                     @* <h6 class="card-text">Decreased by 10%</h6> *@
                                 </div>
                             </div>
@@ -196,7 +197,7 @@
                                     <h4 class="font-weight-normal mb-3">
                                         Total Users <i class="mdi mdi-diamond mdi-24px float-end"></i>
                                     </h4>
-                                    <h2 class="mb-5">95,5741</h2>
+                                    <h2 class="mb-5">@Model.TotalUsers</h2>
                                     @* <h6 class="card-text">Increased by 5%</h6> *@
                                 </div>
                             </div>
