@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -102,6 +103,16 @@ namespace LilamiBazzar.Areas.Accounts
                         SameSite = SameSiteMode.Strict,
                         Expires = DateTime.Now.AddDays(1)
                     });
+                    var handler = new JwtSecurityTokenHandler();
+                    var jwtToken = handler.ReadJwtToken(token);
+                    var role = jwtToken.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value;
+
+                    if (role == "ADMIN")
+                    {
+                        return BadRequest(new { code = 4 });
+
+                    }
+
                     return Redirect("/");
 
 
