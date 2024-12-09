@@ -44,6 +44,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Areas\AdminTest\Controllers\" />
 	  <Folder Include="Classes\" />
 	  <Folder Include="wwwroot\uploads\" />
 	</ItemGroup>

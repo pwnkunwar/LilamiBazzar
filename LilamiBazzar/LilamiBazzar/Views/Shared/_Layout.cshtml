@@ -639,23 +639,7 @@
             $('#signupModal').modal('hide');
         });
     </script>
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            debugger
-            // Ensure the URL has the necessary parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('pidx') && urlParams.has('transaction_id')) {
-                // Automatically hit the PaymentVerifyKhalti endpoint on page load
-                fetch(`/Users/Home/PaymentVerifyKhalti?pidx=${urlParams.get('pidx')}&transaction_id=${urlParams.get('transaction_id')}&amount=${urlParams.get('amount')}&status=${urlParams.get('status')}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Process the response, e.g., show success message
-                        console.log(data); // Handle success or failure response
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        });
-    </script>
+
 
 
 
