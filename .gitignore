@@ -13,8 +13,5 @@
 /LilamiBazzar/LilamiBazzar/obj*
 /LilamiBazzar/LilamiBazzar/.config/
 /LilamiBazzar/LilamiBazzar/Properties/PublishProfiles/
-<<<<<<< HEAD
 /LilamiBazzar/LilamiBazzar/appsettings.json
-=======
 *.gitignore*
->>>>>>> 86436106ff48da68548af32c59fc26835200ed5c
