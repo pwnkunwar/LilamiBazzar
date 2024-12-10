@@ -13,3 +13,4 @@
 /LilamiBazzar/LilamiBazzar/obj*
 /LilamiBazzar/LilamiBazzar/.config/
 /LilamiBazzar/LilamiBazzar/Properties/PublishProfiles/
+*.gitignore*
