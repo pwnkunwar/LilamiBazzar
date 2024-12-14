@@ -541,7 +541,7 @@
                 };
 
                 try {
-                    var signUpResponse = await AjaxCall("Accounts/SignUp/Create", data);
+                    var signUpResponse = await AjaxCall("/Accounts/SignUp/Create", data);
                     if (signUpResponse.success) {
                         //alert(signUpResponse.message);
                         location.reload();
