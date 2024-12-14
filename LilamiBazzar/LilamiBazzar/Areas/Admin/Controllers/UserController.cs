@@ -62,6 +62,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles ="ADMIN")]
         public IActionResult RoleManagement(LilamiBazzar.Models.Models.RoleManagmentVM roleManagmentVM)
         {
 
@@ -115,6 +116,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles ="ADMIN")]
         public IActionResult GetAll()
         {
             var objUserList = _dbContext.Users
@@ -139,6 +141,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles="ADMIN")]
         public IActionResult LockUnlock([FromBody] Guid id)
         {
 

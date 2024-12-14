@@ -109,7 +109,8 @@ namespace LilamiBazzar.Areas.Accounts
 
                     if (role == "ADMIN")
                     {
-                        return BadRequest(new { code = 4 });
+                    return Redirect("/");
+
 
                     }
 

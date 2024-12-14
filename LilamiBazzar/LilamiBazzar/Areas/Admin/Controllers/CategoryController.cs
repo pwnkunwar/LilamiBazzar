@@ -47,6 +47,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         {
             _context.Categories.Update(category);
             _context.SaveChanges();
+            TempData["success"] = "Category Successfully Edited!";
             return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
@@ -72,6 +73,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             }
             _context.Categories.Remove(category);
             _context.SaveChanges();
+            TempData["success"] = "Category Successfully deleted!";
             return RedirectToAction("Index");
         }
     }
