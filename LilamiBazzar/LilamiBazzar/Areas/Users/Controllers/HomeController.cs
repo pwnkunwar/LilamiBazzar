@@ -333,7 +333,7 @@ namespace LilamiBazzar.Areas.User.Controllers
                 var auction = _context.Auctions.FirstOrDefault(a => a.ProductId == ProductId);
                 var previousBid = _context.Bids.Where(u => u.UserId == userId && u.AuctionId == auction.AunctionId).FirstOrDefault();
                 var totalAmountUser = _context.Bids  // Or Payments, depending on your table
-        .Where(bid => bid.UserId == userId)  // Filter by UserId
+        .Where(bid => bid.UserId == userId && bid.Auction.AunctionId == auction.AunctionId)  // Filter by UserId
         .Sum(bid => bid.Amount);
                 if (auction.CurrentHighestBid == totalAmountUser)
                 {
