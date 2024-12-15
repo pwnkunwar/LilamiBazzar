@@ -79,10 +79,13 @@ namespace LilamiBazzar.Areas.Admin.Controllers
             {
                 return BadRequest("BadRequest");
             }
-            var pdt = _dbContext.Products.FirstOrDefault(P=>P.ProductId == product.ProductId);
-       
+            var pdt = _dbContext.Products
+                    .Include(p => p.Auction)
+                    .FirstOrDefault(p => p.ProductId == product.ProductId);
+
             if (pdt is not null)
             {
+                pdt.Auction.CurrentHighestBid = product.StartingPrice;
                 pdt.Title = product.Title;
                 pdt.Description = product.Description;
                 pdt.Location = product.Location;
@@ -90,6 +93,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 pdt.CategoryName = product.CategoryName;
                 pdt.Days = product.Days;
                 _dbContext.Products.Update(pdt);
+                _dbContext.Auctions.Update(pdt.Auction);
                 _dbContext.SaveChanges();
                 TempData["success"] = "Updated Successfully!";
                 return RedirectToAction("Index");
