@@ -97,6 +97,23 @@ namespace LilamiBazzar.Areas.Admin.Controllers
 
             return Json(combinedData);
         }
+        public IActionResult Category()
+        {
+            List<Category> objCategoryList = _dbContext.Categories.ToList();
+            return View(objCategoryList);
+        }
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateCategory(Category obj)
+        {
+            _dbContext.Categories.Add(obj);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Category");
+        }
+
 
 
 
