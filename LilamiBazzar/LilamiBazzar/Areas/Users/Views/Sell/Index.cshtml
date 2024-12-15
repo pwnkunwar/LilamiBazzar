@@ -266,9 +266,9 @@
                     </div>
                     <br>
                     <div class="form-group row align-items-center">
-                        <label for="category" class="col-form-label col-sm-4 text-sm-center mb-0">Category</label>
+                        <label for="categoryName" class="col-form-label col-sm-4 text-sm-center mb-0">Category</label>
                         <div class="col-sm-7">
-                            <select id="mySelect" class="form-control form-control-sm" name="category" required>
+                            <select id="mySelect" class="form-control form-control-sm" name="categoryName" required>
                                 <option value="">Select a category</option>
                             </select>
                         </div>
@@ -298,7 +298,7 @@
         success: function (data) {
             $.each(data, function (index, item) {
                 $('#mySelect').append(
-                    $('<option></option>').val(item.id).text(item.name)
+                    $('<option></option>').text(item.name)
                 );
             });
         },
@@ -733,7 +733,6 @@ $(document).ready(function () {
                 if (document3) {
                     formData.append('Documents', document3);
                 }
-                debugger
                 // Append other form fields to FormData
                 formData.append('title', $('#title').val());
                 formData.append('description', $('#description').val());
@@ -744,6 +743,7 @@ $(document).ready(function () {
                 formData.append('provenance', $('#provenance').val());
                 formData.append('location', $('#location').val());
                 formData.append('Startingprice', $('#price').val());
+            formData.append('CategoryName', $('#mySelect').val());
             formData.append('Days', Number($('#auctionDuration').val()));
 
                 try {
