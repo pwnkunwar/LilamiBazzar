@@ -115,6 +115,55 @@ namespace LilamiBazzar.Areas.Admin.Controllers
         }
 
 
+        public IActionResult EditCategory(int id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Category categoryFromDb = _dbContext.Categories.Find(id);
+            if (categoryFromDb == null)
+            {
+                return NotFound();
+
+            }
+            return View(categoryFromDb);
+        }
+        [HttpPost]
+        public IActionResult EditCategory(Category category)
+        {
+            _dbContext.Categories.Update(category);
+            _dbContext.SaveChanges();
+            TempData["success"] = "Category Successfully Edited!";
+            return RedirectToAction("Category");
+        }
+        public IActionResult DeleteCategory(int id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Category category = _dbContext.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+        [HttpPost, ActionName("DeleteCategory")]
+        public IActionResult DeletePOST(int id)
+        {
+            Category category = _dbContext.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            _dbContext.Categories.Remove(category);
+            _dbContext.SaveChanges();
+            TempData["success"] = "Category Successfully deleted!";
+            return RedirectToAction("Category");
+        }
+
 
 
     }
