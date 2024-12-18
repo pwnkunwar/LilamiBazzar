@@ -267,9 +267,20 @@
             {
                 var fullName = User.FindFirst(ClaimTypes.GivenName)?.Value ?? "User";
                 <div class="nav-link">
-                    <a class="" asp-area="Accounts" asp-controller="Dashboard" asp-action="Index">Hello @fullName</a>
+                    <a class="" asp-area="Accounts" asp-controller="Dashboard" asp-action="Index" style=" 
+font-size:14PX;
+    text-decoration: none;
+    padding: 10px;
+color:#ffff;
+">Hello @fullName</a>
                     <!-- Trigger modal for Logout -->
-                    <a href="#" class="" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+                    <a href="#" class="" data-bs-toggle="modal" data-bs-target="#logoutModal" 
+                    style="
+font-size:14PX;
+    text-decoration: none;
+    padding: 10px;
+color:#ffff;
+    ">Logout</a>
                 </div>
             }
         
