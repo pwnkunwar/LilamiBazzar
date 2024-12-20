@@ -72,9 +72,7 @@
                 <!-- Category Dropdown -->
                 <div class="mb-3">
                     <label asp-for="CategoryName" class="form-label">Category</label>
-                    <select asp-for="CategoryName" class="form-select">
-                        <option value="Arts">Arts</option>
-                        <option value="Painting">Painting</option>
+                    <select asp-for="CategoryName" id="mySelect" class="form-select">
                         <option value="Other">Other</option>
                         <!-- Add other categories here -->
                     </select>
@@ -103,3 +101,19 @@
         </form>
     </div>
 </div>
+<script>
+    $.ajax({
+        url: '/Admin/Product/Category',
+        method: 'GET',
+        success: function (data) {
+            $.each(data, function (index, item) {
+                $('#mySelect').append(
+                    $('<option></option>').text(item.name)
+                );
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+</script>
