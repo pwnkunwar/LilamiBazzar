@@ -94,7 +94,7 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                 // Handle Document Uploads
                 if (product.Documents != null && product.Documents.Any())
                 {
-                    var allowedDocumentExtensions = new[] { ".pdf", ".docx", ".xlsx", ".svg", ".png" };
+                    var allowedDocumentExtensions = new[] { ".pdf", ".docx", ".xlsx", ".svg", ".png",".jpg" };
                     var uploadedDocumentFiles = new List<string>();
 
                     // Validate and save each document
