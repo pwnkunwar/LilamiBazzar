@@ -39,10 +39,10 @@ namespace LilamiBazzar.Areas.Admin.Controllers
                     obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "PENDING").ToList();
                     break;
                 case "inprocess":
-                    obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "APPROVED" && u.AunctionEndDate > DateTime.UtcNow).ToList();
+                    obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "APPROVED" && u.Auction.EndDate > DateTime.UtcNow).ToList();
                     break;
                 case "completed":
-                    obj = _dbContext.Products.Where(u => u.SellerId == userId && u.AunctionEndDate < DateTime.UtcNow && u.ProductRoles == "APPROVED").ToList();
+                    obj = _dbContext.Products.Where(u => u.SellerId == userId && u.Auction.EndDate < DateTime.UtcNow && u.ProductRoles == "APPROVED").ToList();
                     break;
                 case "rejected":
                     obj = _dbContext.Products.Where(u => u.SellerId == userId && u.ProductRoles == "REJECTED").ToList();
