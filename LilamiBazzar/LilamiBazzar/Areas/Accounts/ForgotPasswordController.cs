@@ -66,12 +66,12 @@ namespace LilamiBazzar.Areas.Accounts
             if (token == null || newPassword == null || confirmPassword == null)
             {
                 TempData["error"] = "Please enter value for all required fields";
-                return RedirectToAction("Reset");
+                return RedirectToAction("Index");
             }
             if(newPassword != confirmPassword)
             {
                 TempData["error"] = "NewPassword and ConfirmPassword must match";
-                return RedirectToAction("Reset");
+                return RedirectToAction("Index");
 
             }
 
@@ -96,7 +96,7 @@ namespace LilamiBazzar.Areas.Accounts
             _passwordHashingService.GeneratePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
             isTokenExists.PasswordHash = passwordHash;
             isTokenExists.PasswordSalt = passwordSalt;
-            isTokenExists.PasswordResetToken = null;
+            isTokenExists.PasswordResetToken = Guid.NewGuid().ToString();
             _dbContext.SaveChanges();
 
             TempData["success"] = "Password reset successfully";
