@@ -18,36 +18,9 @@ Please note that the frontend of this application **is not responsive** at the m
 - Visual Studio or any preferred IDE
 - SQL Server or SQLite database (for local development)
 
+## Live Hosting 
+https://lilamibazzar.runasp.net/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-live hosting -> https://lilamibazzar.runasp.net/
-
-admin credentials -> username : pwnkunwar@gmail.com
-                     password: pwnkunwar
+# Admin credentials 
+username : pwnkunwar@gmail.com
+password: pwnkunwar
